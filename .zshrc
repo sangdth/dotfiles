@@ -11,7 +11,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/sangdang/.oh-my-zsh"
+export ZSH="~/.oh-my-zsh"
 export TERM="xterm-256color"
 export FZF_BASE="/usr/local/opt/fzf"
 # export FZF_COMPLETION_TRIGGER='``'
@@ -199,8 +199,8 @@ export GIT_TERMINAL_PROMPT=1
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 ###-tns-completion-start-###
-if [ -f /Users/sangdth/.tnsrc ]; then
-    source /Users/sangdth/.tnsrc
+if [ -f ~/.tnsrc ]; then
+    source ~/.tnsrc
 fi
 ###-tns-completion-end-###
 # eval "$(rbenv init -)"
@@ -211,13 +211,13 @@ fi
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/sangdth/Downloads/google-cloud-sdk/path.zsh.inc' ]; then 
-  . '/Users/sangdth/Downloads/google-cloud-sdk/path.zsh.inc';
+if [ -f '~/Downloads/google-cloud-sdk/path.zsh.inc' ]; then 
+  . '~/Downloads/google-cloud-sdk/path.zsh.inc';
 fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/sangdth/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then
-  . '/Users/sangdth/Downloads/google-cloud-sdk/completion.zsh.inc';
+if [ -f '~/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then
+  . '~/Downloads/google-cloud-sdk/completion.zsh.inc';
 fi
 
 if command -v pyenv 1>/dev/null 2>&1; then
