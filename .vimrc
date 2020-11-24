@@ -130,12 +130,12 @@ set hidden
 " Better display for messages
 set cmdheight=1
 " Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=250
+set updatetime=150
 " don't give |ins-completion-menu| messages.
 
 set foldmethod=syntax " set the fold by language
 set foldenable
-set foldlevel=20
+set foldlevel=20 " Bigger than 20 does not work
 
 set shortmess+=c
 " always show signcolumns
@@ -310,15 +310,16 @@ let g:fzf_layout = { 'window': '-tabnew' }
 let g:fzf_tags_command = 'ctags -R'
 " Search files
 nmap <silent> sa :FzfAg<cr>
-nmap <silent> sh :FzfAgIn<cr>
+nmap <silent> si :FzfAgIn<cr>
 " Search files
 nmap <silent> sf :FzfFiles<cr>
 " Search Git files only
 nmap <silent> sg :FzfGFiles<cr>
+
 " Search buffers
-" nmap <silent> sb :FzfBuffers<cr>
+nmap <silent> sb :FzfBuffers<cr>
 " Search words
-nmap <silent> sb :FzfBLines<cr>
+nmap <silent> sh :FzfBLines<cr>
 " Search words in all buffer
 nmap <silent> sl :FzfLines<cr>
 " Search marks
