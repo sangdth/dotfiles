@@ -7,6 +7,7 @@ alias codemod='npx @next/codemod'
 alias la='ls -la --group-dirs first'
 alias lt='ls --tree --ignore-glob node_modules --ignore-glob .git'
 alias create-svelte-app='npx degit sveltejs/template'
+alias update-dotfiles='git -C ~/.dotfiles pull origin master'
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..='cd ..'
@@ -20,6 +21,7 @@ alias paths='nvim ~/.paths'
 # Shortcuts
 alias dl='cd ~/Downloads'
 alias dt='cd ~/Desktop'
+alias dj='cd ~/Digia'
 alias mp='cd ~/Projects'
 alias dc='docker-compose'
 alias dcrun='docker-compose run --rm'

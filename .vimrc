@@ -26,9 +26,9 @@ Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 " Put your non-Plugin stuff after this li
 
-let g:onedark_color_overrides = {
-\ "black": {"gui": "#000000", "cterm": "255", "cterm16": "0" },
-\}
+" let g:onedark_color_overrides = {
+" \ "black": {"gui": "#000000", "cterm": "255", "cterm16": "0" },
+" \}
 
 set background=dark
 colorscheme onedark
@@ -400,6 +400,7 @@ map <C-l> <C-W>l
 " Format Go code
 " nnoremap <silent> <leader>f :GoFmt<cr>
 
+noremap <F9> :execute 'new <bar> 0read !g++ -Wall -std=c++17 main.cpp'<cr>
 " noremap <F9> :execute 'new <bar> 0read ! go run' expand("%:t")<CR>
 " noremap <F9> :below new <bar> 0read ! go run #<CR>:resize 9<CR>
 
