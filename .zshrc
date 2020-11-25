@@ -11,7 +11,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh" # Using ~/ will cause permission issues.
 export TERM="xterm-256color"
 export FZF_BASE="/usr/local/opt/fzf"
 # export FZF_COMPLETION_TRIGGER='``'
