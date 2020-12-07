@@ -8,6 +8,7 @@ Plug 'SirVer/ultisnips'
 Plug 'ascenator/L9', {'name': 'newL9'}
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -267,11 +268,11 @@ let g:airline#extensions#obsession#enabled=0
 let g:airline#extensions#po#enabled=0
 let g:airline#extensions#syntastic#enabled=0
 
-" let g:user_emmet_mode='i'
-" let g:user_emmet_leader_key='<c-e>'
-" let g:user_emmet_install_global=1
-" imap <expr> <c-e> emmet#expandAbbrIntelligent("\<c-e>")
-" let g:user_emmet_expandabbr_key='<c-e>'
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key='<c-e>'
+let g:user_emmet_install_global=1
+imap <expr> <c-e> emmet#expandAbbrIntelligent("\<c-e>")
+let g:user_emmet_expandabbr_key='<c-e>'
 
 " Allow JSX in normal JS files
 let g:jsx_ext_required=0
