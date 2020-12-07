@@ -10,6 +10,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
 Plug 'sheerun/vim-polyglot'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sensible'
@@ -286,6 +288,18 @@ let g:vue_disable_pre_processors=1
 
 let g:workspace_create_new_tabs=0
 
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+" let g:go_highlight_build_constraints = 1
+" let g:go_highlight_extra_types = 1
+" let g:go_highlight_fields = 1
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_structs = 1
+" let g:go_highlight_types = 1
+let g:go_fmt_command = "goimports"
+
 " let g:polyglot_disabled = ['jsx', 'tsx']
 
 " ############# Customize Fzf #############
@@ -328,6 +342,10 @@ nmap <silent> sm :FzfMarks<cr>
 nmap <silent> st :FzfTags<cr>
 
 imap <c-t> <plug>(fzf-complete-path)
+
+" Remap for split-join
+nmap sj :SplitjoinSplit<cr>
+nmap sk :SplitjoinJoin<cr>
 
 " Likewise, Files command with preview window
 command! -bang -nargs=? -complete=dir FzfFiles
@@ -386,6 +404,10 @@ nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
 " Switching tab with control-left/right
 nnoremap <silent> <Right> :bnext<cr>
 nnoremap <silent> <Left> :bprevious<cr>
+nnoremap <silent> <Up> :cprev<cr>
+nnoremap <silent> <Down> :cnext<cr>
+nnoremap <silent> <PageUp> :copen<cr>
+nnoremap <silent> <PageDown> :cclose<cr>
 " Switch buffer (tab) on english keyboard
 map <leader>] :bnext<cr>
 map <leader>[ :bprevious<cr>
@@ -398,9 +420,9 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Format Go code
-" nnoremap <silent> <leader>f :GoFmt<cr>
+nnoremap <silent> <leader>f :GoFmt<cr>
 
-noremap <F9> :execute 'new <bar> 0read !g++ -Wall -std=c++17 main.cpp'<cr>
+" noremap <F9> :execute 'new <bar> 0read !g++ -Wall -std=c++17 main.cpp'<cr>
 " noremap <F9> :execute 'new <bar> 0read ! go run' expand("%:t")<CR>
 " noremap <F9> :below new <bar> 0read ! go run #<CR>:resize 9<CR>
 
@@ -571,6 +593,8 @@ if has("autocmd")
     autocmd StdinReadPre * let s:std_in=1
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+    autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
     " Close vim if the only window left open is a NERDTree
     " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -593,7 +617,14 @@ if has("autocmd")
       autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
       autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
     augroup end
-  
+ 
+    augroup golang
+        au FileType go set noexpandtab
+        au FileType go set shiftwidth=4
+        au FileType go set softtabstop=4
+        au FileType go set tabstop=4
+    augroup end
+
     augroup updateBuffer
       " Trigegr `autoread` when files changes on disk
       autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif

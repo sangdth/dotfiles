@@ -27,7 +27,7 @@ export FZF_DEFAULT_OPTS="
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 POWERLEVEL9K_MODE="nerdfont-complete"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_PROMPT_ON_NEWLINE=false
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
 # Customize Prompt elements
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
