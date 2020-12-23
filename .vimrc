@@ -11,13 +11,17 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
+Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 Plug 'thaerkh/vim-workspace'
+Plug 'pechorin/any-jump.vim'
+Plug 'wakatime/vim-wakatime'
 Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -27,11 +31,7 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'sangdth/tapilu-snippets'
 
 call plug#end()
-" Put your non-Plugin stuff after this li
-
-" let g:onedark_color_overrides = {
-" \ "black": {"gui": "#000000", "cterm": "255", "cterm16": "0" },
-" \}
+" Put your non-Plugin stuff after this
 
 set background=dark
 colorscheme onedark
@@ -164,7 +164,7 @@ set nowritebackup
 let g:python3_host_prog='/usr/local/opt/python/libexec/bin/python'
 let g:ruby_host_prog='/Users/sangdth/.rbenv/shims/gem'
 let g:loaded_perl_provider=0
-let g:loaded_python_provider = 0
+let g:loaded_python_provider=0
 
 " let g:indentLine_char='▏'
 " let g:indentLine_color_gui='#333444'
@@ -233,23 +233,25 @@ let g:NERDTreeIndicatorMapCustom = {
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='unique_tail'
 let g:airline#extensions#coc#enabled=1
+let g:airline#extensions#hunks#enabled=1
+let g:airline#extensions#branch#enabled=1
 let g:airline_extensions=['branch', 'tabline']
 
 let g:airline_powerline_fonts=1
 let g:airline_theme='onedark'
-let g:airline_highlighting_cache = 1
+let g:airline_highlighting_cache=1
 let g:airline_left_sep=''
 let g:airline_left_alt_sep=''
 let g:airline_right_sep=''
 let g:airline_right_alt_sep=''
 
+" let g:airline_skip_empty_sections=1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-" let g:airline_skip_empty_sections=1
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+let g:airline_symbols.branch=''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 let g:airline_symbols.maxlinenr = ''
 
 " disable other airline extensions I do not need
@@ -391,11 +393,11 @@ let g:diminactive_enable_focus=1
 
 let mapleader = "ä"
 " let mapleader = '\'
+
 " Toggle NerdTree
 map <c-e> :NERDTreeToggle<cr>
 map <c-b> :enew<cr>
 " map <leader>qq :w<cr>:Bclose<cr>:tabclose<cr>gT
-map <leader>w :w<cr>
 " open Explore
 " map <F2> :!ls<CR>:e
 
@@ -404,16 +406,18 @@ map <leader>w :w<cr>
 " Remove highlight by shift-star
 
 nnoremap <silent> <leader>y  :<C-u>CocList -A --normal yank<cr>
-" Switching tab with control-left/right
+" Switching tab with left/right
 nnoremap <silent> <Right> :bnext<cr>
 nnoremap <silent> <Left> :bprevious<cr>
+
+" Open/close and jump to next/previous "error"
+" I use this as a hack for working with TODO list
 nnoremap <silent> <Up> :cprev<cr>
 nnoremap <silent> <Down> :cnext<cr>
 nnoremap <silent> <PageUp> :copen<cr>
 nnoremap <silent> <PageDown> :cclose<cr>
+
 " Switch buffer (tab) on english keyboard
-map <leader>] :bnext<cr>
-map <leader>[ :bprevious<cr>
 map <leader>q :Bclose<cr>
 
 " Smart way to move between windows

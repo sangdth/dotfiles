@@ -15,7 +15,6 @@
 
     "codeLens.enable": true,
 
-
     "diagnostic.infoSign": "",
     "diagnostic.hintSign": "ஐ",
     "diagnostic.errorSign": "",
@@ -39,7 +38,17 @@
         "vue"
     ],
 
-    "javascript.validate.enable": false,
+    "git": {
+        "addedSign.text": "+",
+        "removedSign.text": "-",
+        "changedSign.text": "~"
+    },
+
+    "javascript": {
+        "suggestionActions.enabled": false,
+        "format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+        "validate.enable": false
+    },
 
     "languageserver": {
         "golang": {
@@ -84,7 +93,7 @@
     "python.autoComplete.addBrackets": true,
     "python.analysis.diagnosticPublishDelay": 500,
 
-    "smartf.timeout": 1500,
+    "smartf.timeout": 1000,
 
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",
@@ -115,7 +124,12 @@
     },
 
     "tsserver.enableJavascript": false,
-    "tsserver.formatOnType": true,
+    "tsserver.formatOnType": false,
+
+    "typescript": {
+        "suggestionActions.enabled": false,
+        "format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
+    },
 
     "yaml.customTags": [
         "!Equals sequence",
