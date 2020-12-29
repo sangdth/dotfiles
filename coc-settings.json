@@ -46,8 +46,10 @@
 
     "javascript": {
         "suggestionActions.enabled": false,
-        "format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
-        "validate.enable": false
+        "format": {
+            "enabled": true,
+            "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
+        }
     },
 
     "languageserver": {
@@ -124,11 +126,13 @@
     },
 
     "tsserver.enableJavascript": false,
-    "tsserver.formatOnType": false,
 
     "typescript": {
         "suggestionActions.enabled": false,
-        "format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
+        "format": {
+            "enabled": true,
+            "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
+        }
     },
 
     "yaml.customTags": [

@@ -146,16 +146,18 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  brew
-  common-aliases
-  docker
-  fzf
-  git
-  git-flow
-  osx
-  poetry
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+    brew
+    common-aliases
+    docker
+    fzf
+    git
+    git-flow
+    golang
+    osx
+    poetry
+    vi-mode
+    zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 
 # The oh-my-zsh might print out the update question
@@ -163,8 +165,9 @@ source $ZSH/oh-my-zsh.sh
 source ~/.paths
 source ~/.dotfiles/.aliases
 source ~/.iterm2_shell_integration.zsh
+# source ./completions/.fnm
 
-eval "$(fnm env --multi)"
+eval "$(fnm env)"
 
 # Add completion for gh cli
 eval "$(gh completion -s zsh)"
@@ -192,6 +195,7 @@ fi
 # ssh
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 export GIT_TERMINAL_PROMPT=1
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -205,8 +209,6 @@ export GIT_TERMINAL_PROMPT=1
 if [ -f ~/.tnsrc ]; then
     source ~/.tnsrc
 fi
-###-tns-completion-end-###
-# eval "$(rbenv init -)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
