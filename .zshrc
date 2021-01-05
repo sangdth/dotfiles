@@ -1,14 +1,8 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Trying to disable the permission prompt
+ZSH_DISABLE_COMPFIX="true"
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh" # Using ~/ will cause permission issues.
@@ -20,7 +14,7 @@ export FZF_BASE="/usr/local/opt/fzf"
 export FZF_DEFAULT_OPTS="
    --color fg:-1,bg:-1,hl:33,fg+:254,bg+:235,hl+:33
    --color info:136,prompt:136,pointer:230,marker:230,spinner:136"
-# export FZF_DEFAULT_COMMAND="ag --path-to-ignore ~/.agignore --hidden"
+# export FZF_DEFAULT_COMMAND="ag --path-to-ignore ~/.agignore"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -154,17 +148,17 @@ plugins=(
     git-flow
     golang
     osx
-    poetry
-    vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
 
 # The oh-my-zsh might print out the update question
 source $ZSH/oh-my-zsh.sh
-source ~/.paths
-source ~/.dotfiles/.aliases
-source ~/.iterm2_shell_integration.zsh
+source "${HOME}/.paths"
+source "${HOME}/.dotfiles/.aliases"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # source ./completions/.fnm
 
 eval "$(fnm env)"
