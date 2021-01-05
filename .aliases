@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-alias ag='ag --path-to-ignore ~/.ignore'
+# alias ag='ag --path-to-ignore ~/.ignore'
 alias ls='lsd'
 alias am='amplify'
 alias codemod='npx @next/codemod'
@@ -8,11 +8,6 @@ alias la='ls -la --group-dirs first'
 alias lt='ls --tree --ignore-glob node_modules --ignore-glob .git'
 alias create-svelte-app='npx degit sveltejs/template'
 alias update-dotfiles='git -C ~/.dotfiles pull origin master'
-
-# Easier navigation: .., ..., ...., ....., ~ and -
-alias ..='cd ..'
-alias ....='cd ../..'
-alias ......='cd ../../..'
 
 alias vimrc='nvim ~/.dotfiles/.vimrc'
 alias zshrc='nvim ~/.dotfiles/.zshrc'

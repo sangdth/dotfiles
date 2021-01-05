@@ -4,23 +4,24 @@ filetype off         " required
  call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug '/usr/local/opt/fzf'
-Plug 'SirVer/ultisnips'
-Plug 'ascenator/L9', {'name': 'newL9'}
+" Plug 'SirVer/ultisnips'
+" Plug 'ascenator/L9', {'name': 'newL9'}
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
-Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install'}
+" Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
+" Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-Plug 'thaerkh/vim-workspace'
-Plug 'pechorin/any-jump.vim'
+" Plug 'thaerkh/vim-workspace'
+" Plug 'pechorin/any-jump.vim'
 Plug 'wakatime/vim-wakatime'
 Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
@@ -600,8 +601,8 @@ if has("autocmd")
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
     " Open a NERDTree automatically when vim starts up if no files were specified
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    " autocmd StdinReadPre * let s:std_in=1
+    " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
     autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
