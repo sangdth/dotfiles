@@ -4,12 +4,11 @@ filetype off         " required
  call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug '/usr/local/opt/fzf'
-" Plug 'SirVer/ultisnips'
-" Plug 'ascenator/L9', {'name': 'newL9'}
+Plug 'SirVer/ultisnips'
+Plug 'ascenator/L9', {'name': 'newL9'}
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
-" Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'sheerun/vim-polyglot'
 " Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
@@ -21,7 +20,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 " Plug 'thaerkh/vim-workspace'
-" Plug 'pechorin/any-jump.vim'
+Plug 'pechorin/any-jump.vim'
 Plug 'wakatime/vim-wakatime'
 Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
@@ -59,7 +58,7 @@ set binary
 set noeol
 
 " Highlight current line, could slow down vim
-" set cursorline
+set cursorline
 
 " Centralize backups, swapfiles and undo history
 " set backupdir=~/.vim/backups
@@ -86,8 +85,8 @@ filetype indent on
 " syntax sync minlines=64  " this slow things?
 set nocursorcolumn
 " Make tabs as wide as two spaces
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 set copyindent
@@ -162,10 +161,14 @@ set nobackup
 set noundofile
 set nowritebackup
 
-let g:python3_host_prog='/usr/local/opt/python/libexec/bin/python'
-let g:ruby_host_prog='/Users/sangdth/.rbenv/shims/gem'
+" let g:python3_host_prog='/usr/local/opt/python/libexec/bin/python'
+" let g:ruby_host_prog='/Users/sangdth/.rbenv/shims/gem'
 let g:loaded_perl_provider=0
-let g:loaded_python_provider=0
+
+" Somehow we need to bring this out because it could be computer specified
+let g:loaded_python_provider='/usr/bin/python'
+let g:python3_host_prog='/usr/bin/python3'
+let g:ruby_host_prog='~/.rbenv/shims/ruby'
 
 " let g:indentLine_char='▏'
 " let g:indentLine_color_gui='#333444'
@@ -191,25 +194,6 @@ let g:NERDTreeFileExtensionHighlightFullName=1
 let g:NERDTreeExactMatchHighlightFullName=1
 let g:NERDTreePatternMatchHighlightFullName=1
 
-" let g:webdevicons_enable_nerdtree=0
-" let g:DevIconsEnableFoldersOpenClose=0
-" let g:WebDevIconsNerdTreeAfterGlyphPadding='  '
-
-" let g:WebDevIconsUnicodeDecorateFolderNodes=1
-" let g:DevIconsEnableFoldersOpenClose=1
-" let g:DevIconsDefaultFolderOpenSymbol=''
-" let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol=''
-" let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol=''
-
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols={}
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['css']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['svg']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['png']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['jpg']=''
-
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "",
     \ "Staged"    : "",
@@ -223,14 +207,6 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : ""
     \ }
 
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols={}
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.gitignore']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['package.json']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['yarn.lock']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['package-lock.json']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['node_modules']=''
-" let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.git'] =''
-
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='unique_tail'
 let g:airline#extensions#coc#enabled=1
@@ -241,10 +217,10 @@ let g:airline_extensions=['branch', 'tabline']
 let g:airline_powerline_fonts=1
 let g:airline_theme='onedark'
 let g:airline_highlighting_cache=1
-let g:airline_left_sep=''
-let g:airline_left_alt_sep=''
-let g:airline_right_sep=''
-let g:airline_right_alt_sep=''
+" let g:airline_left_sep=''
+" let g:airline_left_alt_sep=''
+" let g:airline_right_sep=''
+" let g:airline_right_alt_sep=''
 
 " let g:airline_skip_empty_sections=1
 if !exists('g:airline_symbols')

@@ -16,15 +16,14 @@ alias paths='nvim ~/.paths'
 # Shortcuts
 alias dl='cd ~/Downloads'
 alias dt='cd ~/Desktop'
-alias dj='cd ~/Digia'
 alias mp='cd ~/Projects'
+alias sm='cd ~/Smartly'
 alias dc='docker-compose'
 alias dcrun='docker-compose run --rm'
 
 # Working projects
 # alias pw='~/Projects/pw/bin/run'
 
-alias bat='cd ~/Projects/password-manager'
 alias blog='cd ~/Projects/sangdang.fi'
 alias rete='cd ~/Projects/rete.academy'
 alias openlocal='ngrok http -region=eu -subdomain=super -host-header=rewrite 3000'

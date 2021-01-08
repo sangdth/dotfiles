@@ -14,7 +14,7 @@ export FZF_BASE="/usr/local/opt/fzf"
 # export FZF_DEFAULT_OPTS="
 #    --color fg:-1,bg:-1,hl:33,fg+:254,bg+:235,hl+:33
 #    --color info:136,prompt:136,pointer:230,marker:230,spinner:136"
-export FZF_DEFAULT_COMMAND='ag --path-to-ignore ./.agignore -g ""'
+export FZF_DEFAULT_COMMAND='ag --path-to-ignore ~/.dotfiles/.agignore -g ""'
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -222,3 +222,5 @@ fi
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
+
+eval "$(rbenv init -)"
