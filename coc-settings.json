@@ -1,60 +1,78 @@
 {
-    "css.colorDecorators.enable": true,
-    "css.lint.duplicateProperties": "warning",
-	"css.lint.unknownAtRules": "ignore",
+  "css.colorDecorators.enable": true,
+  "css.lint.duplicateProperties": "warning",
+  "css.lint.unknownAtRules": "ignore",
 
-    "coc.preferences.formatOnType": true,
-    "coc.preferences.formatOnSaveFiletypes": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "html",
-        "vue"
-    ],
+  "coc.preferences.colorSupport": true,
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "css",
+      "json",
+      "markdown",
+      "html",
+      "vue"
+  ],
 
-    "codeLens.enable": true,
+  "codeLens.enable": true,
 
-    "diagnostic.infoSign": "",
-    "diagnostic.hintSign": "ஐ",
-    "diagnostic.errorSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "ஐ",
+  "diagnostic.errorSign": "",
 	"diagnostic.warningSign": "",
 	"diagnostic.enable": true,
-    "diagnostic.highlightOffset": 9999999,
-    "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.highlightOffset": 9999999,
+  "diagnostic.refreshOnInsertMode": true,
 
 	"emmet.includeLanguages": {
-	    "javascript": "javascriptreact",
-	    "typescript": "typescriptreact"
+	  "javascript": "javascriptreact",
+	  "typescript": "typescriptreact"
 	},
 
-    "eslint.autoFixOnSave": true,
-    "eslint.filetypes": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "html",
-        "vue"
-    ],
+  "eslint.autoFixOnSave": true,
+  "eslint.format.enable": true,
+  "eslint.run": "onType",
 
-    "git": {
-        "addedSign.text": "+",
-        "removedSign.text": "-",
-        "changedSign.text": "~"
+  "explorer.keyMappings.global": {
+    "u": "indentPrev"
+  },
+  "explorer.icon.enableNerdfont": true,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.floating.border.enable": true,
+  /* "explorer.floating.border.chars": [ "─", "│", "─", "│", "╭", "╮", "╯", "╰" ], */
+  "explorer.floating.contentWidth": -5,
+  "explorer.git.icon.rootStatus.conflicted": "",
+  "explorer.git.icon.status.modified": "~",
+  "explorer.presets": {
+    "staticRight": {
+      "position": "right",
+      "width": 60,
+      "content-width": -5
     },
+    "floatingRight": {
+      "position": "floating",
+      "floating-position": "right-center",
+      "floating-width": 60,
+      "content-width": -5,
+      "floating-height": -5,
+      "open-action-strategy": "sourceWindow"
+   }
+  },
 
-    "javascript": {
-        "suggestionActions.enabled": false,
-        "format": {
-            "enabled": true,
-            "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
-        }
-    },
+  "git.addedSign.text": "+",
+  "git.removedSign.text": "-",
+  "git.changedSign.text": "~",
 
-    "languageserver": {
-        "golang": {
-            "command": "gopls",
+  "javascript.suggestionActions.enabled": false,
+  "javascript.format.enabled": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
                 "rootPatterns": [
                     "go.mod",
                     ".vim/",
@@ -90,6 +108,7 @@
     },
 
     "less.lint.duplicateProperties": "warning",
+
 
     "python.jediEnabled": false,
     "python.autoComplete.addBrackets": true,
@@ -127,13 +146,9 @@
 
     "tsserver.enableJavascript": false,
 
-    "typescript": {
-        "suggestionActions.enabled": false,
-        "format": {
-            "enabled": true,
-            "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
-        }
-    },
+    "typescript.suggestionActions.enabled": false,
+    "typescript.format.enabled": true,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
 
     "yaml.customTags": [
         "!Equals sequence",

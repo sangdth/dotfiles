@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# alias ag='ag --path-to-ignore ~/.ignore'
 alias ls='lsd'
 alias am='amplify'
 alias codemod='npx @next/codemod'

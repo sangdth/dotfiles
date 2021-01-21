@@ -1,165 +1,116 @@
-set nocompatible     " be iMproved, required
-filetype off         " required
+" .vimrc config file
+filetype off                    " required
 
  call plug#begin('~/.vim/plugged')
-" Make sure you use single quotes
 Plug '/usr/local/opt/fzf'
-Plug 'SirVer/ultisnips'
-Plug 'ascenator/L9', {'name': 'newL9'}
-Plug 'junegunn/fzf.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'sheerun/vim-polyglot'
-" Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
-" Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app && yarn install'}
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
+Plug 'ascenator/L9', {'name': 'newL9'}
+Plug 'joshdick/onedark.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'mattn/emmet-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pechorin/any-jump.vim'
+Plug 'psliwka/vim-smoothie'
+Plug 'sangdth/tapilu-snippets'
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-" Plug 'thaerkh/vim-workspace'
-Plug 'pechorin/any-jump.vim'
 Plug 'wakatime/vim-wakatime'
-Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" Plug 'leafgarland/typescript-vim'
-" Plug 'pantharshit00/vim-prisma'
-" Plug 'sangdth/tapilu-snippets'
-
-call plug#end()
-" Put your non-Plugin stuff after this
+call plug#end()                       " Put your non-Plugin stuff after this
 
 set background=dark
 colorscheme onedark
 
-" set guifont=Furamono\ Nerd\ Font:h14
-" used plus to help coc-yank cross vim instance
-set clipboard=unnamedplus
-" Enhance command-line completion
-" Allow cursor keys in insert mode
-" set esckeys
-" Allow backspace in insert mode
-set backspace=indent,eol,start
-" Optimize for fast terminal connections
-set ttyfast
-" Add the g flag to search/replace by default
-" set gdefault
-" Use UTF-8 without BOM
-set encoding=utf-8 nobomb
+filetype plugin indent on
+
+set clipboard=unnamedplus             " used plus to help coc-yank cross vim instance
+set backspace=indent,eol,start        " Allow backspace in insert mode
+set ttyfast                           " Optimize for fast terminal connections
+
+" set gdefault                        " Add the g flag to search/replace by default
+set encoding=utf-8 nobomb             " Use UTF-8 without BOM
 set fileformat=unix
 
-set ttimeoutlen=10
-" Don’t add empty newlines at the end of files
+set ttimeoutlen=10                    " Don’t add empty newlines at the end of files
 set binary
 set noeol
 
-" Highlight current line, could slow down vim
-set cursorline
+set cursorline                        " Highlight current line, could slow down vim
 
-" Centralize backups, swapfiles and undo history
-" set backupdir=~/.vim/backups
-" set undodir=~/.vim/undo
-" set nohidden
-" Don’t create backups when editing files in certain directories
-" set backupskip=/tmp/*,/private/tmp/*
-
-set synmaxcol=140
-" Respect modeline in files
-set modeline
+set modeline                          " Respect modeline in files
 set modelines=4
-" set lazyredraw " Why it makes slower than redraw?
-" set redrawtime=10000
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-" Enable line numbers
-set number
-" Enable syntax highlighting
-" syntax on
-" filetype plugin on
-filetype indent on
-" syntax sync minlines=64  " this slow things?
+
+" performance tweaks
+set nocursorline
 set nocursorcolumn
-" Make tabs as wide as two spaces
+set scrolljump=5
+set redrawtime=10000
+set synmaxcol=140                     " Stop decorate after this column number
+set lazyredraw                        " Why it makes slower in some cases?
+" set re=1                            " Why this cause the coc-explorer freeze when open file
+
+" required by coc
+set hidden                            " if hidden is not set, TextEdit might fail.
+set nobackup
+set nowritebackup
+set cmdheight=1                       " Better display for messages
+set updatetime=150                    " Smaller updatetime for CursorHold & CursorHoldI
+set shortmess=atI                     " This one better than += version
+set signcolumn=yes                    " always show signcolumns
+
+set exrc                              " Enable per-directory .vimrc files
+set secure                            " Disable unsafe commands in them
+set number                            " Enable line numbers
+
 set tabstop=2
 set shiftwidth=2
 set expandtab
 set autoindent
-set copyindent
 set smartindent
-set complete-=i " do not parse included files in autocomplete
+set copyindent                        " Disable if cause weird problem with indentation
+set complete-=i                       " do not parse included files in autocomplete
 set autoread
 set noautowrite
-" set autowrite
-" set preserveindent
-" make cmdline tab completion similar to bash
-" set wildmode=list:longest,full
-" stuff to ignore when tab completing
-set wildignore=*.o,*.obj,*~
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,nbsp:_
-" set list
-" Highlight searches
-set hlsearch
-" Ignore case of searches
-set ignorecase
+set wildignore=*.o,*.obj,*~           " stuff to ignore when tab completing
+set lcs=tab:▸\ ,trail:·,nbsp:_        " Show “invisible” characters
+set hlsearch                          " Highlight searches
+set ignorecase                        " Ignore case of searches
 set smartcase
-" Highlight dynamically as pattern is typed
-set incsearch
-" Enable mouse in all modes
-set mouse=a
-" Disable error bells
-set noerrorbells
-" Set no visual bell
-set novisualbell
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" dont break word in new line
-set linebreak
-" Don’t show the intro message when starting Vim
-" set shortmess=atI
-" Show the filename in the window titlebar
-set title
-" Show the (partial) command as it’s being typed
-set showcmd
-" Not show the current mode
-set noshowmode
-" if hidden is not set, TextEdit might fail.
-set hidden
-" Better display for messages
-set cmdheight=1
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=150
-" don't give |ins-completion-menu| messages.
+set incsearch                         " Highlight dynamically as pattern is typed
+set mouse=a                           " Enable mouse in all modes
+set noerrorbells                      " Disable error bells
+set novisualbell                      " Set no visual bell
+set nostartofline                     " Don’t reset cursor to start of line when moving around.
+set linebreak                         " dont break word in new line
+set title                             " Show the filename in the window titlebar
+set showcmd                           " Show the (partial) command as it’s being typed
+set noshowmode                        " Not show the current mode
 
-set foldmethod=syntax " set the fold by language
-set foldenable
-set foldlevel=20 " Bigger than 20 does not work
+set foldmethod=syntax                 " Set the fold by language instead of indent
+set foldenable                        " otherwise we have to enable manually
+set foldlevel=20                      " Prevent fold all at beginning, bigger than 20 does not work
 
-set shortmess+=c
-" always show signcolumns
-" set signcolumn=yes
-" Mu custom corlos
-" hi clear SignColumn
-" hi clear LineNr
-" hi clear VertSplit
+set matchpairs+=<:>                   " Highlight matching pairs of brackets. Use the '%' character to jump.
 
-" Highlight matching pairs of brackets. Use the '%' character to jump between them.
-set matchpairs+=<:>
-" Use relative line numbers
-if exists("&relativenumber")
-  set relativenumber
+if exists("&relativenumber")  
+  set relativenumber                  " Use relative line numbers
   au BufReadPost * set relativenumber
 endif
 
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on                       " Enable syntax highlighting
+endif
+
 set noswapfile 
-set nobackup
 set noundofile
-set nowritebackup
 
 " let g:python3_host_prog='/usr/local/opt/python/libexec/bin/python'
 " let g:ruby_host_prog='/Users/sangdth/.rbenv/shims/gem'
@@ -176,36 +127,17 @@ let g:ruby_host_prog='~/.rbenv/shims/ruby'
 " let g:indentLine_showFirstIndentLevel=0
 " let g:indentLine_faster=1
 
-" Fix the folder color orange
-highlight! link NERDTreeFlags NERDTreeDir
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.hg', '\.svn', '\.bzr', '\.DS_Store']
-
-let g:NERDTreeChDirMode=3
-let g:NERDTreeDirArrowExpandable=''
-let g:NERDTreeDirArrowCollapsible=''
-let g:NERDTreeHighlightCursorline=0
-let NERDTreeShowBookmarks=0
-let g:NERDTreeFileExtensionHighlightFullName=1
-let g:NERDTreeExactMatchHighlightFullName=1
-let g:NERDTreePatternMatchHighlightFullName=1
-
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "",
-    \ "Staged"    : "",
-    \ "Untracked" : "ﳁ",
-    \ "Renamed"   : "",
-    \ "Unmerged"  : "",
-    \ "Deleted"   : "",
-    \ "Dirty"     : "",
-    \ "Clean"     : "",
-    \ 'Ignored'   : "",
-    \ "Unknown"   : ""
-    \ }
+" Some useful icons
+" \ "Modified"  : "",
+" \ "Staged"    : "",
+" \ "Untracked" : "ﳁ",
+" \ "Renamed"   : "",
+" \ "Unmerged"  : "",
+" \ "Deleted"   : "",
+" \ "Dirty"     : "",
+" \ "Clean"     : "",
+" \ 'Info'      : "",
+" \ "Unknown"   : "",
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='unique_tail'
@@ -217,10 +149,10 @@ let g:airline_extensions=['branch', 'tabline']
 let g:airline_powerline_fonts=1
 let g:airline_theme='onedark'
 let g:airline_highlighting_cache=1
-" let g:airline_left_sep=''
-" let g:airline_left_alt_sep=''
-" let g:airline_right_sep=''
-" let g:airline_right_alt_sep=''
+let g:airline_left_sep=''
+let g:airline_left_alt_sep=''
+let g:airline_right_sep=''
+let g:airline_right_alt_sep=''
 
 " let g:airline_skip_empty_sections=1
 if !exists('g:airline_symbols')
@@ -283,9 +215,11 @@ let g:go_fmt_command = "goimports"
 " let g:polyglot_disabled = ['jsx', 'tsx']
 
 " ############# Customize Fzf #############
+" let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
+
 " Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
   \ 'hl':      ['fg', 'Comment'],
   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
@@ -298,10 +232,41 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+
 let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'window': '-tabnew' }
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
+let g:fzf_layout = { 'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
+
+let g:fzf_tags_command = 'ctags -R'             " [Tags] Command to generate tags file
+
+" Avoid crashes when calling vim-plug functions while the cursor is on the NERDTree window
+let g:plug_window='noautocmd vertical topleft new'
+
+let g:coc_config_home = '~/.dotfiles'
+
+let g:coc_snippet_next = '<Tab>'
+let g:coc_snippet_prev = '<S-Tab>'
+
+" list of the extensions to make sure are always installed
+let g:coc_global_extensions = [
+  \'coc-actions',
+  \'coc-css',
+  \'coc-emmet',
+  \'coc-eslint',
+  \'coc-git',
+  \'coc-html',
+  \'coc-json',
+  \'coc-lists',
+  \'coc-pairs',
+  \'coc-smartf',
+  \'coc-snippets',
+  \'coc-tabnine',
+  \'coc-tsserver',
+  \'coc-xml',
+  \'coc-yaml',
+  \'coc-python',
+  \]
+
+" Mapping setup from here
 " Search files
 nmap <silent> sa :FzfAg<cr>
 nmap <silent> si :FzfAgIn<cr>
@@ -323,11 +288,23 @@ nmap <silent> st :FzfTags<cr>
 
 imap <c-t> <plug>(fzf-complete-path)
 
+" fugitive mappings
+nmap <silent> <space>gd :Gdiffsplit<CR>
+nmap <silent> <space>gb :Gblame<CR>
+
+" Jump between next and previous hunks
+nmap <silent> <space>gn <Plug>(GitGutterNextHunk)
+nmap <silent> <space>gp <Plug>(GitGutterPrevHunk)
+
+" git add (chunk)
+nmap <silent> <space>ga <Plug>(GitGutterStageHunk)
+nmap <silent> <space>gu <Plug>(GitGutterUndoHunk)
+
 " Remap for split-join
 nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
 
-nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 
 " Likewise, Files command with preview window
@@ -353,14 +330,6 @@ imap <c-l> <Plug>(coc-snippets-expand)
 " Use <C-j> for select text for visual placeholder of snippet.
 vmap <c-j> <Plug>(coc-snippets-select)
 
-let g:coc_config_home = '~/.dotfiles'
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 " -------------------------------------
@@ -371,11 +340,12 @@ nmap <silent> as ysiw
 " Dim the inactive window background
 let g:diminactive_enable_focus=1
 
-let mapleader = "ä"
+let mapleader = "§"
 " let mapleader = '\'
 
-" Toggle NerdTree
-map <c-e> :NERDTreeToggle<cr>
+" Toggle Coc Explorer tree in floating
+nmap <c-e> :CocCommand explorer --preset staticRight<CR>
+nmap <c-f> :CocCommand explorer --preset floatingRight<CR>
 map <c-b> :enew<cr>
 " map <leader>qq :w<cr>:Bclose<cr>:tabclose<cr>gT
 " open Explore
@@ -430,14 +400,12 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 
-let g:coc_snippet_next = '<tab>'
-
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-" inoremap <silent><expr> <Tab>
-"      \ pumvisible() ? "\<C-n>" :
-"      \ <SID>check_back_space() ? "\<Tab>" :
-"      \ coc#refresh()
+inoremap <silent><expr> <Tab>
+     \ pumvisible() ? "\<C-n>" :
+     \ <SID>check_back_space() ? "\<Tab>" :
+     \ coc#refresh()
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
@@ -508,7 +476,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 " Remap for do codeAction of current line
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <silent> <space>qf  <Plug>(coc-fix-current)
 
 nnoremap <leader>s :ToggleWorkspace<CR>
 
@@ -519,10 +487,12 @@ command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " Using CocList
+" Show actions
+nnoremap <silent> <space>a  :<C-u>CocAction<cr>
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>e  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>x  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
@@ -535,6 +505,7 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
 " turn off highlight
 nnoremap <silent> <space>n :noh<cr>
 nnoremap <silent> <space>r :CocRestart<CR>
@@ -548,6 +519,8 @@ nnoremap <silent> <leader>f5 :source $MYVIMRC<cr>
 command! W w
 command! Q q
 command! Wa wa
+command! Wqa wqa
+command! WQa wqa
 command! Qa qa
 
 command! Bclose call <SID>BufcloseCloseIt()
@@ -555,6 +528,9 @@ nnoremap <silent> <space>q  :Bclose<cr>
 
 nnoremap <silent> cl "ayiwoconsole.log('### <C-R>a: ', <C-R>a);<Esc>
 nnoremap <silent> cL "ayiwOconsole.log('### <C-R>a: ', <C-R>a);<Esc>
+
+hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#282c34
+hi CocExplorerNormalFloat guibg=#282c34
 
 " Automatic commands
 if has("autocmd")
@@ -576,19 +552,18 @@ if has("autocmd")
 
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-    " Open a NERDTree automatically when vim starts up if no files were specified
-    " autocmd StdinReadPre * let s:std_in=1
-    " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-    autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+    " autocmd ColorScheme *
+    "   \ hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#282c34
+    "   \ | hi CocExplorerNormalFloat guibg=#272B34
+    "   \ | hi CocExplorerSelectUI guibg=blue
 
-    " Close vim if the only window left open is a NERDTree
-    " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-    augroup nerdtreehidecwd
+    augroup CocExplorerCustom
       autocmd!
-      autocmd FileType nerdtree setlocal conceallevel=3 | syntax match NERDTreeDirSlash #/$# containedin=NERDTreeDir conceal contained
-    augroup end
+      " Quit if explorer is the last window
+      autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
+      autocmd FileType coc-explorer call <SID>init_explorer()
+    augroup END
 
     augroup mygroup
       autocmd!
@@ -605,13 +580,6 @@ if has("autocmd")
       autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
     augroup end
  
-    augroup golang
-        au FileType go set noexpandtab
-        au FileType go set shiftwidth=4
-        au FileType go set softtabstop=4
-        au FileType go set tabstop=4
-    augroup end
-
     augroup updateBuffer
       " Trigegr `autoread` when files changes on disk
       autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
@@ -621,6 +589,14 @@ if has("autocmd")
         \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
     augroup end
 endif
+
+function! s:init_explorer()
+  if &filetype == 'coc-explorer'
+    set nocursorline                    " Disable cursorline in explorer
+    set number relativenumber           " Display relative number in explorer
+    " setl statusline=hehehe
+  endif
+endfunction
 
 function! <SID>BufcloseCloseIt()
     let l:currentBufNum = bufnr("%")
