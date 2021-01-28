@@ -39,18 +39,20 @@
   "explorer.keyMappings.global": {
     "u": "indentPrev"
   },
-  "explorer.icon.enableNerdfont": true,
+  "explorer.file.autoReveal": true,
+  "explorer.file.root.template": "[icon] [title] [root]",
   "explorer.file.showHiddenFiles": true,
   "explorer.floating.border.enable": true,
-  /* "explorer.floating.border.chars": [ "─", "│", "─", "│", "╭", "╮", "╯", "╰" ], */
   "explorer.floating.contentWidth": -5,
   "explorer.git.icon.rootStatus.conflicted": "",
   "explorer.git.icon.status.modified": "~",
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
   "explorer.presets": {
     "staticRight": {
       "position": "right",
-      "width": 60,
-      "content-width": -5
+      "content-width": -5,
+      "width": 60
     },
     "floatingRight": {
       "position": "floating",
@@ -115,6 +117,11 @@
     "python.analysis.diagnosticPublishDelay": 500,
 
     "smartf.timeout": 1000,
+
+    "snippets.extends": {
+        "javascriptreact": ["javascript"],
+        "typescriptreact": ["javascript"]
+    },
 
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",

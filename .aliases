@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+alias pip='pip3'
 alias ls='lsd'
 alias am='amplify'
 alias codemod='npx @next/codemod'

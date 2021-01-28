@@ -1,4 +1,3 @@
-" .vimrc config file
 filetype off                    " required
 
  call plug#begin('~/.vim/plugged')
@@ -10,6 +9,7 @@ Plug 'ascenator/L9', {'name': 'newL9'}
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
+Plug 'mhinz/vim-startify'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pechorin/any-jump.vim'
 Plug 'psliwka/vim-smoothie'
@@ -41,17 +41,16 @@ set ttimeoutlen=10                    " Don’t add empty newlines at the end of
 set binary
 set noeol
 
-set cursorline                        " Highlight current line, could slow down vim
+set cursorline                        " Highlight current line, could slow down vim use nocursorline to turn off
 
 set modeline                          " Respect modeline in files
 set modelines=4
 
 " performance tweaks
-set nocursorline
 set nocursorcolumn
 set scrolljump=5
 set redrawtime=10000
-set synmaxcol=140                     " Stop decorate after this column number
+set synmaxcol=120                     " Stop decorate after this column number
 set lazyredraw                        " Why it makes slower in some cases?
 " set re=1                            " Why this cause the coc-explorer freeze when open file
 
@@ -112,14 +111,12 @@ endif
 set noswapfile 
 set noundofile
 
-" let g:python3_host_prog='/usr/local/opt/python/libexec/bin/python'
-" let g:ruby_host_prog='/Users/sangdth/.rbenv/shims/gem'
 let g:loaded_perl_provider=0
+let g:loaded_ruby_provider=0
+let g:loaded_python_provider=0
 
 " Somehow we need to bring this out because it could be computer specified
-let g:loaded_python_provider='/usr/bin/python'
 let g:python3_host_prog='/usr/bin/python3'
-let g:ruby_host_prog='~/.rbenv/shims/ruby'
 
 " let g:indentLine_char='▏'
 " let g:indentLine_color_gui='#333444'
@@ -128,16 +125,16 @@ let g:ruby_host_prog='~/.rbenv/shims/ruby'
 " let g:indentLine_faster=1
 
 " Some useful icons
-" \ "Modified"  : "",
-" \ "Staged"    : "",
-" \ "Untracked" : "ﳁ",
-" \ "Renamed"   : "",
-" \ "Unmerged"  : "",
-" \ "Deleted"   : "",
-" \ "Dirty"     : "",
-" \ "Clean"     : "",
-" \ 'Info'      : "",
-" \ "Unknown"   : "",
+" "Modified"  : "",
+" "Staged"    : "",
+" "Untracked" : "ﳁ",
+" "Renamed"   : "",
+" "Unmerged"  : "",
+" "Deleted"   : "",
+" "Dirty"     : "",
+" "Clean"     : "",
+" "Info"      : "",
+" "Unknown"   : "",
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='unique_tail'
@@ -160,7 +157,7 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_symbols.branch=''
 let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+let g:airline_symbols.linenr = ' '
 let g:airline_symbols.maxlinenr = ''
 
 " disable other airline extensions I do not need
@@ -189,9 +186,9 @@ let g:user_emmet_expandabbr_key='<c-e>'
 let g:jsx_ext_required=0
 
 let g:UltiSnipsUsePythonVersion=3
-let g:UltiSnipsExpandTrigger="<Nop>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsExpandTrigger='<Nop>' " Use tab here will cause the conflict with coc.nvim
+let g:UltiSnipsJumpForwardTrigger='<c-j>'
+let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 
 let g:LanguageClient_serverCommands={
 \   'vue': ['vls']
@@ -210,7 +207,7 @@ let g:go_info_mode='gopls'
 " let g:go_highlight_operators = 1
 " let g:go_highlight_structs = 1
 " let g:go_highlight_types = 1
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = 'goimports'
 
 " let g:polyglot_disabled = ['jsx', 'tsx']
 
@@ -234,7 +231,8 @@ let g:fzf_colors = {
   \ 'header':  ['fg', 'Comment'] }
 
 let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
+" let g:fzf_layout = { 'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
+let g:fzf_layout = { 'window': '-tabnew' }
 
 let g:fzf_tags_command = 'ctags -R'             " [Tags] Command to generate tags file
 
@@ -243,8 +241,8 @@ let g:plug_window='noautocmd vertical topleft new'
 
 let g:coc_config_home = '~/.dotfiles'
 
-let g:coc_snippet_next = '<Tab>'
-let g:coc_snippet_prev = '<S-Tab>'
+" let g:coc_snippet_next = '<Tab>'
+" let g:coc_snippet_prev = '<S-Tab>'
 
 " list of the extensions to make sure are always installed
 let g:coc_global_extensions = [
@@ -265,6 +263,8 @@ let g:coc_global_extensions = [
   \'coc-yaml',
   \'coc-python',
   \]
+
+let g:startify_change_to_dir = 0                " Do not change CWD when open files from MRU list
 
 " Mapping setup from here
 " Search files
@@ -340,7 +340,7 @@ nmap <silent> as ysiw
 " Dim the inactive window background
 let g:diminactive_enable_focus=1
 
-let mapleader = "§"
+let mapleader = '§'
 " let mapleader = '\'
 
 " Toggle Coc Explorer tree in floating
@@ -394,11 +394,6 @@ function! StripWhitespace()
 	call setreg('/', old_query)
 endfunction
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -406,7 +401,11 @@ inoremap <silent><expr> <Tab>
      \ pumvisible() ? "\<C-n>" :
      \ <SID>check_back_space() ? "\<Tab>" :
      \ coc#refresh()
-
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? coc#_select_confirm() :
+"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -543,6 +542,8 @@ if has("autocmd")
     " autocmd BufEnter,InsertEnter * highlight CursorLine guibg=#333333 guifg=fg
     " autocmd BufLeave, InsertLeave * highlight CursorLine guibg=#121212 guifg=fg
 
+    au BufRead,BufNewFile *.ino,*.pde set filetype=c++
+
     " Highlight symbol under cursor on CursorHold
     autocmd CursorHold * silent call CocActionAsync('highlight')
     " autocmd FileType vue syntax sync fromstart
@@ -592,9 +593,11 @@ endif
 
 function! s:init_explorer()
   if &filetype == 'coc-explorer'
-    set nocursorline                    " Disable cursorline in explorer
+    " set nocursorline                    " Disable cursorline in explorer
     set number relativenumber           " Display relative number in explorer
-    " setl statusline=hehehe
+    setl statusline=coc-explorer
+    set signcolumn=no                    " hide signcolumns
+    " autocmd User CocExplorerOpenPost setl statusline=%#NonText#
   endif
 endfunction
 
