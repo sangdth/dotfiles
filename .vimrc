@@ -11,7 +11,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 Plug 'mhinz/vim-startify'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pechorin/any-jump.vim'
 Plug 'psliwka/vim-smoothie'
 Plug 'sangdth/tapilu-snippets'
 Plug 'sheerun/vim-polyglot'
@@ -19,7 +18,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'wakatime/vim-wakatime'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()                       " Put your non-Plugin stuff after this
@@ -41,7 +39,7 @@ set ttimeoutlen=10                    " Don’t add empty newlines at the end of
 set binary
 set noeol
 
-set cursorline                        " Highlight current line, could slow down vim use nocursorline to turn off
+set nocursorline                      " Highlight current line, could slow down vim use nocursorline to turn off
 
 set modeline                          " Respect modeline in files
 set modelines=4
@@ -50,7 +48,7 @@ set modelines=4
 set nocursorcolumn
 set scrolljump=5
 set redrawtime=10000
-set synmaxcol=120                     " Stop decorate after this column number
+set synmaxcol=160                     " Stop decorate after this column number
 set lazyredraw                        " Why it makes slower in some cases?
 " set re=1                            " Why this cause the coc-explorer freeze when open file
 
@@ -59,8 +57,8 @@ set hidden                            " if hidden is not set, TextEdit might fai
 set nobackup
 set nowritebackup
 set cmdheight=1                       " Better display for messages
-set updatetime=150                    " Smaller updatetime for CursorHold & CursorHoldI
-set shortmess=atI                     " This one better than += version
+set updatetime=300                    " Smaller updatetime for CursorHold & CursorHoldI
+set shortmess=atI                     " This one better than +=c version
 set signcolumn=yes                    " always show signcolumns
 
 set exrc                              " Enable per-directory .vimrc files
@@ -74,6 +72,7 @@ set autoindent
 set smartindent
 set copyindent                        " Disable if cause weird problem with indentation
 set complete-=i                       " do not parse included files in autocomplete
+set complete-=t                       " disable searching tags
 set autoread
 set noautowrite
 set wildignore=*.o,*.obj,*~           " stuff to ignore when tab completing
@@ -96,6 +95,7 @@ set foldenable                        " otherwise we have to enable manually
 set foldlevel=20                      " Prevent fold all at beginning, bigger than 20 does not work
 
 set matchpairs+=<:>                   " Highlight matching pairs of brackets. Use the '%' character to jump.
+
 
 if exists("&relativenumber")  
   set relativenumber                  " Use relative line numbers
@@ -257,7 +257,6 @@ let g:coc_global_extensions = [
   \'coc-pairs',
   \'coc-smartf',
   \'coc-snippets',
-  \'coc-tabnine',
   \'coc-tsserver',
   \'coc-xml',
   \'coc-yaml',
@@ -343,9 +342,10 @@ let g:diminactive_enable_focus=1
 let mapleader = '§'
 " let mapleader = '\'
 
-" Toggle Coc Explorer tree in floating
-nmap <c-e> :CocCommand explorer --preset staticRight<CR>
+" Toggle Coc Explorer tree
+nmap <c-e> :CocCommand explorer --preset staticLeft<CR>
 nmap <c-f> :CocCommand explorer --preset floatingRight<CR>
+
 map <c-b> :enew<cr>
 " map <leader>qq :w<cr>:Bclose<cr>:tabclose<cr>gT
 " open Explore
@@ -401,11 +401,6 @@ inoremap <silent><expr> <Tab>
      \ pumvisible() ? "\<C-n>" :
      \ <SID>check_back_space() ? "\<Tab>" :
      \ coc#refresh()
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? coc#_select_confirm() :
-"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -507,6 +502,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " turn off highlight
 nnoremap <silent> <space>n :noh<cr>
+nnoremap <silent> <Esc><Esc> :noh<cr>
 nnoremap <silent> <space>r :CocRestart<CR>
 " Remap for rename current word
 nnoremap <silent> <space>rn <Plug>(coc-rename)
@@ -528,6 +524,7 @@ nnoremap <silent> <space>q  :Bclose<cr>
 nnoremap <silent> cl "ayiwoconsole.log('### <C-R>a: ', <C-R>a);<Esc>
 nnoremap <silent> cL "ayiwOconsole.log('### <C-R>a: ', <C-R>a);<Esc>
 
+" Make the color of coc-explorer fit with onedark colorscheme
 hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#282c34
 hi CocExplorerNormalFloat guibg=#282c34
 
@@ -559,10 +556,16 @@ if has("autocmd")
     "   \ | hi CocExplorerNormalFloat guibg=#272B34
     "   \ | hi CocExplorerSelectUI guibg=blue
 
+    augroup MoveQuickFix
+      autocmd FileType qf call <SID>MoveQuickFix()
+    augroup end
+
+    augroup filetype_python
+      autocmd FileType python setlocal shiftwidth=4 tabstop=4
+    augroup end
+
     augroup CocExplorerCustom
       autocmd!
-      " Quit if explorer is the last window
-      autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
       autocmd FileType coc-explorer call <SID>init_explorer()
     augroup END
 
@@ -591,13 +594,20 @@ if has("autocmd")
     augroup end
 endif
 
+" Declare all functions after this
+function! <SID>MoveQuickFix()
+    wincmd L
+    vertical resize 40
+endfunction
+
+
+" Some setup for coc-explorer
 function! s:init_explorer()
   if &filetype == 'coc-explorer'
-    " set nocursorline                    " Disable cursorline in explorer
+    set nocursorline                    " Hide cursor line in explorer
     set number relativenumber           " Display relative number in explorer
+    set signcolumn=yes                  " Display signcolumn in coc-explorer
     setl statusline=coc-explorer
-    set signcolumn=no                    " hide signcolumns
-    " autocmd User CocExplorerOpenPost setl statusline=%#NonText#
   endif
 endfunction
 

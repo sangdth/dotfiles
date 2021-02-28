@@ -37,28 +37,33 @@
   "eslint.run": "onType",
 
   "explorer.keyMappings.global": {
-    "u": "indentPrev"
+    "u": "indentPrev",
+    "gs": ["wait", "reveal:select"]
   },
-  "explorer.file.autoReveal": true,
+  "explorer.file.autoReveal": false,
   "explorer.file.root.template": "[icon] [title] [root]",
   "explorer.file.showHiddenFiles": true,
   "explorer.floating.border.enable": true,
   "explorer.floating.contentWidth": -5,
   "explorer.git.icon.rootStatus.conflicted": "",
+  "explorer.git.icon.status.deleted": "-",
   "explorer.git.icon.status.modified": "~",
   "explorer.icon.enableNerdfont": true,
   "explorer.previewAction.onHover": false,
   "explorer.presets": {
+    "staticLeft": {
+      "position": "left",
+      "width": 40
+    },
     "staticRight": {
       "position": "right",
-      "content-width": -5,
-      "width": 60
+      "width": 40
     },
     "floatingRight": {
       "position": "floating",
-      "floating-position": "right-center",
-      "floating-width": 60,
-      "content-width": -5,
+      "floating-position": "center",
+      "floating-width": 100,
+      "content-width": -10,
       "floating-height": -5,
       "open-action-strategy": "sourceWindow"
    }
