@@ -9,12 +9,8 @@ export ZSH="${HOME}/.oh-my-zsh" # Using ~/ will cause permission issues.
 export TERM="xterm-256color"
 export FZF_BASE="/usr/local/opt/fzf"
 # export FZF_COMPLETION_TRIGGER='``'
-# export FZF_DEFAULT_OPTS="--reverse"
-# Solarized Dark color scheme for fzf
-# export FZF_DEFAULT_OPTS="
-#    --color fg:-1,bg:-1,hl:33,fg+:254,bg+:235,hl+:33
-#    --color info:136,prompt:136,pointer:230,marker:230,spinner:136"
 export FZF_DEFAULT_COMMAND='ag --path-to-ignore ~/.dotfiles/.agignore -g ""'
+export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.

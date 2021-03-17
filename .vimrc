@@ -27,6 +27,7 @@ colorscheme onedark
 
 filetype plugin indent on
 
+set rtp+=/usr/local/opt/fzf           " use fzf in vim
 set clipboard=unnamedplus             " used plus to help coc-yank cross vim instance
 set backspace=indent,eol,start        " Allow backspace in insert mode
 set ttyfast                           " Optimize for fast terminal connections
@@ -39,16 +40,16 @@ set ttimeoutlen=10                    " Don’t add empty newlines at the end of
 set binary
 set noeol
 
-set nocursorline                      " Highlight current line, could slow down vim use nocursorline to turn off
+set cursorline                        " Highlight current line, could slow down vim
 
 set modeline                          " Respect modeline in files
 set modelines=4
 
 " performance tweaks
 set nocursorcolumn
-set scrolljump=5
-set redrawtime=10000
-set synmaxcol=160                     " Stop decorate after this column number
+set scrolljump=50
+set redrawtime=1500
+set synmaxcol=180                     " Stop decorate after this column number
 set lazyredraw                        " Why it makes slower in some cases?
 " set re=1                            " Why this cause the coc-explorer freeze when open file
 
@@ -57,7 +58,7 @@ set hidden                            " if hidden is not set, TextEdit might fai
 set nobackup
 set nowritebackup
 set cmdheight=1                       " Better display for messages
-set updatetime=300                    " Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=200                    " Smaller updatetime for CursorHold & CursorHoldI
 set shortmess=atI                     " This one better than +=c version
 set signcolumn=yes                    " always show signcolumns
 
@@ -264,6 +265,31 @@ let g:coc_global_extensions = [
   \]
 
 let g:startify_change_to_dir = 0                " Do not change CWD when open files from MRU list
+let g:startify_session_dir = '~/.vim/sessions'
+let g:startify_session_autoload = 1
+let g:startify_session_delete_buffers = 1
+let g:startify_fortune_use_unicode = 1
+let g:startify_session_persistence = 1
+let g:startify_custom_header = [
+\ '                                                         .                        ',
+\ '                                           .            @88o                      ',
+\ '       u.    u.                   _u.    88Nu.   u.     08P     ..    .     .     ',
+\ '     x@88k u@88c.      .u     ...ue888b  "88888  888c    .     .888: x888  x888.  ',
+\ '    ^"8888""8888"   ud8888.   888R Y888r  ^8888  8888  .@88u  ~`8888~"888X`?888f` ',
+\ '      8888  888R  :888 8888.  888R I888>   8888  8888 ''888E`   X888  888X  888>  ',
+\ '      8888  888R  d888  88%"  888R I888>   8888  8888   888E    X888  888X  888>  ',
+\ '      8888  888R  8888.+""    888R I888>   8888  8888   888E    X888  888X  888>  ',
+\ '      8888  888R  8888L      u8888cJ888   .8888b.888P   888E    X888  888X  888>  ',
+\ '     "*88*  8888" "8888c. .+  "*888*P"     ^Y8888*""    888& . "*88%  *88"  888!` ',
+\ '       ""   "Y"    "88888%      "Y"          `Y"        R888"    `~    "    `"`   ',
+\ '                     "YP"                                ""                       ',
+\ ]
+
+let g:startify_lists = [
+\ { 'type': 'files',     'header': ['   Recent opened files: ']               },
+\ { 'type': 'dir',       'header': ['   Current working directory: '. getcwd()]  },
+\ { 'type': 'sessions',  'header': ['   Sessions']            },
+\ ]
 
 " Mapping setup from here
 " Search files
@@ -556,8 +582,9 @@ if has("autocmd")
     "   \ | hi CocExplorerNormalFloat guibg=#272B34
     "   \ | hi CocExplorerSelectUI guibg=blue
 
-    augroup MoveQuickFix
+    augroup QuicFixCustom
       autocmd FileType qf call <SID>MoveQuickFix()
+      autocmd FileType qf map <buffer> <Del> :RemoveQFItem<cr>
     augroup end
 
     augroup filetype_python
@@ -592,7 +619,23 @@ if has("autocmd")
       autocmd FileChangedShellPost *
         \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
     augroup end
+
+    " autocmd VimLeavePre * silent execute 'SSave! ' . GetUniqueSessionName()
+
+    " lua vim.api.nvim_command [[autocmd CursorHold   * lua require'utils'.blameVirtText()]]
+    " lua vim.api.nvim_command [[autocmd CursorMoved  * lua require'utils'.clearBlameVirtText()]]
+    " lua vim.api.nvim_command [[autocmd CursorMovedI * lua require'utils'.clearBlameVirtText()]]
+
+    " hi! link GitLens Comment
 endif
+
+" function! GetUniqueSessionName()
+"   let path = fnamemodify(getcwd(), ':~:t')
+"   let path = empty(path) ? 'no-project' : path
+"   let branch = gitbranch#name()
+"   let branch = empty(branch) ? '' : '-' . branch
+"   return substitute(path . branch, '/', '-', 'g')
+" endfunction
 
 " Declare all functions after this
 function! <SID>MoveQuickFix()
@@ -600,11 +643,21 @@ function! <SID>MoveQuickFix()
     vertical resize 40
 endfunction
 
+" When using Delete in the quickfix list, remove the item from the quickfix list.
+function! RemoveQFItem()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endfunction
+command! RemoveQFItem :call RemoveQFItem()
 
 " Some setup for coc-explorer
 function! s:init_explorer()
   if &filetype == 'coc-explorer'
-    set nocursorline                    " Hide cursor line in explorer
+    set cursorline                      " Cursor line in explorer
     set number relativenumber           " Display relative number in explorer
     set signcolumn=yes                  " Display signcolumn in coc-explorer
     setl statusline=coc-explorer

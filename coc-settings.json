@@ -5,17 +5,6 @@
 
   "coc.preferences.colorSupport": true,
   "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": [
-      "javascript",
-      "javascriptreact",
-      "typescript",
-      "typescriptreact",
-      "css",
-      "json",
-      "markdown",
-      "html",
-      "vue"
-  ],
 
   "codeLens.enable": true,
 
@@ -37,6 +26,8 @@
   "eslint.run": "onType",
 
   "explorer.keyMappings.global": {
+    "e": false,
+    "o": ["wait", "expandable?", ["expanded?", "collapse", "expand"], "open"],
     "u": "indentPrev",
     "gs": ["wait", "reveal:select"]
   },
@@ -63,8 +54,8 @@
       "position": "floating",
       "floating-position": "center",
       "floating-width": 100,
-      "content-width": -10,
-      "floating-height": -5,
+      "content-width": -20,
+      "floating-height": -2,
       "open-action-strategy": "sourceWindow"
    }
   },

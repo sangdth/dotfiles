@@ -25,7 +25,7 @@ alias dcrun='docker-compose run --rm'
 
 alias blog='cd ~/Projects/sangdang.fi'
 alias rete='cd ~/Projects/rete.academy'
-alias openlocal='ngrok http -region=eu -subdomain=super -host-header=rewrite 3000'
+alias openlocal='~/Applications/ngrok http https://localhost:3000 -region=eu -subdomain=sa -host-header=rewrite 3000'
 
 # Work with wordpress
 alias wpthemes='cd ~/Projects/wordpress/wp-content/themes'
