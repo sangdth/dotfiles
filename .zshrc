@@ -168,6 +168,7 @@ export LANG=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
+  export VISUAL='nvim'
   export EDITOR='nvim'
 fi
 
@@ -240,3 +241,16 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+makeName() {
+  jira i --project ZEUS | fzf --ansi | ruby -ne 'i = $_.strip.split(/\s{2,}/); puts "#{i[0]} #{i[2]}"' | sed 's/ /-/g'
+}
+gira() {
+  titleName=$(makeName)
+  git checkout -b "${titleName}"
+  # git push -u origin "${titleName}"
+  # still can not make this
+  # Error: must be on a branch named differently than "...titleName here..."
+  # Dont know why T_T
+  # gh pr create --base "${titleName}" --draft --title "${titleName}"
+}

@@ -5,13 +5,14 @@
 
   "coc.preferences.colorSupport": true,
   "coc.preferences.formatOnType": true,
+  "coc.preferences.useQuickfixForLocations": true,
 
   "codeLens.enable": true,
 
-  "diagnostic.infoSign": "",
-  "diagnostic.hintSign": "ஐ",
-  "diagnostic.errorSign": "",
-	"diagnostic.warningSign": "",
+  "diagnostic.infoSign": "i",
+  "diagnostic.hintSign": "?",
+  "diagnostic.errorSign": "x",
+	"diagnostic.warningSign": "!",
 	"diagnostic.enable": true,
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
@@ -21,6 +22,7 @@
 	  "typescript": "typescriptreact"
 	},
 
+  "eslint.alwaysShowStatus": true,
   "eslint.autoFixOnSave": true,
   "eslint.format.enable": true,
   "eslint.run": "onType",
@@ -33,10 +35,11 @@
   },
   "explorer.file.autoReveal": false,
   "explorer.file.root.template": "[icon] [title] [root]",
+  "explorer.file.child.template": "[selection | clip | 1][indent][icon | 1] [filename growRight 1 omitRight 1] [diagnosticError | diagnosticWarning][git]",
   "explorer.file.showHiddenFiles": true,
   "explorer.floating.border.enable": true,
   "explorer.floating.contentWidth": -5,
-  "explorer.git.icon.rootStatus.conflicted": "",
+  "explorer.git.icon.rootStatus.conflicted": "x",
   "explorer.git.icon.status.deleted": "-",
   "explorer.git.icon.status.modified": "~",
   "explorer.icon.enableNerdfont": true,
@@ -44,16 +47,16 @@
   "explorer.presets": {
     "staticLeft": {
       "position": "left",
-      "width": 40
+      "width": 60
     },
     "staticRight": {
       "position": "right",
       "width": 40
     },
-    "floatingRight": {
+    "floatingCenter": {
       "position": "floating",
       "floating-position": "center",
-      "floating-width": 100,
+      "floating-width": 120,
       "content-width": -20,
       "floating-height": -2,
       "open-action-strategy": "sourceWindow"
@@ -81,38 +84,39 @@
                 "initializationOptions": {
                 "usePlaceholders": true
             }
-        },
+      },
 
-        "ccls": {
-            "command": "ccls",
-            "filetypes": [
-                "c", "cpp", "cuda", "objc", "objcpp"],
-                "rootPatterns": [
-                ".ccls",
-                ".ccls-root",
-                "compile_commands.json",
-                ".vim/",
-                ".git/"
-            ],
-            "initializationOptions": {
-                "cache": {
-                    "directory": "/tmp/.ccls-cache"
-                },
-                "client": {
-                    "snippetSupport": true
-                }
-            }
+      "ccls": {
+        "command": "ccls",
+        "filetypes": [
+          "c", "cpp", "cuda", "objc", "objcpp"],
+          "rootPatterns": [
+          ".ccls",
+          ".ccls-root",
+          "compile_commands.json",
+          ".vim/",
+          ".git/"
+        ],
+        "initializationOptions": {
+          "cache": {
+              "directory": "/tmp/.ccls-cache"
+          },
+          "client": {
+              "snippetSupport": true
+          }
         }
+      }
     },
 
     "less.lint.duplicateProperties": "warning",
 
+    "Lua.diagnostics.globals": ["love", "vim"],
 
     "python.jediEnabled": false,
     "python.autoComplete.addBrackets": true,
     "python.analysis.diagnosticPublishDelay": 500,
 
-    "smartf.timeout": 1000,
+    "smartf.timeout": 2000,
 
     "snippets.extends": {
         "javascriptreact": ["javascript"],
@@ -147,9 +151,9 @@
         "default": "\uf29c"
     },
 
-    "tsserver.enableJavascript": false,
+    "tsserver.enableJavascript": true,
 
-    "typescript.suggestionActions.enabled": false,
+    "typescript.suggestionActions.enabled": true,
     "typescript.format.enabled": true,
     "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
 

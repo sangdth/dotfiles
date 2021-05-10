@@ -1,0 +1,24 @@
+#!/bin/bash
+# post-checkout
+
+# Git post checkout hook. ------------------------------------------------------
+# Reminds you to update requirements, if necessary
+
+PREVIOUS_HEAD=$1
+NEW_HEAD=$2
+BRANCH_SWITCH=$3
+
+if [ $BRANCH_SWITCH == "1" -a $PREVIOUS_HEAD != $NEW_HEAD ]; then
+    # Start from the repository root.
+    echo '> Start running the post-checkout hook...'
+    cd ./$(git rev-parse --show-cdup)
+    git fetch origin --prune
+
+    # Check if requirements have been updated - npm/yarn
+    REQUIREMENTS=`git diff $PREVIOUS_HEAD $NEW_HEAD --name-status | grep "package.json"`
+    if [ $? -eq "0" ]; then
+        echo '> The requirements for this project may have changed. Update dependencies...'
+        # In the future detect yarn.lock before run yarn, otherwise run npm
+        yarn cache clean && yarn install
+    fi
+fi

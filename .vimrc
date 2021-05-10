@@ -3,23 +3,25 @@ filetype off                    " required
  call plug#begin('~/.vim/plugged')
 Plug '/usr/local/opt/fzf'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'AndrewRadev/tagalong.vim'
 Plug 'SirVer/ultisnips'
-Plug 'airblade/vim-gitgutter'
 Plug 'ascenator/L9', {'name': 'newL9'}
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 Plug 'mhinz/vim-startify'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'psliwka/vim-smoothie'
-Plug 'sangdth/tapilu-snippets'
+Plug 'rhysd/git-messenger.vim'
+Plug 'sangdth/tapilu'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+" Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'} " need neovim 0.5
 call plug#end()                       " Put your non-Plugin stuff after this
 
 set background=dark
@@ -27,6 +29,7 @@ colorscheme onedark
 
 filetype plugin indent on
 
+set guifont="FuraCode Nerd Front":h15
 set rtp+=/usr/local/opt/fzf           " use fzf in vim
 set clipboard=unnamedplus             " used plus to help coc-yank cross vim instance
 set backspace=indent,eol,start        " Allow backspace in insert mode
@@ -49,7 +52,7 @@ set modelines=4
 set nocursorcolumn
 set scrolljump=50
 set redrawtime=1500
-set synmaxcol=180                     " Stop decorate after this column number
+set synmaxcol=200                     " Stop decorate after this column number
 set lazyredraw                        " Why it makes slower in some cases?
 " set re=1                            " Why this cause the coc-explorer freeze when open file
 
@@ -97,7 +100,6 @@ set foldlevel=20                      " Prevent fold all at beginning, bigger th
 
 set matchpairs+=<:>                   " Highlight matching pairs of brackets. Use the '%' character to jump.
 
-
 if exists("&relativenumber")  
   set relativenumber                  " Use relative line numbers
   au BufReadPost * set relativenumber
@@ -124,6 +126,9 @@ let g:python3_host_prog='/usr/bin/python3'
 " let g:indentLine_first_char =''
 " let g:indentLine_showFirstIndentLevel=0
 " let g:indentLine_faster=1
+let g:webdevicons_enable = 1
+let g:airline_powerline_fonts = 1
+let g:webdevicons_enable_airline_statusline = 1
 
 " Some useful icons
 " "Modified"  : "",
@@ -142,9 +147,13 @@ let g:airline#extensions#tabline#formatter='unique_tail'
 let g:airline#extensions#coc#enabled=1
 let g:airline#extensions#hunks#enabled=1
 let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#fugitiveline#enabled=1
+let g:airline#extensions#csv#enabled=1
+let g:airline#extensions#cursormode#enabled=1
 let g:airline_extensions=['branch', 'tabline']
 
 let g:airline_powerline_fonts=1
+let g:airline_skip_empty_sections=1
 let g:airline_theme='onedark'
 let g:airline_highlighting_cache=1
 let g:airline_left_sep=''
@@ -152,7 +161,6 @@ let g:airline_left_alt_sep=''
 let g:airline_right_sep=''
 let g:airline_right_alt_sep=''
 
-" let g:airline_skip_empty_sections=1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
@@ -162,13 +170,10 @@ let g:airline_symbols.linenr = ' '
 let g:airline_symbols.maxlinenr = ''
 
 " disable other airline extensions I do not need
-let g:airline#extensions#fugitiveline#enabled=0
 let g:airline#extensions#bufferline#enabled=0
 let g:airline#extensions#capslock#enabled=0
 let g:airline#extensions#gutentags#enabled=0
-let g:airline#extensions#csv#enabled=0
 let g:airline#extensions#ctrlspace#enabled=0
-let g:airline#extensions#cursormode#enabled=0
 let g:airline#extensions#eclim#enabled=0
 let g:airline#extensions#localsearch#enabled=0
 let g:airline#extensions#neomake#enabled=0
@@ -265,11 +270,11 @@ let g:coc_global_extensions = [
   \]
 
 let g:startify_change_to_dir = 0                " Do not change CWD when open files from MRU list
-let g:startify_session_dir = '~/.vim/sessions'
-let g:startify_session_autoload = 1
-let g:startify_session_delete_buffers = 1
+" let g:startify_session_autoload = 1
 let g:startify_fortune_use_unicode = 1
+let g:startify_session_dir = '~/.vim/sessions'
 let g:startify_session_persistence = 1
+let g:startify_session_delete_buffers = 1
 let g:startify_custom_header = [
 \ '                                                         .                        ',
 \ '                                           .            @88o                      ',
@@ -286,10 +291,14 @@ let g:startify_custom_header = [
 \ ]
 
 let g:startify_lists = [
-\ { 'type': 'files',     'header': ['   Recent opened files: ']               },
-\ { 'type': 'dir',       'header': ['   Current working directory: '. getcwd()]  },
-\ { 'type': 'sessions',  'header': ['   Sessions']            },
+\ { 'type': 'sessions',  'header': ['   Sessions']                                },
+\ { 'type': 'files',     'header': ['   Recent opened files: ']                   },
+\ { 'type': 'dir',       'header': ['   Current working directory: '. getcwd()]   },
 \ ]
+
+let g:git_messenger_always_into_popup=v:true    " the cursor goes into a popup window
+let g:git_messenger_max_popup_height=60
+let g:git_messenger_max_popup_width=110
 
 " Mapping setup from here
 " Search files
@@ -317,13 +326,16 @@ imap <c-t> <plug>(fzf-complete-path)
 nmap <silent> <space>gd :Gdiffsplit<CR>
 nmap <silent> <space>gb :Gblame<CR>
 
-" Jump between next and previous hunks
-nmap <silent> <space>gn <Plug>(GitGutterNextHunk)
-nmap <silent> <space>gp <Plug>(GitGutterPrevHunk)
+" git-messenger mappings
+nmap <silent> gm <Plug>(git-messenger) 
 
-" git add (chunk)
-nmap <silent> <space>ga <Plug>(GitGutterStageHunk)
-nmap <silent> <space>gu <Plug>(GitGutterUndoHunk)
+" Jump between next and previous hunks
+" nmap <silent> <space>gn <Plug>(GitGutterNextHunk)
+" nmap <silent> <space>gp <Plug>(GitGutterPrevHunk)
+
+" " git add (chunk)
+" nmap <silent> <space>ga <Plug>(GitGutterStageHunk)
+" nmap <silent> <space>gu <Plug>(GitGutterUndoHunk)
 
 " Remap for split-join
 nmap sj :SplitjoinSplit<cr>
@@ -370,7 +382,7 @@ let mapleader = '§'
 
 " Toggle Coc Explorer tree
 nmap <c-e> :CocCommand explorer --preset staticLeft<CR>
-nmap <c-f> :CocCommand explorer --preset floatingRight<CR>
+nmap <c-f> :CocCommand explorer --preset floatingCenter<CR>
 
 map <c-b> :enew<cr>
 " map <leader>qq :w<cr>:Bclose<cr>:tabclose<cr>gT
@@ -407,7 +419,7 @@ nnoremap <silent> <leader>f :GoFmt<cr>
 
 " noremap <F9> :execute 'new <bar> 0read !g++ -Wall -std=c++17 main.cpp'<cr>
 " noremap <F9> :execute 'new <bar> 0read ! go run' expand("%:t")<CR>
-" noremap <F9> :below new <bar> 0read ! go run #<CR>:resize 9<CR>
+nnoremap <F9> :!love .<CR>
 
 noremap <leader>ss :call StripWhitespace()<CR>
 
@@ -463,8 +475,10 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
   else
-    call CocAction('doHover')
+    execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
 
@@ -506,6 +520,9 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
+" Open Startify with F11
+nnoremap <silent> <F11> :Startify<CR>
+
 " Using CocList
 " Show actions
 nnoremap <silent> <space>a  :<C-u>CocAction<cr>
@@ -527,15 +544,15 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " turn off highlight
-nnoremap <silent> <space>n :noh<cr>
-nnoremap <silent> <Esc><Esc> :noh<cr>
+nnoremap <silent> <space>n :noh<CR>
+nnoremap <silent> <Esc><Esc> :noh<CR>
 nnoremap <silent> <space>r :CocRestart<CR>
 " Remap for rename current word
 nnoremap <silent> <space>rn <Plug>(coc-rename)
 
 nnoremap <silent> <space>f :CocCommand eslint.executeAutofix<CR>
 
-nnoremap <silent> <leader>f5 :source $MYVIMRC<cr>
+nnoremap <silent> <F5> :source $MYVIMRC<cr>
 
 command! W w
 command! Q q
@@ -558,7 +575,7 @@ hi CocExplorerNormalFloat guibg=#282c34
 if has("autocmd")
     " Enable file type detection
     filetype on
-    autocmd BufEnter,InsertLeave * :syntax sync fromstart
+    autocmd BufEnter,InsertLeave,CursorHold * :syntax sync fromstart
 
     autocmd VimEnter * call UpdateVimPlug()
 
@@ -609,8 +626,7 @@ if has("autocmd")
     augroup Smartf
       autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
       autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
-    augroup end
- 
+    augroup end 
     augroup updateBuffer
       " Trigegr `autoread` when files changes on disk
       autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
@@ -620,22 +636,41 @@ if has("autocmd")
         \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
     augroup end
 
-    " autocmd VimLeavePre * silent execute 'SSave! ' . GetUniqueSessionName()
+    autocmd FileType gitmessengerpopup call <SID>setup_gitmessengerpopup()
 
-    " lua vim.api.nvim_command [[autocmd CursorHold   * lua require'utils'.blameVirtText()]]
-    " lua vim.api.nvim_command [[autocmd CursorMoved  * lua require'utils'.clearBlameVirtText()]]
-    " lua vim.api.nvim_command [[autocmd CursorMovedI * lua require'utils'.clearBlameVirtText()]]
+    " Change Color when entering Insert Mode
+    autocmd InsertEnter * set nocursorline
 
-    " hi! link GitLens Comment
+    " Revert Color to default when leaving Insert Mode
+    " autocmd InsertLeave * set cursorline
+    " autocmd ColorScheme * call AdaptColorscheme()
 endif
-
-" function! GetUniqueSessionName()
-"   let path = fnamemodify(getcwd(), ':~:t')
-"   let path = empty(path) ? 'no-project' : path
-"   let branch = gitbranch#name()
-"   let branch = empty(branch) ? '' : '-' . branch
-"   return substitute(path . branch, '/', '-', 'g')
+" for transparent background
+" function! AdaptColorscheme()
+"    highlight clear CursorLine
+"    highlight Normal ctermbg=none
+"    highlight LineNr ctermbg=none
+"    highlight Folded ctermbg=none
+"    highlight NonText ctermbg=none
+"    highlight SpecialKey ctermbg=none
+"    highlight VertSplit ctermbg=none
+"    highlight SignColumn ctermbg=none
 " endfunction
+" highlight Normal guibg=NONE ctermbg=NONE
+" highlight CursorColumn cterm=NONE ctermbg=NONE ctermfg=NONE
+" highlight CursorLineNr cterm=NONE ctermbg=NONE ctermfg=NONE
+" highlight clear LineNr
+" highlight clear SignColumn
+" highlight clear StatusLine
+
+highlight DiffAdd     gui=NONE guibg=NONE guifg=#98c379
+highlight DiffChange  gui=NONE guibg=NONE guifg=#56b6c2
+highlight DiffDelete  gui=NONE guibg=NONE guifg=#be5046
+
+function! s:setup_gitmessengerpopup() abort
+    nmap <buffer><C-h> o
+    nmap <buffer><C-l> O
+endfunction
 
 " Declare all functions after this
 function! <SID>MoveQuickFix()
@@ -657,6 +692,7 @@ command! RemoveQFItem :call RemoveQFItem()
 " Some setup for coc-explorer
 function! s:init_explorer()
   if &filetype == 'coc-explorer'
+    set sessionoptions=buffers,curdir,folds,help,slash,tabpages,winsize
     set cursorline                      " Cursor line in explorer
     set number relativenumber           " Display relative number in explorer
     set signcolumn=yes                  " Display signcolumn in coc-explorer
@@ -689,10 +725,10 @@ if (has("nvim"))
 endif
 
 " For Neovim > 0.1.5 and Vim > patch 7.4.1799
-" < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+" https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162
 " Based on Vim patch 7.4.1770 (`guicolors` option)
-" < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-" < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+" https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd
+" https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
 if (has("termguicolors"))
   set termguicolors
 endif
