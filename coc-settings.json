@@ -27,42 +27,6 @@
   "eslint.format.enable": true,
   "eslint.run": "onType",
 
-  "explorer.keyMappings.global": {
-    "e": false,
-    "o": ["wait", "expandable?", ["expanded?", "collapse", "expand"], "open"],
-    "u": "indentPrev",
-    "gs": ["wait", "reveal:select"]
-  },
-  "explorer.file.autoReveal": false,
-  "explorer.file.root.template": "[icon] [title] [root]",
-  "explorer.file.child.template": "[selection | clip | 1][indent][icon | 1] [filename growRight 1 omitRight 1] [diagnosticError | diagnosticWarning][git]",
-  "explorer.file.showHiddenFiles": true,
-  "explorer.floating.border.enable": true,
-  "explorer.floating.contentWidth": -5,
-  "explorer.git.icon.rootStatus.conflicted": "x",
-  "explorer.git.icon.status.deleted": "-",
-  "explorer.git.icon.status.modified": "~",
-  "explorer.icon.enableNerdfont": true,
-  "explorer.previewAction.onHover": false,
-  "explorer.presets": {
-    "staticLeft": {
-      "position": "left",
-      "width": 60
-    },
-    "staticRight": {
-      "position": "right",
-      "width": 40
-    },
-    "floatingCenter": {
-      "position": "floating",
-      "floating-position": "center",
-      "floating-width": 120,
-      "content-width": -20,
-      "floating-height": -2,
-      "open-action-strategy": "sourceWindow"
-   }
-  },
-
   "git.addedSign.text": "+",
   "git.removedSign.text": "-",
   "git.changedSign.text": "~",

@@ -10,6 +10,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 Plug 'mhinz/vim-startify'
+Plug 'preservim/nerdtree'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'rhysd/git-messenger.vim'
 Plug 'sangdth/tapilu'
@@ -52,9 +53,8 @@ set modelines=4
 set nocursorcolumn
 set scrolljump=50
 set redrawtime=1500
-set synmaxcol=200                     " Stop decorate after this column number
+set synmaxcol=160                     " Stop decorate after this column number
 set lazyredraw                        " Why it makes slower in some cases?
-" set re=1                            " Why this cause the coc-explorer freeze when open file
 
 " required by coc
 set hidden                            " if hidden is not set, TextEdit might fail.
@@ -99,6 +99,7 @@ set foldenable                        " otherwise we have to enable manually
 set foldlevel=20                      " Prevent fold all at beginning, bigger than 20 does not work
 
 set matchpairs+=<:>                   " Highlight matching pairs of brackets. Use the '%' character to jump.
+set sessionoptions=buffers,curdir,folds,help,slash,tabpages,winsize " Force session options, avoid saving nerdtree
 
 if exists("&relativenumber")  
   set relativenumber                  " Use relative line numbers
@@ -168,6 +169,10 @@ let g:airline_symbols.branch=''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ' '
 let g:airline_symbols.maxlinenr = ''
+
+let g:NERDTreeShowHidden=1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
 
 " disable other airline extensions I do not need
 let g:airline#extensions#bufferline#enabled=0
@@ -344,6 +349,10 @@ nmap sk :SplitjoinJoin<cr>
 nnoremap <nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 
+nnoremap <c-n> :NERDTree<CR>
+nnoremap <c-e> :NERDTreeToggle<CR>
+nnoremap <c-f> :NERDTreeFind<CR>
+
 " Likewise, Files command with preview window
 command! -bang -nargs=? -complete=dir FzfFiles
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
@@ -379,10 +388,6 @@ let g:diminactive_enable_focus=1
 
 let mapleader = '§'
 " let mapleader = '\'
-
-" Toggle Coc Explorer tree
-nmap <c-e> :CocCommand explorer --preset staticLeft<CR>
-nmap <c-f> :CocCommand explorer --preset floatingCenter<CR>
 
 map <c-b> :enew<cr>
 " map <leader>qq :w<cr>:Bclose<cr>:tabclose<cr>gT
@@ -567,10 +572,6 @@ nnoremap <silent> <space>q  :Bclose<cr>
 nnoremap <silent> cl "ayiwoconsole.log('### <C-R>a: ', <C-R>a);<Esc>
 nnoremap <silent> cL "ayiwOconsole.log('### <C-R>a: ', <C-R>a);<Esc>
 
-" Make the color of coc-explorer fit with onedark colorscheme
-hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#282c34
-hi CocExplorerNormalFloat guibg=#282c34
-
 " Automatic commands
 if has("autocmd")
     " Enable file type detection
@@ -594,6 +595,15 @@ if has("autocmd")
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 
+    " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+    autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+    augroup nerdtreehidecwd
+      autocmd!
+      autocmd FileType nerdtree setlocal conceallevel=3 | syntax match NERDTreeDirSlash #/$# containedin=NERDTreeDir conceal contained
+    augroup end
+
     " autocmd ColorScheme *
     "   \ hi CocExplorerNormalFloatBorder guifg=#414347 guibg=#282c34
     "   \ | hi CocExplorerNormalFloat guibg=#272B34
@@ -607,11 +617,6 @@ if has("autocmd")
     augroup filetype_python
       autocmd FileType python setlocal shiftwidth=4 tabstop=4
     augroup end
-
-    augroup CocExplorerCustom
-      autocmd!
-      autocmd FileType coc-explorer call <SID>init_explorer()
-    augroup END
 
     augroup mygroup
       autocmd!
@@ -688,17 +693,6 @@ function! RemoveQFItem()
   :copen
 endfunction
 command! RemoveQFItem :call RemoveQFItem()
-
-" Some setup for coc-explorer
-function! s:init_explorer()
-  if &filetype == 'coc-explorer'
-    set sessionoptions=buffers,curdir,folds,help,slash,tabpages,winsize
-    set cursorline                      " Cursor line in explorer
-    set number relativenumber           " Display relative number in explorer
-    set signcolumn=yes                  " Display signcolumn in coc-explorer
-    setl statusline=coc-explorer
-  endif
-endfunction
 
 function! <SID>BufcloseCloseIt()
     let l:currentBufNum = bufnr("%")
