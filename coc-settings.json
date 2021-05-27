@@ -5,9 +5,10 @@
 
   "coc.preferences.colorSupport": true,
   "coc.preferences.formatOnType": true,
+  "coc.preferences.jumpCommand": "edit",
   "coc.preferences.useQuickfixForLocations": true,
 
-  "codeLens.enable": true,
+  "codeLens.enable": false,
 
   "diagnostic.infoSign": "i",
   "diagnostic.hintSign": "?",
@@ -17,10 +18,10 @@
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
 
-	"emmet.includeLanguages": {
-	  "javascript": "javascriptreact",
-	  "typescript": "typescriptreact"
-	},
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  },
 
   "eslint.alwaysShowStatus": true,
   "eslint.autoFixOnSave": true,
