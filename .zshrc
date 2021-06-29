@@ -242,15 +242,27 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-makeName() {
-  jira i --project ZEUS | fzf --ansi | ruby -ne 'i = $_.strip.split(/\s{2,}/); puts "#{i[0]} #{i[2]}"' | sed 's/ /-/g'
-}
-gira() {
-  titleName=$(makeName)
-  git checkout -b "${titleName}"
-  # git push -u origin "${titleName}"
-  # still can not make this
-  # Error: must be on a branch named differently than "...titleName here..."
-  # Dont know why T_T
-  # gh pr create --base "${titleName}" --draft --title "${titleName}"
+# The `ZEUS` is hard-coded, still don't know how to make it like
+# `git checkout -b ZEUS` then tab => get only the ZEUS' tasks
+_fzf_complete_git() {
+    git rev-parse HEAD > /dev/null 2>&1 || return
+
+    ARGS="$@"
+    local tasks
+    local branches
+    tasks=$(jira i --project ZEUS)
+    branches=$(git branch -a | grep -v HEAD)
+
+    if [[ $ARGS == 'git checkout -b'* ]]; then
+        _fzf_complete --ansi --reverse --multi --prompt="Jira > " -- "$@" < <(
+            echo $tasks
+        )
+
+        ruby -ne 'i = $_.strip.split(/\s{2,}/); puts "#{i[0]} #{i[2]}"' | sed 's/ /-/g' | awk '{print $1}'
+    elif [[ $ARGS == 'git checkout'* ]]; then
+        _fzf_complete --prompt="Branches > " -- "$@" < <(
+            echo $branches
+        )
+        sed "s/.* //" | awk '{print $1}'
+    fi
 }

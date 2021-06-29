@@ -2,6 +2,26 @@ filetype off                    " required
 
 call plug#begin('~/.vim/plugged') 
 Plug '/usr/local/opt/fzf'
+
+" Lua plugins
+" Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-telescope/telescope-media-files.nvim'
+" Plug 'lewis6991/gitsigns.nvim'
+" Plug 'hrsh7th/nvim-compe'
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-lua/popup.nvim'
+Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'windwp/nvim-autopairs'
+Plug 'alvan/vim-closetag'
+Plug 'onsails/lspkind-nvim'
+Plug 'akinsho/nvim-bufferline.lua'
+Plug 'norcalli/nvim-colorizer.lua'
+
+" Normal plugins
 Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/splitjoin.vim' 
 Plug 'AndrewRadev/tagalong.vim'
@@ -11,31 +31,12 @@ Plug 'mhinz/vim-startify'
 Plug 'rhysd/git-messenger.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sangdth/tapilu'
+Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
-
-" Lua plugins
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-media-files.nvim'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'akinsho/nvim-bufferline.lua'
-Plug 'windwp/nvim-autopairs'
-Plug 'hrsh7th/nvim-compe'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'alvan/vim-closetag'
-Plug 'christianchiarulli/nvcode-color-schemes.vim'
-Plug 'onsails/lspkind-nvim'
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'} " need neovim 0.5
 call plug#end()                        " Put your non-Plugin stuff after this
 
 set termguicolors " Need to call before the colorizer
@@ -45,15 +46,15 @@ lua <<EOF
   require'nvim-autopairs'.setup()
   require'lspkind'
 
-  -- require'my-compe'     -- super young for eslint
-  -- require'my-lspconfig' -- super hard to config
-  -- require'my-telescope' -- super slow to grep :(
-  -- require'my-gitsigns'  -- color is so bad
+  -- require'my-compe'      -- super young for eslint
+  -- require'my-lspconfig'  -- super hard to config
+  -- require'my-gitsigns'   -- color is so bad
+  -- require'my-telescope'  -- super slow to grep :(
+  require'my-treesitter'
   require'my-bufferline'
+  require'my-statusline'
   require'my-explorer'
   require'my-icons'
-  require'my-statusline'
-  require'my-treesitter'
 EOF
 
 set background=dark
@@ -129,18 +130,12 @@ set foldmethod=syntax                 " Set the fold by language instead of inde
 set foldenable                        " otherwise we have to enable manually
 set foldlevel=20                      " Prevent fold all at beginning, bigger than 20 does not work
 
+set relativenumber                    " Use relative line numbers
 set matchpairs+=<:>                   " Highlight matching pairs of brackets. Use the '%' character to jump.
 set sessionoptions=buffers,curdir,folds,help,slash,tabpages,winsize " Force session options, avoid saving explorer
 
-if exists("&relativenumber")  
-  set relativenumber                  " Use relative line numbers
-  au BufReadPost * set relativenumber
-endif
-
 set noswapfile 
 set noundofile
-
-let g:nvcode_termcolors=256
 
 let g:loaded_perl_provider=0
 let g:loaded_ruby_provider=0
@@ -281,7 +276,6 @@ command! -bang -nargs=* FzfAgIn
 
 " command! -bang Commits
 "  \ call fzf#vim#commits({'right': '75%'}, <bang>0)
-" ----------------- Done Customized Fzf --------------------
 
 " fugitive mappings
 nmap <silent> <space>gd :Gdiffsplit<CR>
@@ -357,10 +351,11 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 " Add surround map
 nmap <silent> as ysiw
 
-" Dim the inactive window background
-let g:diminactive_enable_focus=1
-
 map <c-b> :enew<cr>
+
+" Switching tab with left/right
+nnoremap <silent> <Right> :bnext<cr>
+nnoremap <silent> <Left>  :bprevious<cr>
 
 " Open/close and jump to next/previous "error"
 " I use this as a hack for working with TODO list
@@ -394,9 +389,12 @@ function! StripWhitespace()
 	call setreg('/', old_query)
 endfunction
 
+function! CleanUp()
+  noh
+endfunction
 " turn off highlight
 nnoremap <silent> <space>n :noh<CR>
-nnoremap <silent> <Esc><Esc> :noh<CR>
+nnoremap <silent> <Esc><Esc> :call CleanUp()<CR>
 " Remap for rename current word
 
 nnoremap <silent> <F5> :source $MYVIMRC<cr>
@@ -417,11 +415,11 @@ nnoremap <silent> cL "ayiwOconsole.log('### <C-R>a: ', <C-R>a);<Esc>
 " Automatic commands
 if has("autocmd")
     " Enable file type detection
-    " filetype on
+    filetype on
     " autocmd BufEnter,InsertLeave,CursorHold * :syntax sync fromstart
     augroup UsefulJobs
-      autocmd!
       autocmd VimEnter * call UpdateVimPlug()
+      autocmd User CocGitStatusChange {command}
     augroup end
 
     augroup MapFileType
@@ -429,6 +427,7 @@ if has("autocmd")
       autocmd BufRead,BufNewFile *.ino,*.pde set filetype=c++
       autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript  " Treat .json files as .js
       autocmd BufNewFile,BufRead *.md setlocal filetype=markdown            " Treat .md files as Markdown
+      autocmd BufEnter NvimTree :NvimTreeRefresh
     augroup end
 
     augroup QuicFixCustom
@@ -467,7 +466,6 @@ endif
 highlight DiffAdd     gui=NONE guibg=NONE guifg=#98c379
 highlight DiffChange  gui=NONE guibg=NONE guifg=#56b6c2
 highlight DiffDelete  gui=NONE guibg=NONE guifg=#be5046
-
 
 function! UpdateVimPlug() abort
   " Run PlugUpdate every week automatically when entering Vim.

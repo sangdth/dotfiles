@@ -8,13 +8,13 @@
   "coc.preferences.jumpCommand": "edit",
   "coc.preferences.useQuickfixForLocations": true,
 
-  "codeLens.enable": false,
+  "codeLens.enable": true,
 
   "diagnostic.infoSign": "i",
   "diagnostic.hintSign": "?",
   "diagnostic.errorSign": "x",
-	"diagnostic.warningSign": "!",
-	"diagnostic.enable": true,
+  "diagnostic.warningSign": "!",
+  "diagnostic.enable": true,
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
 
@@ -31,6 +31,7 @@
   "git.addedSign.text": "+",
   "git.removedSign.text": "-",
   "git.changedSign.text": "~",
+  "git.addGBlameToBufferVar": true,
 
   "javascript.suggestionActions.enabled": false,
   "javascript.format.enabled": true,
@@ -133,5 +134,6 @@
         "!Select sequence",
         "!Split sequence",
         "!Sub"
-	]
+  ],
+  "git.enableGutters": true
 }
