@@ -19,7 +19,8 @@ local colors = {
 local map_mode = {
     ['n']  = {'NORMAL',   colors.green},
     ['i']  = {'INSERT',   colors.blue},
-    ['R']  = {'REPLACE',  colors.orange},
+    ['r']  = {'REPLACE',  colors.orange},
+    ['R']  = {'REPLACE',  colors.orange}, -- wtf is this
     ['v']  = {'VISUAL',   colors.violet},
     ['V']  = {'V-LINE',   colors.violet},
     ['c']  = {'COMMAND',  colors.red},
@@ -32,8 +33,22 @@ local map_mode = {
     ['rm'] = {'--MORE',   colors.cyan}
 }
 
-local function mode_label() return map_mode[vim.fn.mode()][1] or 'N/A' end
-local function mode_highlight() return map_mode[vim.fn.mode()][2] or colors.cyan end
+local function mode_label() 
+    local label = 'N/A'
+    local mode = map_mode[vim.fn.mode()]
+    if mode ~= nil then
+        label = mode[1]
+    end
+    return label
+end
+local function mode_highlight()
+    local bgColor = colors.cyan
+    local mode = map_mode[vim.fn.mode()]
+    if mode ~= nil then
+        bgColor = mode[2]
+    end
+    return bgColor
+end
 local function highlight(group, fg, bg, gui)
     local cmd = string.format('highlight %s guifg=%s guibg=%s', group, fg, bg)
     if gui ~= nil then cmd = cmd .. ' gui=' .. gui end
@@ -50,14 +65,16 @@ local function split(str, sep)
     end
     return res
 end
-local isNotTree = function()
-    return require('galaxyline.provider_buffer').get_buffer_filetype() ~= 'NVIMTREE'
+local canDisplay = function()
+    local isNotTree = require('galaxyline.provider_buffer').get_buffer_filetype() ~= 'NVIMTREE'
+    local haveMode = vim.fn.mode() ~= nil
+    return isNotTree and haveMode
 end
 local is_file = function()
-    return vim.bo.buftype ~= 'nofile' and isNotTree()
+    return vim.bo.buftype ~= 'nofile' and canDisplay()
 end
 local isGit = function()
-    return require("galaxyline.condition").check_git_workspace() and isNotTree()
+    return require("galaxyline.condition").check_git_workspace() and canDisplay()
 end
 local checkwidth = function()
     local squeeze_width = vim.fn.winwidth(0) / 2
@@ -71,15 +88,13 @@ local auto_trim = function (str)
         return
     end
     local text = str
-    if not checkwidth() then
-        local found = str:match("%((%a+)%)")
-        if found then
-            text = found
-        end
+    local found = str:match("%((.+)%)")
+    if found then
+        text = found
     end
-    if #text > 40 then
-        text=string.sub(text, 1, 40) .. '…'
-    end
+    -- if #text > 40 then
+    --     text = string.sub(text, 1, 40) .. '…'
+    -- end
     return text
 end
 -- local function trim(s)
@@ -94,57 +109,49 @@ gls.left[1] = {
             highlight('GalaxyViModeInv', bgColor, colors.bg, 'bold')
             return string.format('  %s ', mode_label())
         end,
-        condition = isNotTree,
+        condition = canDisplay,
         separator = " ",
         separator_highlight = {colors.lightBg, colors.lightBg},
     }
 }
 
 gls.left[2] = {
-    LinePercent = {
-        provider = "LinePercent",
+    LineColumn = {
+        provider = "LineColumn",
         highlight = {colors.white, colors.lightBg},
-        condition = isNotTree,
+        condition = canDisplay,
     }
 }
 
 gls.left[3] = {
-    LineColumn = {
-        provider = "LineColumn",
-        highlight = {colors.white, colors.lightBg},
-        condition = isNotTree,
-    }
-}
-
-gls.left[4] = {
     DiagnosticError = {
         provider = "DiagnosticError",
         icon = " ",
         highlight = {colors.red, colors.bg},
         separator = " ",
         separator_highlight = {colors.bg, colors.bg},
-        condition = isNotTree,
+        condition = canDisplay,
     }
 }
 
-gls.left[5] = {
+gls.left[4] = {
     DiagnosticWarn = {
         provider = "DiagnosticWarn",
         icon = " ",
         highlight = {colors.orange, colors.bg},
-        condition = isNotTree,
+        condition = canDisplay,
         separator = " ",
         separator_highlight = {colors.bg, colors.bg},
     }
 }
 
-gls.left[6] = {
+gls.left[5] = {
     FilePath = {
         provider = function()
             local fp = vim.fn.fnamemodify(vim.fn.expand '%', ':~:.:h')
             local tbl = split(fp, '/')
             local len = #tbl
-
+            -- TODO: Make the trim.. like comp../Table../cells/Editab../ format
             if len > 2 and not len == 3 and not tbl[0] == '~' then
                 return '…/' .. table.concat(tbl, '/', len - 1) .. '/' -- shorten filepath to last 2 folders
                 -- alternative: only 1 containing folder using vim builtin function

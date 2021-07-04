@@ -8,8 +8,9 @@ Plug '/usr/local/opt/fzf'
 " Plug 'nvim-telescope/telescope-media-files.nvim'
 " Plug 'lewis6991/gitsigns.nvim'
 " Plug 'hrsh7th/nvim-compe'
-" Plug 'neovim/nvim-lspconfig'
 " Plug 'nvim-lua/popup.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-lua/plenary.nvim'
@@ -18,6 +19,7 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'windwp/nvim-autopairs'
 Plug 'alvan/vim-closetag'
 Plug 'onsails/lspkind-nvim'
+Plug 'tjdevries/colorbuddy.nvim'
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'norcalli/nvim-colorizer.lua'
 
@@ -47,9 +49,9 @@ lua <<EOF
   require'lspkind'
 
   -- require'my-compe'      -- super young for eslint
-  -- require'my-lspconfig'  -- super hard to config
   -- require'my-gitsigns'   -- color is so bad
   -- require'my-telescope'  -- super slow to grep :(
+  require'my-lspconfig'
   require'my-treesitter'
   require'my-bufferline'
   require'my-statusline'
@@ -237,7 +239,21 @@ let g:coc_global_extensions = [
   \'coc-pairs',
   \'coc-smartf',
   \'coc-snippets',
-  \'coc-tsserver',
+  \]
+
+" Indent options
+" highlight IndentBlanklineChar guifg=#323232 gui=nocombine
+let g:indent_blankline_char = '│'
+let g:indent_blankline_show_trailing_blankline_indent = v:false
+let g:indent_blankline_use_treesitter = v:true
+let g:indent_blankline_show_current_context = v:true
+let g:indent_blankline_context_patterns = [
+  \'class', 'function', 'method',
+  \'^if', '^while', '^for', '^object', '^table',
+  \'block', 'arguments', 'statement', 'switch_body',
+  \'declaration', 'expression', 'pattern', 'primary_expression',
+  \'jsx_fragment', 'jsx_element', 'jsx_self_closing_element',
+  \'jsx_attribute', 'jsx_closing_element', 'jsx_opening_element',
   \]
 
 " Mapping setup from here
@@ -289,60 +305,60 @@ nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
 
 " press <esc> to cancel.
-nmap f <Plug>(coc-smartf-forward)
-nmap F <Plug>(coc-smartf-backward)
-nmap ; <Plug>(coc-smartf-repeat)
-nmap , <Plug>(coc-smartf-repeat-opposite)
+" nmap f <Plug>(coc-smartf-forward)
+" nmap F <Plug>(coc-smartf-backward)
+" nmap ; <Plug>(coc-smartf-repeat)
+" nmap , <Plug>(coc-smartf-repeat-opposite)
 
-nnoremap <nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+" nnoremap <nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+" nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 
 " ############# Snippets #############
 " " Use <C-l> for trigger snippet expand.
-imap <c-l> <Plug>(coc-snippets-expand)
+" imap <c-l> <Plug>(coc-snippets-expand)
 
 " Use <C-j> for select text for visual placeholder of snippet.
-vmap <c-j> <Plug>(coc-snippets-select)
+" vmap <c-j> <Plug>(coc-snippets-select)
 
 " Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " press <esc> to cancel.
-nmap f <Plug>(coc-smartf-forward)
-nmap F <Plug>(coc-smartf-backward)
-nmap ; <Plug>(coc-smartf-repeat)
-nmap , <Plug>(coc-smartf-repeat-opposite)
+" nmap f <Plug>(coc-smartf-forward)
+" nmap F <Plug>(coc-smartf-backward)
+" nmap ; <Plug>(coc-smartf-repeat)
+" nmap , <Plug>(coc-smartf-repeat-opposite)
 
 " Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" nmap <silent> [c <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gt <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gt <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
 " " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   elseif (coc#rpc#ready())
+"     call CocActionAsync('doHover')
+"   else
+"     execute '!' . &keywordprg . " " . expand('<cword>')
+"   endif
+" endfunction
 
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <Tab>
-     \ pumvisible() ? "\<C-n>" :
-     \ <SID>check_back_space() ? "\<Tab>" :
-     \ coc#refresh()
+" inoremap <silent><expr> <Tab>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<Tab>" :
+"      \ coc#refresh()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -421,6 +437,11 @@ if has("autocmd")
       autocmd VimEnter * call UpdateVimPlug()
       autocmd User CocGitStatusChange {command}
     augroup end
+
+    " augroup ShowTypeOnHover
+    "   autocmd FileType *.ts,*.tsx,*.js,*.jsx
+    "       \ autocmd! ShowTypeOnHover CursorHold * silent call CocActionAsync('doHover')
+    " augroup END
 
     augroup MapFileType
       autocmd!
