@@ -1,3 +1,26 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+
+alias luamake=/Users/sangdang/.config/lua-language-server/3rd/luamake/luamake
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/sangdang/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/sangdang/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/sangdang/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/sangdang/google-cloud-sdk/completion.zsh.inc'; fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
