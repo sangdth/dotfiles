@@ -107,3 +107,10 @@ require "nvim-web-devicons".setup {
         }
     }
 }
+-- something useful
+-- 綠
+--    
+--  
+--     
+-- 喝卑
+-- 祈 祉

@@ -55,15 +55,14 @@ local function highlight(group, fg, bg, gui)
     vim.cmd(cmd)
 end
 local function split(str, sep)
-    local res = {}
-    local n = 1
-    for w in str:gmatch('([^' .. sep .. ']*)') do
-        res[n] = res[n] or w -- only set once (so the blank after a string is ignored)
-        if w == '' then
-            n = n + 1
-        end -- step forwards on a blank but not a string
+    if sep == nil then
+        sep = "%s"
     end
-    return res
+    local tempTable = {}
+    for word in string.gmatch(str, "([^"..sep.."]+)") do
+        table.insert(tempTable, word)
+    end
+    return tempTable
 end
 local canDisplay = function()
     local isNotTree = require('galaxyline.provider_buffer').get_buffer_filetype() ~= 'NVIMTREE'
@@ -76,7 +75,7 @@ end
 local isGit = function()
     return require("galaxyline.condition").check_git_workspace() and canDisplay()
 end
-local checkwidth = function()
+local wideEnough = function()
     local squeeze_width = vim.fn.winwidth(0) / 2
     if squeeze_width > 40 then
         return true
@@ -97,9 +96,6 @@ local auto_trim = function (str)
     -- end
     return text
 end
--- local function trim(s)
---   return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
--- end
 
 gls.left[1] = {
     ViMode = {
@@ -148,20 +144,28 @@ gls.left[4] = {
 gls.left[5] = {
     FilePath = {
         provider = function()
-            local fp = vim.fn.fnamemodify(vim.fn.expand '%', ':~:.:h')
-            local tbl = split(fp, '/')
-            local len = #tbl
-            -- TODO: Make the trim.. like comp../Table../cells/Editab../ format
-            if len > 2 and not len == 3 and not tbl[0] == '~' then
-                return '…/' .. table.concat(tbl, '/', len - 1) .. '/' -- shorten filepath to last 2 folders
-                -- alternative: only 1 containing folder using vim builtin function
-                -- return '…/' .. vim.fn.fnamemodify(vim.fn.expand '%', ':p:h:t') .. '/'
-            else
-                return fp .. '/'
+            local maxWidth = 24
+            local path = vim.fn.fnamemodify(vim.fn.expand '%', ':~:.:h')
+            if #path > maxWidth then
+                local tempTable = split(path, '/')
+                local firstLast = #tempTable[1] + #tempTable[#tempTable]
+                if #tempTable > 2 then
+                    local tempPath = ''
+                    for i,v in ipairs(tempTable) do
+                        if i ~= 1 and i ~= #tempTable then
+                            tempPath = tempPath .. string.sub(v, 1, 1) .. '…/'
+                        else
+                            tempPath = tempPath .. v .. '/'
+                        end
+                    end
+                    return tempPath
+                end
+                return path
             end
+            return path
         end,
         condition = function()
-            return is_file() and checkwidth()
+            return is_file() and wideEnough()
         end,
         highlight = { colors.white, colors.bg },
     },
@@ -183,9 +187,13 @@ gls.right[2] = {
     GitBranch = {
         provider = function()
             local branchName = require("galaxyline.provider_vcs").get_git_branch() or '!Git'
+            local jiraStyle = branchName:match("%a+%-%d+") -- try to get CODE-123 pattern
+            if jiraStyle ~= nil then
+                branchName = jiraStyle
+            end
             local length = 8
-            if checkwidth() then
-              length = 20
+            if wideEnough() then
+              length = 18
             end
             return  ' ' .. string.sub(branchName, 1, length) -- Make the sub auto detect like responsive(branchName)
         end,

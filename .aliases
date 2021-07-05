@@ -8,9 +8,8 @@ alias lt='ls --tree --ignore-glob node_modules --ignore-glob .git'
 alias create-svelte-app='npx degit sveltejs/template'
 alias update-dotfiles='git -C ~/.dotfiles pull origin master'
 
-alias vimrc='nvim ~/.dotfiles/.vimrc'
-alias zshrc='nvim ~/.dotfiles/.zshrc'
-alias paths='nvim ~/.paths'
+alias vimrc='nvim ~/.dotfiles/vimrc'
+alias zshrc='nvim ~/.dotfiles/zshrc'
 
 # Shortcuts
 alias dl='cd ~/Downloads'
@@ -23,8 +22,6 @@ alias dcrun='docker-compose run --rm'
 # Working projects
 # alias pw='~/Projects/pw/bin/run'
 
-alias blog='cd ~/Projects/sangdang.fi'
-alias rete='cd ~/Projects/rete.academy'
 alias openlocal='~/Applications/ngrok http https://localhost:3000 -region=eu -subdomain=sa -host-header=rewrite 3000'
 
 # Work with wordpress

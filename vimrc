@@ -304,11 +304,11 @@ nmap <silent> gm <Plug>(git-messenger)
 nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
 
-" press <esc> to cancel.
-" nmap f <Plug>(coc-smartf-forward)
-" nmap F <Plug>(coc-smartf-backward)
-" nmap ; <Plug>(coc-smartf-repeat)
-" nmap , <Plug>(coc-smartf-repeat-opposite)
+" Smart F (press <esc> to cancel.)
+nmap f <Plug>(coc-smartf-forward)
+nmap F <Plug>(coc-smartf-backward)
+nmap ; <Plug>(coc-smartf-repeat)
+nmap , <Plug>(coc-smartf-repeat-opposite)
 
 " nnoremap <nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 " nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"

@@ -5,11 +5,9 @@
 - clean: ['~']
 
 - link:
-    ~/.config/nvim:
+    ~/.config/nvim/lua:
       create: true
-      path: config/nvim
-    ~/.tmux.conf: tmux.conf
-    ~/.vimrc: vimrc
+      path: config/nvim/lua
     ~/.zshrc: zshrc
 
 - shell:
