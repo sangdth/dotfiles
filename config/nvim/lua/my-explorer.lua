@@ -4,7 +4,7 @@ local g = vim.g
 vim.o.termguicolors = true
 
 g.nvim_tree_side = "left"
-g.nvim_tree_width = 55
+g.nvim_tree_width = 45
 g.nvim_tree_ignore = {}
 g.nvim_tree_auto_open = 0
 g.nvim_tree_auto_close = 0

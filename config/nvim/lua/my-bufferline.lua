@@ -1,12 +1,14 @@
-local bar_fg = "#565c64"
-local activeBuffer_fg = "#ffffff" 
+local gray = "#565c64"
+local black = "#252931"
+local white = "#ffffff" 
+local green = "#236e00"
+local orange = "#ff6600"
 
 require "bufferline".setup {
     options = {
         offsets = {{filetype = "NvimTree", text = "Explorer"}},
         buffer_close_icon = "",
         modified_icon = "",
-        -- close_icon = "  ",
         left_trunc_marker = "",
         right_trunc_marker = "",
         show_close_icon = false,
@@ -23,27 +25,39 @@ require "bufferline".setup {
     -- bar colors!!
     highlights = {
         fill = {
-            guifg = bar_fg,
+            guifg = gray,
             guibg = "NONE"
         },
         background = {
-            guifg = bar_fg,
+            guifg = gray,
             guibg = "NONE"
         },
         -- buffer
         buffer_selected = {
-            guifg = activeBuffer_fg,
-            guibg = "#236e00",
+            guifg = white,
+            guibg = green,
             gui = "bold"
         },
         buffer_visible = {
-            guifg = "#f00",
+            guifg = gray,
             guibg = "NONE"
+        },
+        close_button = {
+            guifg = gray,
+            guibg = "NONE"
+        },
+        close_button_visible = {
+            guifg = gray,
+            guibg = "NONE"
+        },
+        close_button_selected = {
+            guifg = white,
+            guibg = green
         },
         -- tabs over right
         tab = {
             guifg = "#9298a0",
-            guibg = "NONE"
+            guibg = "#ffff00"
         },
         tab_selected = {
             guifg = "#30343c",
@@ -51,36 +65,36 @@ require "bufferline".setup {
         },
         tab_close = {
             guifg = "#f9929b",
-            guibg = "#252931"
+            guibg = "#ff00ff"
         },
         -- buffer separators
         separator = {
-            guifg = "#252931",
-            guibg = "#252931"
+            guifg = black,
+            guibg = "NONE"
         },
         separator_selected = {
             guifg = "#1e222a",
-            guibg = "#1e222a"
+            guibg = green
         },
         separator_visible = {
-            guifg = "#252931",
-            guibg = "#252931"
+            guifg = black,
+            guibg = green
         },
         indicator_selected = {
-            guifg = "#252931",
-            guibg = "#252931"
+            guifg = black,
+            guibg = green
         },
-        -- modified files (but not saved)
+        -- modified files (but not save)
         modified = {
-            guifg = "#ff6600",
+            guifg = orange,
             guibg = "NONE"
         },
         modified_selected = {
-            guifg = "#ff6600",
-            guibg = "#236e00"
+            guifg = orange,
+            guibg = green
         },
         modified_visible = {
-            guifg = "#ff0000",
+            guifg = orange,
             guibg = "NONE"
         }
     }
@@ -97,4 +111,3 @@ map("n", "<S-x>", [[<Cmd>bdelete<CR>]], opt) -- close tab
 -- move between tabs
 map("n", "<Right>", [[<Cmd>BufferLineCycleNext<CR>]], opt)
 map("n", "<Left>", [[<Cmd>BufferLineCyclePrev<CR>]], opt)
-
