@@ -1,4 +1,4 @@
-local nvim_lsp = require("lspconfig")
+local lspconfig = require("lspconfig")
 
 local function on_attach(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -31,6 +31,8 @@ local function on_attach(client, bufnr)
     elseif client.resolved_capabilities.document_range_formatting then
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
     end
+
+    print('Attached to ' .. client.name)
 end
 
 
@@ -40,64 +42,21 @@ local servers = {
     "ccls",
     "clangd",
     "cssls",
-    -- "diagnosticls", -- extremely slow compare to coc.nvim, wtf...
     "html",
     "pyright",
     "tsserver",
 }
 
 for _, lang in ipairs(servers) do
-    nvim_lsp[lang].setup {
+    lspconfig[lang].setup {
         on_attach = on_attach,
         root_dir = vim.loop.cwd
     }
 end
 
--- nvim_lsp.diagnosticls.setup {
---   filetypes = { "javascript", "javascript.jsx", "typescript", "typescript.tsx" },
---   init_options = {
---     filetypes = {
---       javascript = "eslint",
---       typescript = "eslint",
---       ["javascript.jsx"] = "eslint",
---       ["typescript.jsx"] = "eslint",
---       javascriptreact = "eslint",
---       typescriptreact = "eslint",
---     },
---     linters = {
---       eslint = {
---         sourceName = "eslint",
---         command = "./node_modules/.bin/eslint",
---         rootPatterns = { ".git" },
---         debounce = 100,
---         args = {
---           "--stdin",
---           "--stdin-filename",
---           "%filepath",
---           "--format",
---           "json",
---         },
---         parseJson = {
---           errorsRoot = "[0].messages",
---           line = "line",
---           column = "column",
---           endLine = "endLine",
---           endColumn = "endColumn",
---           message = "${message} [${ruleId}]",
---           security = "severity",
---         };
---         securities = {
---           [2] = "error",
---           [1] = "warning"
---         }
---       }
---     }
---   }
--- }
-
 -- vls conf example
 local vls_binary = "/usr/local/bin/vls"
-nvim_lsp.vls.setup {
+lspconfig.vls.setup {
     cmd = {vls_binary}
 }
 

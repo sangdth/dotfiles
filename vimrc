@@ -7,8 +7,10 @@ Plug '/usr/local/opt/fzf'
 " Plug 'nvim-telescope/telescope.nvim'
 " Plug 'nvim-telescope/telescope-media-files.nvim'
 " Plug 'lewis6991/gitsigns.nvim'
-" Plug 'hrsh7th/nvim-compe'
 " Plug 'nvim-lua/popup.nvim'
+Plug 'phaazon/hop.nvim'
+" Plug 'yamatsum/nvim-cursorline'
+Plug 'hrsh7th/nvim-compe'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
@@ -24,6 +26,7 @@ Plug 'akinsho/nvim-bufferline.lua'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " Normal plugins
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/splitjoin.vim' 
 Plug 'AndrewRadev/tagalong.vim'
@@ -31,7 +34,6 @@ Plug 'SirVer/ultisnips'
 Plug 'mattn/emmet-vim'
 Plug 'mhinz/vim-startify'
 Plug 'rhysd/git-messenger.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sangdth/tapilu'
 Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-commentary'
@@ -48,23 +50,23 @@ lua <<EOF
   require'nvim-autopairs'.setup()
   require'lspkind'
 
-  -- require'my-compe'      -- super young for eslint
   -- require'my-gitsigns'   -- color is so bad
   -- require'my-telescope'  -- super slow to grep :(
+  require'my-efm'
+  require'my-compe'
   require'my-lspconfig'
   require'my-treesitter'
   require'my-bufferline'
   require'my-statusline'
   require'my-explorer'
   require'my-icons'
+  require'my-others'
 EOF
 
 set background=dark
 colorscheme onedark
 
-filetype plugin indent on
-
-set guifont="FuraCode Nerd Front":h15
+set guifont="FuraCode Nerd Front"
 set rtp+=/usr/local/opt/fzf           " use fzf in vim
 set clipboard=unnamedplus             " used plus
 set backspace=indent,eol,start        " Allow backspace in insert mode
@@ -87,7 +89,7 @@ set modelines=4
 set nocursorcolumn
 set scrolljump=50
 set redrawtime=1500
-set synmaxcol=160                     " Stop decorate after this column number
+set synmaxcol=120                     " Stop decorate after this column number
 set lazyredraw                        " Why it makes slower in some cases?
 
 " required by coc
@@ -226,20 +228,20 @@ let g:git_messenger_always_into_popup=v:true    " the cursor goes into a popup w
 let g:git_messenger_max_popup_height=60
 let g:git_messenger_max_popup_width=110
 
-let g:coc_config_home = '~/.dotfiles'
+" let g:coc_config_home = '~/.dotfiles'
 
 " list of the extensions to make sure are always installed
-let g:coc_global_extensions = [
-  \'coc-actions',
-  \'coc-css',
-  \'coc-emmet',
-  \'coc-eslint',
-  \'coc-git',
-  \'coc-html',
-  \'coc-pairs',
-  \'coc-smartf',
-  \'coc-snippets',
-  \]
+" let g:coc_global_extensions = [
+"   \'coc-actions',
+"   \'coc-css',
+"   \'coc-emmet',
+"   \'coc-eslint',
+"   \'coc-git',
+"   \'coc-html',
+"   \'coc-pairs',
+"   \'coc-smartf',
+"   \'coc-snippets',
+"   \]
 
 " Indent options
 " highlight IndentBlanklineChar guifg=#323232 gui=nocombine
@@ -305,10 +307,10 @@ nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
 
 " Smart F (press <esc> to cancel.)
-nmap f <Plug>(coc-smartf-forward)
-nmap F <Plug>(coc-smartf-backward)
-nmap ; <Plug>(coc-smartf-repeat)
-nmap , <Plug>(coc-smartf-repeat-opposite)
+" nmap f <Plug>(coc-smartf-forward)
+" nmap F <Plug>(coc-smartf-backward)
+" nmap ; <Plug>(coc-smartf-repeat)
+" nmap , <Plug>(coc-smartf-repeat-opposite)
 
 " nnoremap <nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 " nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
@@ -359,10 +361,10 @@ nmap , <Plug>(coc-smartf-repeat-opposite)
 "      \ pumvisible() ? "\<C-n>" :
 "      \ <SID>check_back_space() ? "\<Tab>" :
 "      \ coc#refresh()
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
 " Add surround map
 nmap <silent> as ysiw
@@ -414,6 +416,11 @@ nnoremap <silent> <Esc><Esc> :call CleanUp()<CR>
 " Remap for rename current word
 
 nnoremap <silent> <F5> :source $MYVIMRC<cr>
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-u>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 command! W w
 command! Q q

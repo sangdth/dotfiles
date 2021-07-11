@@ -1,3 +1,4 @@
+-- https://github.com/kyazdani42/nvim-tree.lua/blob/master/doc/nvim-tree-lua.txt
 local cmd = vim.cmd
 local g = vim.g
 
@@ -17,6 +18,7 @@ g.nvim_tree_git_hl = 1
 g.nvim_tree_root_folder_modifier = ":~"
 g.nvim_tree_allow_resize = 1
 g.nvim_tree_special_files = {}
+g.nvim_tree_lsp_diagnostics = 1
 
 g.nvim_tree_show_icons = {
     git = 0,
@@ -38,6 +40,12 @@ g.nvim_tree_icons = {
         default   = "",
         open      = "",
         symlink   = "" -- 
+    },
+    lsp = {
+        hint      = "",
+        info      = "",
+        warning   = "",
+        error     = ""
     }
 }
 
@@ -60,14 +68,13 @@ vim.api.nvim_set_keymap(
 )
 
 g.nvim_tree_bindings = {
-    { key = "<",                                  cb = tree_cb("prev_sibling") },
     { key = "<BS>",                               cb = tree_cb("close_node") },
     { key = "<C-r>",                              cb = tree_cb("full_rename") },
     { key = "<C-t>",                              cb = tree_cb("tabnew") },
-    { key = "<C-x>",                              cb = tree_cb("split") },
     { key = "<S-CR>",                             cb = tree_cb("close_node") },
     { key = "<Tab>",                              cb = tree_cb("preview") },
     { key = ">",                                  cb = tree_cb("next_sibling") },
+    { key = "<",                                  cb = tree_cb("prev_sibling") },
     { key = "H",                                  cb = tree_cb("toggle_dotfiles") },
     { key = "I",                                  cb = tree_cb("toggle_ignored") },
     { key = "J",                                  cb = tree_cb("last_sibling") },
@@ -89,7 +96,8 @@ g.nvim_tree_bindings = {
     { key = "y",                                  cb = tree_cb("copy_name") },
     { key = {"-", "<BS>"},                        cb = tree_cb("dir_up") },
     { key = {"<2-RightMouse>", "<C-]>", "<CR>"},  cb = tree_cb("cd") },
-    { key = {"<C-v>", "E"},                       cb = tree_cb("vsplit") },
+    { key = {"<C-v>", "V"},                       cb = tree_cb("vsplit") },
+    { key = {"<C-s>", "S"},                       cb = tree_cb("split") },
     { key = {"o", "<2-LeftMouse>"},               cb = tree_cb("edit") },
 }
 

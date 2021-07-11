@@ -5,9 +5,12 @@
 - clean: ['~']
 
 - link:
-    ~/.config/nvim/lua:
+    ~/.config/nvim:
       create: true
-      path: config/nvim/lua
+      path: config/nvim
+    ~/.config/efm-langserver:
+      create: true
+      path: config/efm-langserver
     ~/.zshrc: zshrc
 
 - shell:

@@ -1,7 +1,9 @@
+-- https://github.com/glepnir/galaxyline.nvim
 local gl = require("galaxyline")
 local gls = gl.section
+local vim_mode = vim.fn.mode()
 
-gl.short_line_list = {""} -- keeping this table { } as empty will show inactive statuslines
+gl.short_line_list = {""}
 
 local colors = {
     bg      = "#282c34",
@@ -35,15 +37,17 @@ local map_mode = {
 
 local function mode_label() 
     local label = 'N/A'
-    local mode = map_mode[vim.fn.mode()]
+    local mode = map_mode[vim_mode]
     if mode ~= nil then
         label = mode[1]
+    else
+        label = vim_mode
     end
     return label
 end
 local function mode_highlight()
     local bgColor = colors.cyan
-    local mode = map_mode[vim.fn.mode()]
+    local mode = map_mode[vim_mode]
     if mode ~= nil then
         bgColor = mode[2]
     end
@@ -66,7 +70,7 @@ local function split(str, sep)
 end
 local canDisplay = function()
     local isNotTree = require('galaxyline.provider_buffer').get_buffer_filetype() ~= 'NVIMTREE'
-    local haveMode = vim.fn.mode() ~= nil
+    local haveMode = vim_mode ~= nil
     return isNotTree and haveMode
 end
 local is_file = function()
@@ -96,6 +100,39 @@ local auto_trim = function (str)
     -- end
     return text
 end
+local FilePath = function()
+    local maxWidth = 24
+    local path = vim.fn.fnamemodify(vim.fn.expand '%', ':~:.:h')
+    if #path > maxWidth then
+        local tempTable = split(path, '/')
+        local firstLast = #tempTable[1] + #tempTable[#tempTable]
+        if #tempTable > 2 then
+            local tempPath = ''
+            for i,v in ipairs(tempTable) do
+                if i ~= 1 and i ~= #tempTable then
+                    tempPath = tempPath .. string.sub(v, 1, 1) .. '…/'
+                else
+                    tempPath = tempPath .. v .. '/'
+                end
+            end
+            return tempPath
+        end
+        return path
+    end
+    if path == "." then
+      return nil
+    end
+    return path
+end
+
+gls.short_line_left[1] = {
+  BufferType = {
+    provider = FilePath,
+    highlight = {colors.white,colors.lightBg},
+    separator = " ",
+    separator_highlight = {colors.violet,colors.bg},
+  }
+}
 
 gls.left[1] = {
     ViMode = {
@@ -122,7 +159,7 @@ gls.left[2] = {
 gls.left[3] = {
     DiagnosticError = {
         provider = "DiagnosticError",
-        icon = " ",
+        icon = " ",
         highlight = {colors.red, colors.bg},
         separator = " ",
         separator_highlight = {colors.bg, colors.bg},
@@ -143,27 +180,7 @@ gls.left[4] = {
 
 gls.left[5] = {
     FilePath = {
-        provider = function()
-            local maxWidth = 24
-            local path = vim.fn.fnamemodify(vim.fn.expand '%', ':~:.:h')
-            if #path > maxWidth then
-                local tempTable = split(path, '/')
-                local firstLast = #tempTable[1] + #tempTable[#tempTable]
-                if #tempTable > 2 then
-                    local tempPath = ''
-                    for i,v in ipairs(tempTable) do
-                        if i ~= 1 and i ~= #tempTable then
-                            tempPath = tempPath .. string.sub(v, 1, 1) .. '…/'
-                        else
-                            tempPath = tempPath .. v .. '/'
-                        end
-                    end
-                    return tempPath
-                end
-                return path
-            end
-            return path
-        end,
+        provider = FilePath,
         condition = function()
             return is_file() and wideEnough()
         end,
@@ -215,3 +232,4 @@ gls.right[3] = {
         separator_highlight = {colors.lightBg, colors.lightBg}
     }
 }
+

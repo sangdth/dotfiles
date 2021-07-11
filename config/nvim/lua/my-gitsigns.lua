@@ -1,3 +1,4 @@
+-- https://github.com/lewis6991/gitsigns.nvim/blob/main/doc/gitsigns.txt
 require('gitsigns').setup {
   signs = {
     add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
