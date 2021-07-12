@@ -10,10 +10,10 @@
 
   "codeLens.enable": true,
 
-  "diagnostic.infoSign": "i",
-  "diagnostic.hintSign": "?",
-  "diagnostic.errorSign": "x",
-  "diagnostic.warningSign": "!",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
   "diagnostic.enable": true,
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
@@ -89,6 +89,8 @@
         "typescriptreact": ["javascript"]
     },
 
+    "suggest.autoTrigger": "none",
+    "suggest.keepCompleteopt": true,
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",
         "variable": "\ue79b",

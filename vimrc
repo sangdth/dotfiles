@@ -8,8 +8,8 @@ Plug '/usr/local/opt/fzf'
 " Plug 'nvim-telescope/telescope-media-files.nvim'
 " Plug 'lewis6991/gitsigns.nvim'
 " Plug 'nvim-lua/popup.nvim'
-Plug 'phaazon/hop.nvim'
 " Plug 'yamatsum/nvim-cursorline'
+Plug 'phaazon/hop.nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -26,7 +26,7 @@ Plug 'akinsho/nvim-bufferline.lua'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " Normal plugins
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/splitjoin.vim' 
 Plug 'AndrewRadev/tagalong.vim'
@@ -52,7 +52,7 @@ lua <<EOF
 
   -- require'my-gitsigns'   -- color is so bad
   -- require'my-telescope'  -- super slow to grep :(
-  require'my-efm'
+  -- require'my-efm'
   require'my-compe'
   require'my-lspconfig'
   require'my-treesitter'
@@ -228,20 +228,16 @@ let g:git_messenger_always_into_popup=v:true    " the cursor goes into a popup w
 let g:git_messenger_max_popup_height=60
 let g:git_messenger_max_popup_width=110
 
-" let g:coc_config_home = '~/.dotfiles'
-
-" list of the extensions to make sure are always installed
-" let g:coc_global_extensions = [
-"   \'coc-actions',
-"   \'coc-css',
-"   \'coc-emmet',
-"   \'coc-eslint',
-"   \'coc-git',
-"   \'coc-html',
-"   \'coc-pairs',
-"   \'coc-smartf',
-"   \'coc-snippets',
-"   \]
+" Coc settings
+let g:coc_config_home = '~/.dotfiles'
+let g:coc_global_extensions = [
+  \'coc-actions',
+  \'coc-emmet',
+  \'coc-eslint',
+  \'coc-git',
+  \'coc-html',
+  \'coc-pairs',
+  \]
 
 " Indent options
 " highlight IndentBlanklineChar guifg=#323232 gui=nocombine
@@ -443,6 +439,7 @@ if has("autocmd")
     augroup UsefulJobs
       autocmd VimEnter * call UpdateVimPlug()
       autocmd User CocGitStatusChange {command}
+      autocmd BufEnter let b:coc_suggest_disable = 1
     augroup end
 
     " augroup ShowTypeOnHover

@@ -1,5 +1,11 @@
 local lspconfig = require("lspconfig")
 
+-- replace the default lsp diagnostic letters with prettier symbols
+vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
+vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
+
 local function on_attach(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -38,11 +44,11 @@ end
 
 -- these langs require same lspconfig so put em all in a table and loop through!
 local servers = {
-    "bashls",
+    -- "bashls",
+    -- "cssls",
+    -- "html",
     "ccls",
     "clangd",
-    "cssls",
-    "html",
     "pyright",
     "tsserver",
 }
@@ -55,13 +61,49 @@ for _, lang in ipairs(servers) do
 end
 
 -- vls conf example
-local vls_binary = "/usr/local/bin/vls"
-lspconfig.vls.setup {
-    cmd = {vls_binary}
-}
+-- local vls_binary = "/usr/local/bin/vls"
+-- lspconfig.vls.setup {
+--     cmd = {vls_binary}
+-- }
 
--- replace the default lsp diagnostic letters with prettier symbols
-vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
-vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
+-- lspconfig.diagnosticls.setup {
+--   filetypes = { "javascript", "javascript.jsx", "typescript", "typescript.tsx" },
+--   init_options = {
+--     linters = {
+--       eslint = {
+--         sourceName = "eslint",
+--         command = "eslint_d",
+--         rootPatterns = { ".git" },
+--         debounce = 100,
+--         args = {
+--           "--stdin",
+--           "--stdin-filename",
+--           "%filepath",
+--           "--format",
+--           "json",
+--         },
+--         parseJson = {
+--           errorsRoot = "[0].messages",
+--           line = "line",
+--           column = "column",
+--           endLine = "endLine",
+--           endColumn = "endColumn",
+--           message = "${message} [${ruleId}]",
+--           security = "severity",
+--         };
+--         securities = {
+--           [2] = "error",
+--           [1] = "warning"
+--         }
+--       }
+--     },
+--     filetypes = {
+--       javascript = "eslint",
+--       typescript = "eslint",
+--       ["javascript.jsx"] = "eslint",
+--       ["typescript.jsx"] = "eslint",
+--       javascriptreact = "eslint",
+--       typescriptreact = "eslint",
+--     },
+--   }
+-- }
