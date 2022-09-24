@@ -1,0 +1,77 @@
+[init]
+  defaultBranch = master
+
+[user]
+	name = Sang Dang
+	email = sangdth@gmail.com
+	signingkey = 72750EDFEE575EEEFD1C39B8B90A934F169E9CBE
+
+[core]
+	excludesfile = /Users/sangdang/.gitignore_global
+  hooksPath = /Users/sangdang/dotfiles/git/hooks
+  pager = delta
+  editor = lvim
+
+[interactive]
+  diffFilter = delta --color-only --features=interactive
+
+[delta]
+  features = side-by-side line-numbers decorations
+  whitespace-error-style = 22 reverse
+  syntax-theme = OneHalfDark
+  minus-style = syntax "#78191b"
+  plus-style = syntax "#1b4721"
+
+[delta "decorations"]
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
+  hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+  line-numbers-left-style = cyan
+  line-numbers-right-style = cyan
+  line-numbers-minus-style = 124
+  line-numbers-plus-style = 28
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[color]
+  ui = auto
+  branch = auto
+  status = auto
+
+[commit]
+	template = /Users/sangdang/dotfiles/git/commit-template
+	gpgsign = true
+
+[alias]
+	fmain = !git checkout -b master && git branch -D main
+	sorrymaster = !git checkout -b main && git branch -D master
+
+[rebase]
+  autoSquash = true
+
+[pull]
+	rebase = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[gpg]
+	program = /usr/local/MacGPG2/bin/gpg2
+
+[mergetool]
+	keepBackup = false
+
+[push]
+	autoSetupRemote = true

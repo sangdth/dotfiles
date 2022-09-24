@@ -1,0 +1,41 @@
+#!/bin/bash
+# post-checkout
+
+# Git post checkout hook.
+# ------------------------------------------------------
+# Reminds you to update Node dependencies, if necessary
+
+PREVIOUS_HEAD=$1
+NEW_HEAD=$2
+BRANCH_SWITCH=$3
+
+NPM_LOCK=./package-lock.json
+YARN_LOCK=./yarn.lock
+
+echo '> Start running the post-checkout hook...'
+
+if [[ $BRANCH_SWITCH == "1" && $PREVIOUS_HEAD != $NEW_HEAD && $PREVIOUS_HEAD != "0000000000000000000000000000000000000000" ]]; then
+    # Start from the repository root.
+    cd ./$(git rev-parse --show-cdup)
+    git fetch origin --prune
+
+    echo '> Fetched and pruned branches.'
+
+    # Check if requirements have been updated - npm/yarn
+    REQUIREMENTS=`git diff $PREVIOUS_HEAD $NEW_HEAD --name-status | grep "package.json"`
+
+    if [ $? -eq 0 ]; then
+        echo '> The project may have changed. Update dependencies...'
+        git pull origin
+
+        if [ -f "$YARN_LOCK" ]; then
+          echo '> yarn install'
+          yarn install
+        fi
+
+        if [ -f "$NPM_LOCK" ]; then
+          echo '> npm install'
+          npm install
+        fi
+    fi
+fi

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+COMMIT_MSG_FILE=$1
+
+# Ignore if branch name is: master/main/develop/dev
+if [ -z "$NAMES_TO_SKIP" ]; then
+  NAMES_TO_SKIP=(master main develop dev)
+fi
+
+# Get code in branch name with format DEV-123
+CODE_NAME=$(git symbolic-ref --short HEAD | ggrep -oP "(?<=feature\/|bugfix\/)([a-zA-Z]+)-(\d+)" | awk '{print $1}')
+
+BRANCH_EXCLUDED=$(printf "%s\n" "${NAMES_TO_SKIP[@]}" | grep -c "^$CODE_NAME$")
+
+# If commit message already have it, do not duplicate
+BRANCH_IN_COMMIT=$(grep -c "$CODE_NAME" $1)
+
+if [ -n "$CODE_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]] && ! [[ $BRANCH_IN_COMMIT -ge 1 ]]; then 
+  # Add code name to commit message
+  sed -i.bak -e "1s/^/$CODE_NAME /" "$COMMIT_MSG_FILE"
+fi

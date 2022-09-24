@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# Only run the fucking lefthook in Lokalise projects
+if [[ "$(pwd)" != *"Lokalise"* ]]; then
+  exit 0
+fi
+
+if [ "$LEFTHOOK" = "0" ]; then
+  exit 0
+fi
+
+CODENAME=$(git symbolic-ref --short HEAD | ggrep -oP "(?<=feature\/|bugfix\/)([a-zA-Z]+)-(\d+)" | awk '{print $1}')
+CODENAME="${CODENAME##*/}"
+CODENAME_IN_COMMIT=$(grep -c "$CODENAME" $1)
+
+if [ "$CODENAME_IN_COMMIT" = 1 ]; then
+  exit 0
+fi
+
+if [ -t 1 ] ; then
+  exec < /dev/tty ; # <- enables interactive shell
+fi
+
+dir="$(git rev-parse --show-toplevel)"
+
+call_lefthook()
+{
+  if lefthook -h >/dev/null 2>&1
+  then
+    eval lefthook $@
+  elif test -f "$dir/node_modules/@arkweid/lefthook/bin/lefthook"
+  then
+    eval "$dir/node_modules/@arkweid/lefthook/bin/lefthook $@"
+  elif bundle exec lefthook -h >/dev/null 2>&1
+  then
+    bundle exec lefthook $@
+  elif npx @arkweid/lefthook -h >/dev/null 2>&1
+  then
+    npx @arkweid/lefthook $@
+  elif yarn lefthook -h >/dev/null 2>&1
+  then
+    yarn lefthook $@
+  else
+    echo "Can't find lefthook in PATH"
+  fi
+}
+
+
+
+call_lefthook "run commit-msg $@"
