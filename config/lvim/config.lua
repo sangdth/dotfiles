@@ -2,27 +2,29 @@ vim.opt.autoindent = true
 vim.opt.cmdheight = 2
 vim.opt.cursorline = true
 vim.opt.expandtab = true
+vim.opt.fillchars = "eob: "
 vim.opt.foldcolumn = '0'
+vim.opt.foldenable = true
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.opt.foldlevelstart = 99
-vim.opt.foldenable = true
-vim.opt.formatoptions = "crjql"
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.formatoptions = "crjql"
 vim.opt.lazyredraw = true
+vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.number = true
 vim.opt.redrawtime = 1500
 vim.opt.relativenumber = true
+vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+vim.opt.shiftwidth = 2
 vim.opt.shortmess = "a"
 vim.opt.showcmd = true
 vim.opt.showmode = false
 vim.opt.synmaxcol = 150
-vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.timeoutlen = 300
 vim.opt.ttimeoutlen = 10 -- https://vi.stackexchange.com/a/24938/19109
 vim.opt.updatetime = 200
-vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.opt.whichwrap = "<,>,[,]"
 
 -- General
@@ -34,6 +36,7 @@ lvim.format_on_save = true
 
 -- Keymappings [view all the defaults by pressing <leader>Lk]
 lvim.keys.normal_mode["<C-s>"] = ":w<CR>"
+lvim.keys.normal_mode["<C-a>"] = "<cmd>ToggleTermToggleAll<CR>"
 lvim.keys.normal_mode["sa"] = "<cmd>Telescope live_grep<CR>"
 lvim.keys.normal_mode["sf"] = "<cmd>Telescope find_files<CR>"
 lvim.keys.normal_mode["sg"] = "<cmd>Telescope git_files<CR>"
@@ -42,14 +45,11 @@ lvim.keys.normal_mode["sh"] = "<cmd>Telescope current_buffer_fuzzy_find<CR>"
 lvim.keys.normal_mode["sr"] = "<cmd>Telescope oldfiles<CR>"
 lvim.keys.normal_mode["sk"] = "<cmd>SplitjoinJoin<CR>"
 lvim.keys.normal_mode["sj"] = "<cmd>SplitjoinSplit<CR>"
-lvim.keys.normal_mode["as"] = "ysiw" -- add surround >.<
-lvim.keys.normal_mode["cl"] = "<cmd>ColorizerToggle<CR>" -- add surround >.<
-
+lvim.keys.normal_mode["cl"] = "+yiwoconsole.log('### <word>: ', <word>a);<Esc>"
 lvim.keys.normal_mode["<Up>"] = ":cprev<CR>"
 lvim.keys.normal_mode["<Down>"] = ":cnext<CR>"
 lvim.keys.normal_mode["<Left>"] = "<cmd>BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<Right>"] = "<cmd>BufferLineCycleNext<CR>"
-lvim.keys.normal_mode["<C-a>"] = "<cmd>ToggleTermToggleAll<CR>"
 
 -- Map the moving lines, Remember set the escape sequence in your keyboard/terminal
 lvim.keys.normal_mode["<A-j>"] = ":m .+1<CR>=="
@@ -69,6 +69,12 @@ lvim.builtin.which_key.mappings["gdh"] = { ":DiffviewFileHistory<CR>", "Git Diff
 lvim.builtin.which_key.mappings["n"] = { ":noh<CR>", "Clear highlight" }
 lvim.builtin.which_key.mappings["<Tab>"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" }
 lvim.builtin.which_key.mappings["ll"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show diagnostics" }
+lvim.builtin.which_key.mappings["bc"] = { "<cmd>BufferKill<CR>", "Close Buffer" }
+lvim.builtin.which_key.mappings["c"] = {
+  name = "Colorizer",
+  t = { "<cmd>ColorizerToggle<CR>", "Toggle Colors" },
+  r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
+}
 lvim.builtin.which_key.mappings["x"] = {
   name = "Diagnostics",
   x = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
@@ -101,6 +107,7 @@ lvim.builtin.bufferline.options.always_show_bufferline = true
 local components = require "lvim.core.lualine.components"
 components.diff.symbols = { added = " 落", modified = " ", removed = "  " }
 lvim.builtin.lualine.options.theme = "tokyonight"
+lvim.builtin.lualine.options.disabled_filetypes = { "packer", "NvimTree" }
 lvim.builtin.lualine.sections = {
   lualine_a = {},
   lualine_b = { { "filename", file_status = true, path = 3 } },
@@ -182,10 +189,10 @@ lvim.builtin.nvimtree.icons = {
   }
 }
 -- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
-lvim.builtin.nvimtree.setup.view.number = true
-lvim.builtin.nvimtree.setup.view.relativenumber = true
+lvim.builtin.nvimtree.setup.view.number = false
+lvim.builtin.nvimtree.setup.view.relativenumber = false
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.view.width = 40 -- For some reason, put view width inside setup does not work :D
+lvim.builtin.nvimtree.setup.view.width = 35 -- For some reason, put view width inside setup does not work :D
 
 -- local tree_cb = require "nvim-tree.config".nvim_tree_callback
 -- require "nvim-tree".setup {
@@ -515,11 +522,6 @@ lvim.plugins = {
   },
 }
 
--- lvim.autocommands.custom_groups = {
---   { "BufRead", "*.yaml,*.yml", "setlocal foldmethod=indent indentkeys-=e" }, -- dont know why indentkeys has 0 effect
---   { "BufWritePost", "*", ":NvimTreeRefresh" },
--- }
-
 lvim.autocommands = {
   {
     "ColorScheme", {
@@ -527,9 +529,6 @@ lvim.autocommands = {
       callback = function()
         local theme_colors = require("tokyonight.colors").setup()
         local groups_use_bg = {
-          "NvimTreeNormal",
-          "NvimTreeNormalNC",
-          "NvimTreeEndOfBuffer",
           "TelescopeBorder",
           "TelescopeNormal",
         }
@@ -538,13 +537,24 @@ lvim.autocommands = {
         end
 
         local groups_use_dark_bg = {
-          "VertSplit",
           "BufferLineFill",
+          "MsgArea",
+          "NvimTree",
+          "NvimTreeEndOfBuffer",
+          "NvimTreeNormal",
+          "NvimTreeNormalNC",
+          "NvimTreeStatusLine",
+          "NvimTreeStatusLineNC",
           "PanelHeading",
+          "StatusLine",
+          "StatusLineNC",
+          "VertSplit",
         }
         for _, name in ipairs(groups_use_dark_bg) do
           vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
         end
+
+        vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
       end,
     },
   }

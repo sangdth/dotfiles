@@ -46,7 +46,6 @@
     ~/.config/starship.toml: config/starship.toml
     ~/.config/ripgrep/config: config/ripgrep/config
     ~/.config/fd/ignore: config/fd/ignore
-
 # - shell:
 #     - [
 #         npm install -g npm expo-cli eslint_d eas-cli,
