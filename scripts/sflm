@@ -1,0 +1,32 @@
+#!/bin/sh
+
+cd ~/Lokalise/lokalise-main
+bin/dev-console app stop
+
+if [ $(git status --porcelain | wc -l) -eq "0" ]; then
+  echo "> Git repo is clean. Continue..."
+else
+  echo "> Git repo dirty. Stash or commit then start again."
+  exit 1
+fi
+git pull origin
+
+echo "> Clean cache every where..."
+yes "y" | bin/dev-console app service-cache clear
+yes "y" | docker system prune -a
+
+echo "> Start pulling containers..."
+bin/dev-console app build
+bin/dev-console app start
+bin/dev-console app init project
+
+echo "> Restore mysql..."
+cd docker
+deploy/db/mysql-restore.sh blank
+cd ..
+
+bin/dev-console app start
+
+echo "> Migrate..."
+bin/dev-console app console doctrine:migrations:migrate --no-interaction
+# bin/dev-console app console doctrine:migrations:services_db:migrate

@@ -56,10 +56,6 @@ VI_MODE_SET_CURSOR="false"
 # INSERT_MODE_INDICATOR="%F{green}+%f"
 
 plugins=(
-  fd
-  fzf
-  git
-  zsh-interactive-cd
   zsh-autosuggestions
   zsh-syntax-highlighting # must be the last
 )
@@ -89,3 +85,4 @@ fi
 
 eval "$(fnm env --use-on-cd)"
 eval "$(starship init zsh)"
+eval "$(twilio autocomplete:script zsh)"

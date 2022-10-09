@@ -67,7 +67,7 @@ lvim.builtin.which_key.mappings["gdc"] = { ":DiffviewClose<CR>", "Close Git Diff
 lvim.builtin.which_key.mappings["gdf"] = { ":DiffviewToggleFiles<CR>", "Toggle Git Diffview files" }
 lvim.builtin.which_key.mappings["gdh"] = { ":DiffviewFileHistory<CR>", "Git Diffview file history" }
 lvim.builtin.which_key.mappings["n"] = { ":noh<CR>", "Clear highlight" }
-lvim.builtin.which_key.mappings["<Tab>"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" }
+lvim.builtin.which_key.mappings["f"] = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTree" }
 lvim.builtin.which_key.mappings["ll"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show diagnostics" }
 lvim.builtin.which_key.mappings["bc"] = { "<cmd>BufferKill<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["c"] = {
@@ -167,6 +167,12 @@ lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.gitsigns.active = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
+-- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.view.number = false
+lvim.builtin.nvimtree.setup.view.relativenumber = false
+lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.setup.view.width = 45 -- For some reason, put view width inside setup does not work :D
+lvim.builtin.nvimtree.setup.git.enable = true
 lvim.builtin.nvimtree.icons = {
   git = {
     unstaged  = "",
@@ -188,11 +194,6 @@ lvim.builtin.nvimtree.icons = {
     symlink_open = "",
   }
 }
--- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
-lvim.builtin.nvimtree.setup.view.number = false
-lvim.builtin.nvimtree.setup.view.relativenumber = false
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.view.width = 35 -- For some reason, put view width inside setup does not work :D
 
 -- local tree_cb = require "nvim-tree.config".nvim_tree_callback
 -- require "nvim-tree".setup {
@@ -419,7 +420,8 @@ lvim.plugins = {
           'switch_body',
         },
       }
-      vim.highlight.create("IndentBlanklineContextChar", { guifg = "#545c7e" })
+      vim.api.nvim_set_hl(0, "IndentBlanklineChar", { foreground = "#24283b" })
+      -- vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { foreground = "#999999" })
     end
   },
   {
@@ -514,7 +516,7 @@ lvim.plugins = {
     event = "BufRead",
     config = function()
       require("nvim-lastplace").setup({
-        lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm" },
+        lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
         lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
         lastplace_open_folds = true,
       })
@@ -522,40 +524,41 @@ lvim.plugins = {
   },
 }
 
-lvim.autocommands = {
-  {
-    "ColorScheme", {
-      pattern = "*",
-      callback = function()
-        local theme_colors = require("tokyonight.colors").setup()
-        local groups_use_bg = {
-          "TelescopeBorder",
-          "TelescopeNormal",
-        }
-        for _, name in ipairs(groups_use_bg) do
-          vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
-        end
+-- autocommands cause the save format broken
+-- lvim.autocommands = {
+--   {
+--     "ColorScheme", {
+--       pattern = "*",
+--       callback = function()
+--         local theme_colors = require("tokyonight.colors").setup()
+--         local groups_use_bg = {
+--           "TelescopeBorder",
+--           "TelescopeNormal",
+--         }
+--         for _, name in ipairs(groups_use_bg) do
+--           vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
+--         end
 
-        local groups_use_dark_bg = {
-          "BufferLineFill",
-          "MsgArea",
-          "NvimTree",
-          "NvimTreeEndOfBuffer",
-          "NvimTreeNormal",
-          "NvimTreeNormalNC",
-          "NvimTreeStatusLine",
-          "NvimTreeStatusLineNC",
-          "PanelHeading",
-          "StatusLine",
-          "StatusLineNC",
-          "VertSplit",
-        }
-        for _, name in ipairs(groups_use_dark_bg) do
-          vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
-        end
+--         local groups_use_dark_bg = {
+--           "BufferLineFill",
+--           "MsgArea",
+--           "NvimTree",
+--           "NvimTreeEndOfBuffer",
+--           "NvimTreeNormal",
+--           "NvimTreeNormalNC",
+--           "NvimTreeStatusLine",
+--           "NvimTreeStatusLineNC",
+--           "PanelHeading",
+--           "StatusLine",
+--           "StatusLineNC",
+--           "VertSplit",
+--         }
+--         for _, name in ipairs(groups_use_dark_bg) do
+--           vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
+--         end
 
-        vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
-      end,
-    },
-  }
-}
+--         vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
+--       end,
+--     },
+--   }
+-- }

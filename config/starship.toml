@@ -14,7 +14,7 @@ $python\
 $character"""
 
 scan_timeout = 300
-command_timeout = 900
+command_timeout = 1400
 
 [directory]
 style = "blue"
@@ -41,7 +41,7 @@ modified = "​"
 staged = "​"
 renamed = "​"
 deleted = "​"
-stashed = "≡"
+stashed = "≡ "
 
 [cmd_duration]
 format = "[$duration]($style) "

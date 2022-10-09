@@ -17,24 +17,23 @@ echo '> Start running the post-checkout hook...'
 if [[ $BRANCH_SWITCH == "1" && $PREVIOUS_HEAD != $NEW_HEAD && $PREVIOUS_HEAD != "0000000000000000000000000000000000000000" ]]; then
     # Start from the repository root.
     cd ./$(git rev-parse --show-cdup)
+    echo '> Fetched and pruned branches...'
     git fetch origin --prune
-
-    echo '> Fetched and pruned branches.'
 
     # Check if requirements have been updated - npm/yarn
     REQUIREMENTS=`git diff $PREVIOUS_HEAD $NEW_HEAD --name-status | grep "package.json"`
 
     if [ $? -eq 0 ]; then
-        echo '> The project may have changed. Update dependencies...'
+        echo '> The origin has updated. Pulling them...'
         git pull origin
 
         if [ -f "$YARN_LOCK" ]; then
-          echo '> yarn install'
+          echo '> Detected yarn.lock, use yarn install...'
           yarn install
         fi
 
         if [ -f "$NPM_LOCK" ]; then
-          echo '> npm install'
+          echo '> Detected npm lock, use npm install...'
           npm install
         fi
     fi
