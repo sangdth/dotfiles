@@ -13,20 +13,21 @@ git pull origin
 
 echo "> Clean cache every where..."
 yes "y" | bin/dev-console app service-cache clear
-yes "y" | docker system prune -a
+# yes "y" | docker system prune -a
 
 echo "> Start pulling containers..."
 bin/dev-console app build
 bin/dev-console app start
-bin/dev-console app init project
+# bin/dev-console app init project
 
-echo "> Restore mysql..."
-cd docker
-deploy/db/mysql-restore.sh blank
-cd ..
+# for some reason it stuck with mysql step
+# echo "> Restore mysql..."
+# cd docker
+# deploy/db/mysql-restore.sh blank
+# cd ..
 
-bin/dev-console app start
+# bin/dev-console app start
 
 echo "> Migrate..."
 bin/dev-console app console doctrine:migrations:migrate --no-interaction
-# bin/dev-console app console doctrine:migrations:services_db:migrate
+bin/dev-console app console doctrine:migrations:services_db:migrate

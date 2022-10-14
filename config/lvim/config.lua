@@ -173,6 +173,10 @@ lvim.builtin.nvimtree.setup.view.relativenumber = false
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.width = 45 -- For some reason, put view width inside setup does not work :D
 lvim.builtin.nvimtree.setup.git.enable = true
+lvim.builtin.nvimtree.setup.hijack_cursor = true
+lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
+lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
+lvim.builtin.nvimtree.setup.renderer.special_files = {}
 lvim.builtin.nvimtree.icons = {
   git = {
     unstaged  = "",
@@ -388,13 +392,21 @@ lvim.plugins = {
     config = function()
       require("indent_blankline").setup {
         char = "│",
-        filetype_exclude = { "help", "terminal", "dashboard", "NvimTree", "lspinfo", "NormalFloat" },
-        buftype_exclude = { "terminal", "NvimTree" },
         show_trailing_blankline_indent = false,
         show_first_indent_level = true,
         space_char_blankline = " ",
         show_current_context = true,
         use_treesitter = true,
+        buftype_exclude = { "alpha", "terminal", "NvimTree" },
+        filetype_exclude = {
+          "alpha",
+          "help",
+          "terminal",
+          "dashboard",
+          "NvimTree",
+          "lspinfo",
+          "NormalFloat",
+        },
         context_patterns = {
           '^for',
           '^if',
@@ -524,41 +536,66 @@ lvim.plugins = {
   },
 }
 
+-- vim.api.nvim_echo({ { 'first chunk and ', 'name' }, { 'second chunk to echo', 'None' } }, false, {})
+
 -- autocommands cause the save format broken
--- lvim.autocommands = {
---   {
---     "ColorScheme", {
---       pattern = "*",
---       callback = function()
---         local theme_colors = require("tokyonight.colors").setup()
---         local groups_use_bg = {
---           "TelescopeBorder",
---           "TelescopeNormal",
---         }
---         for _, name in ipairs(groups_use_bg) do
---           vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
---         end
+lvim.autocommands = {
+  -- {
+  --   "BufEnter", {
+  --     pattern = "*",
+  --     callback = function()
+  --       -- need to get total buffers before open alpha
+  --       local bufnr = vim.api.nvim_get_current_buf()
+  --       local bufname = vim.api.nvim_buf_get_name(bufnr)
+  --       local bufmodified = vim.api.nvim_buf_get_option(bufnr, "modified")
+  --       local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
 
---         local groups_use_dark_bg = {
---           "BufferLineFill",
---           "MsgArea",
---           "NvimTree",
---           "NvimTreeEndOfBuffer",
---           "NvimTreeNormal",
---           "NvimTreeNormalNC",
---           "NvimTreeStatusLine",
---           "NvimTreeStatusLineNC",
---           "PanelHeading",
---           "StatusLine",
---           "StatusLineNC",
---           "VertSplit",
---         }
---         for _, name in ipairs(groups_use_dark_bg) do
---           vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
---         end
+  --       local should_open_alpha = bufname == "" and not bufmodified and ft == ""
+  --       if should_open_alpha then
+  --         vim.cmd("Alpha")
+  --       end
+  --     end,
+  --   }
+  -- },
+  {
+    "FileType", {
+      pattern = "alpha",
+      command = "setlocal nofoldenable",
+    }
+  },
+  {
+    "ColorScheme", {
+      pattern = "*",
+      callback = function()
+        local theme_colors = require("tokyonight.colors").setup()
+        local groups_use_bg = {
+          "TelescopeBorder",
+          "TelescopeNormal",
+        }
+        for _, name in ipairs(groups_use_bg) do
+          vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
+        end
 
---         vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
---       end,
---     },
---   }
--- }
+        local groups_use_dark_bg = {
+          "BufferLineFill",
+          "MsgArea",
+          "NvimTree",
+          "NvimTreeEndOfBuffer",
+          "NvimTreeNormal",
+          "NvimTreeNormalNC",
+          "NvimTreeStatusLine",
+          "NvimTreeStatusLineNC",
+          "PanelHeading",
+          "StatusLine",
+          "StatusLineNC",
+          "VertSplit",
+        }
+        for _, name in ipairs(groups_use_dark_bg) do
+          vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
+        end
+
+        vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
+      end,
+    },
+  }
+}

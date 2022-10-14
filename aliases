@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 alias am='amplify'
-alias codemod='npx @next/codemod'
+alias codemod='npx --yes @next/codemod'
 alias cp='cp -i'
-alias create-svelte-app='npx degit sveltejs/template'
+alias create-svelte-app='npx --yes degit sveltejs/template'
 alias grep="GREP_COLOR='1;32' grep --color"
 
 alias ls='lsd'
@@ -10,6 +10,7 @@ alias la='lsd -la --group-dirs first --date relative --size short'
 alias lt='lsd --tree --ignore-glob node_modules --ignore-glob .git'
 
 alias mv='mv -i'
+alias nest='npx --yes @nestjs/cli'
 alias pip='pip3'
 alias ppp='pnpm'
 alias rm='rm -i'
