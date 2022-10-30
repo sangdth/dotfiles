@@ -1,21 +1,45 @@
-#!/bin/bash
+#!/bin/sh
 
-COMMIT_MSG_FILE=$1
+dir="$(git rev-parse --show-toplevel)"
+LEFTHOOK_SHIT="$dir/lefthook.yml"
 
-# Ignore if branch name is: master/main/develop/dev
-if [ -z "$NAMES_TO_SKIP" ]; then
-  NAMES_TO_SKIP=(master main develop dev)
+# Only run this fucking lefthook in Lokalise folder or where it has lefthook.yml shit
+# fucking shit, I fucking hate any shit trying to run on global
+if [[ "$LEFTHOOK" = "0" || "$PWD" != *Lokalise* || ! -f "$LEFTHOOK_SHIT" ]]; then
+  exit 0
 fi
 
-# Get code in branch name with format DEV-123
-CODE_NAME=$(git symbolic-ref --short HEAD | ggrep -oP "(?<=feature\/|bugfix\/)([a-zA-Z]+)-(\d+)" | awk '{print $1}')
+call_lefthook()
+{
+  osArch=$(echo "$(uname)" | tr '[:upper:]' '[:lower:]')
+  cpuArch=$(echo "$(uname -m)" | sed 's/aarch64/arm64/')
 
-BRANCH_EXCLUDED=$(printf "%s\n" "${NAMES_TO_SKIP[@]}" | grep -c "^$CODE_NAME$")
+  if lefthook -h >/dev/null 2>&1
+  then
+    eval lefthook $@
+  elif test -f "$dir/node_modules/@evilmartians/lefthook/bin/lefthook_${osArch}_${cpuArch}/lefthook"
+  then
+    eval "$dir/node_modules/@evilmartians/lefthook/bin/lefthook_${osArch}_${cpuArch}/lefthook $@"
+  elif test -f "$dir/node_modules/@evilmartians/lefthook-installer/bin/lefthook_${osArch}_${cpuArch}/lefthook"
+  then
+    eval "$dir/node_modules/@evilmartians/lefthook-installer/bin/lefthook_${osArch}_${cpuArch}/lefthook $@"
+  elif test -f "$dir/node_modules/lefthook/bin/index.js"
+  then
+    eval "$dir/node_modules/lefthook/bin/index.js $@"
+  elif bundle exec lefthook -h >/dev/null 2>&1
+  then
+    bundle exec lefthook $@
+  elif yarn lefthook -h >/dev/null 2>&1
+  then
+    yarn lefthook $@
+  elif npx @evilmartians/lefthook -h >/dev/null 2>&1
+  then
+    npx @evilmartians/lefthook $@
+  else
+    echo "Can't find lefthook in PATH"
+  fi
+}
 
-# If commit message already have it, do not duplicate
-BRANCH_IN_COMMIT=$(grep -c "$CODE_NAME" $1)
 
-if [ -n "$CODE_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]] && ! [[ $BRANCH_IN_COMMIT -ge 1 ]]; then 
-  # Add code name to commit message
-  sed -i.bak -e "1s/^/$CODE_NAME /" "$COMMIT_MSG_FILE"
-fi
+
+call_lefthook "run prepare-commit-msg $@"

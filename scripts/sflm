@@ -11,9 +11,9 @@ else
 fi
 git pull origin
 
-echo "> Clean cache every where..."
+echo "> Clean every where..."
 yes "y" | bin/dev-console app service-cache clear
-# yes "y" | docker system prune -a
+yes "y" | docker system prune -a
 
 echo "> Start pulling containers..."
 bin/dev-console app build
@@ -21,13 +21,17 @@ bin/dev-console app start
 # bin/dev-console app init project
 
 # for some reason it stuck with mysql step
-# echo "> Restore mysql..."
-# cd docker
-# deploy/db/mysql-restore.sh blank
-# cd ..
-
-# bin/dev-console app start
+echo "> Restore mysql..."
+cd docker
+trap "exit" INT
+deploy/db/mysql-restore.sh blank
+cd ..
+bin/dev-console app start
 
 echo "> Migrate..."
 bin/dev-console app console doctrine:migrations:migrate --no-interaction
 bin/dev-console app console doctrine:migrations:services_db:migrate
+
+# Can not do this because the fresh install does not have my acount
+# echo "> Make me become admin..."
+# bin/dev-console app console lokalise:make_admin sang.dang@lokalise.com

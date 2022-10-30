@@ -1,21 +1,18 @@
 #!/bin/sh
 
-# Only run the fucking lefthook in Lokalise projects
-if [[ "$(pwd)" != *"Lokalise"* ]]; then
+dir="$(git rev-parse --show-toplevel)"
+LEFTHOOK_SHIT="$dir/lefthook.yml"
+
+# Only run this fucking lefthook in Lokalise folder or where it has lefthook.yml shit
+# fucking shit, I fucking hate any shit trying to run on global
+if [[ "$LEFTHOOK" = "0" || "$PWD" != *Lokalise* || ! -f "$LEFTHOOK_SHIT" ]]; then
   exit 0
 fi
-
-if [ "$LEFTHOOK" = "0" ]; then
   exit 0
-fi
-
-if [ -t 1 ] ; then
-  exec < /dev/tty ; # <- enables interactive shell
 fi
 
 call_lefthook()
 {
-  dir="$(git rev-parse --show-toplevel)"
   osArch=$(echo "$(uname)" | tr '[:upper:]' '[:lower:]')
   cpuArch=$(echo "$(uname -m)" | sed 's/aarch64/arm64/')
 
