@@ -39,8 +39,9 @@ lvim.builtin.alpha.active = true
 lvim.builtin.autopairs.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.gitsigns.active = true
-lvim.builtin.notify.active = false
 lvim.builtin.terminal.active = true
+lvim.builtin.breadcrumbs.active = false
+-- lvim.builtin.notify.active = false -- Deprecated.
 
 -- Keymappings [view all the defaults by pressing <leader>Lk]
 lvim.keys.normal_mode["<C-s>"] = ":w<CR>"
@@ -79,20 +80,20 @@ lvim.builtin.which_key.mappings["f"] = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTr
 lvim.builtin.which_key.mappings["ll"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show diagnostics" }
 lvim.builtin.which_key.mappings["bc"] = { "<cmd>BufferKill<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["c"] = {
-    name = "Colorizer",
-    t = { "<cmd>ColorizerToggle<CR>", "Toggle Colors" },
-    r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
+  name = "Colorizer",
+  t = { "<cmd>ColorizerToggle<CR>", "Toggle Colors" },
+  r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
 }
 lvim.builtin.which_key.mappings["x"] = {
-    name = "Diagnostics",
-    x = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
-    W = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
-    D = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
-    q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
-    l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
-    d = { "<cmd>TroubleToggle lsp_definitions<cr>", "definitions" },
-    r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
-    t = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
+  name = "Diagnostics",
+  x = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
+  W = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+  D = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
+  q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+  l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+  d = { "<cmd>TroubleToggle lsp_definitions<cr>", "definitions" },
+  r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
+  t = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
 
 lvim.builtin.project.patterns = { ".git" }
@@ -100,13 +101,13 @@ lvim.builtin.project.patterns = { ".git" }
 -- My working place use 4 spaces indentation
 local is_work_dir = string.find(vim.fn.getcwd(), "/Users/sangdang/Lokalise")
 local exceptions = {
-    json = true,
-    yml = true,
-    yaml = true,
+  json = true,
+  yml = true,
+  yaml = true,
 }
 if is_work_dir and exceptions[vim.bo.filetype] == nil then
-    vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
-    vim.opt.tabstop = 4
+  vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
+  vim.opt.tabstop = 4
 end
 
 lvim.builtin.bufferline.options.indicator_icon = nil
@@ -117,51 +118,61 @@ components.diff.symbols = { added = " 落", modified = " ", removed = "  "
 lvim.builtin.lualine.options.theme = "tokyonight"
 lvim.builtin.lualine.options.disabled_filetypes = { "packer", "NvimTree" }
 lvim.builtin.lualine.sections = {
-    lualine_a = {},
-    lualine_b = { { "filename", file_status = true, path = 3 } },
-    lualine_c = {}, -- "os.date('%T')" -- it does not update
-    lualine_y = { components.diff, components.branch },
-    lualine_z = { "location" },
+  lualine_a = {},
+  lualine_b = { { "filename", file_status = true, path = 3 } },
+  lualine_c = {}, -- "os.date('%T')" -- it does not update
+  lualine_y = { components.diff, components.branch },
+  lualine_z = { "location" },
 }
 
 -- We use protected-mode (pcall) just in case the plugin wasn't loaded
+local horizontalConfigs = {
+  layout_strategy = "horizontal",
+  layout_config = {
+    width = 0.9,
+  },
+}
 local _, actions = pcall(require, "telescope.actions")
 lvim.builtin.telescope.defaults.layout_config.width = 0.9
 lvim.builtin.telescope.defaults.path_display.shorten = 10
-lvim.builtin.telescope.defaults.selection_caret = "∙ "
+lvim.builtin.telescope.defaults.selection_caret = "  "
+lvim.builtin.telescope.pickers = {
+  live_grep = horizontalConfigs,
+  find_files = horizontalConfigs,
+}
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
-    "%.git/",
-    "^.next/",
-    "^.cache",
-    "%.gif",
-    "%.png",
-    "%.jpg",
-    "%.svg",
-    "%.webp",
-    "^node_modules/",
-    "^graphqls/index.ts",
-    "^graphqls/schema.json",
-    "^graphqls/schema.graphql",
-    "node_modules",
-    "vendor",
-    "yarn.lock",
-    "npm-lock.json",
-    "package-lock.json",
+  "%.git/",
+  "^.next/",
+  "^.cache",
+  "%.gif",
+  "%.png",
+  "%.jpg",
+  "%.svg",
+  "%.webp",
+  "^node_modules/",
+  "^graphqls/index.ts",
+  "^graphqls/schema.json",
+  "^graphqls/schema.graphql",
+  "node_modules",
+  "vendor",
+  "yarn.lock",
+  "npm-lock.json",
+  "package-lock.json",
 }
 lvim.builtin.telescope.defaults.mappings = {
-    -- for input mode
-    i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<C-n>"] = actions.cycle_history_next,
-        ["<C-p>"] = actions.cycle_history_prev,
-        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-    },
-    -- for normal mode
-    n = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-    },
+  -- for input mode
+  i = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+    ["<C-n>"] = actions.cycle_history_next,
+    ["<C-p>"] = actions.cycle_history_prev,
+    ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+  },
+  -- for normal mode
+  n = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+  },
 }
 
 lvim.builtin.terminal.size = 12
@@ -170,35 +181,50 @@ lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
 -- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
-lvim.builtin.nvimtree.setup.view.number = false
+lvim.builtin.nvimtree.setup.view.number = true
 lvim.builtin.nvimtree.setup.view.relativenumber = false
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.width = 45 -- For some reason, put view width inside setup does not work :D
-lvim.builtin.nvimtree.setup.git.enable = true
+lvim.builtin.nvimtree.setup.git.enable = true -- we need this for git.ignore has effect
 lvim.builtin.nvimtree.setup.hijack_cursor = true
 lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
 lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
 lvim.builtin.nvimtree.setup.renderer.special_files = {}
+lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
+lvim.builtin.nvimtree.setup.renderer.icons.glyphs.git = {
+  unstaged = "",
+  staged = "",
+  unmerged = "",
+  renamed = "",
+  untracked = "",
+  deleted = "",
+  ignored = "",
+}
+lvim.builtin.nvimtree.setup.filters = {
+  dotfiles = true,
+  custom = { ".DS_Store" },
+  exclude = { ".env" }
+}
 lvim.builtin.nvimtree.icons = {
-    git = {
-        unstaged  = "",
-        staged    = "",
-        unmerged  = "",
-        renamed   = "",
-        deleted   = "",
-        untracked = "",
-        ignored   = "",
-    },
-    folder = {
-        arrow_open   = "",
-        arrow_closed = "",
-        default      = "",
-        open         = "",
-        empty        = "",
-        empty_open   = "",
-        symlink      = "",
-        symlink_open = "",
-    }
+  -- git = {
+  --   unstaged  = "",
+  --   staged    = "",
+  --   unmerged  = "",
+  --   renamed   = "",
+  --   deleted   = "",
+  --   untracked = "",
+  --   ignored   = "",
+  -- },
+  folder = {
+    arrow_open   = "",
+    arrow_closed = "",
+    default      = "",
+    open         = "",
+    empty        = "",
+    empty_open   = "",
+    symlink      = "",
+    symlink_open = "",
+  }
 }
 
 -- local tree_cb = require "nvim-tree.config".nvim_tree_callback
@@ -233,308 +259,308 @@ lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = true
 lvim.builtin.treesitter.rainbow.enable = false
 lvim.builtin.treesitter.ensure_installed = {
-    "bash",
-    "c",
-    "css",
-    "go",
-    "graphql",
-    "java",
-    "javascript",
-    "json",
-    "lua",
-    "python",
-    "rust",
-    "typescript",
-    "yaml",
+  "bash",
+  "c",
+  "css",
+  "go",
+  "graphql",
+  "java",
+  "javascript",
+  "json",
+  "lua",
+  "python",
+  "rust",
+  "typescript",
+  "yaml",
 }
 
 lvim.lsp.diagnostics.virtual_text = true
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
-    {
-        exe = "prettier", -- prettier_d_slim somehow ignore the eslint rules
-        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "json", "yaml" },
-    },
+  {
+    exe = "prettier", -- prettier_d_slim somehow ignore the eslint rules
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "json", "yaml" },
+  },
 }
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-    {
-        exe = "eslint_d",
-        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql" },
-    },
+  {
+    exe = "eslint_d",
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql" },
+  },
 }
 
 lvim.builtin.dap.breakpoint.text = "🛑"
 lvim.builtin.dap.on_config_done = function(dap)
-    dap.adapters.chrome = {
-        type = 'executable',
-        command = 'node',
-        args = { os.getenv('HOME') .. '/Applications/vscode-chrome-debug/out/src/chromeDebug.js' },
+  dap.adapters.chrome = {
+    type = 'executable',
+    command = 'node',
+    args = { os.getenv('HOME') .. '/Applications/vscode-chrome-debug/out/src/chromeDebug.js' },
+  }
+  dap.adapters.firefox = {
+    type = 'executable',
+    command = 'node',
+    args = { os.getenv('HOME') .. '/Applications/vscode-firefox-debug/dist/adapter.bundle.js' },
+  }
+  dap.adapters.node2 = {
+    type = 'executable',
+    command = 'node',
+    args = { os.getenv('HOME') .. '/Applications/vscode-node-debug2/out/src/nodeDebug.js' },
+  }
+  dap.adapters.cppdbg = {
+    id = 'cppdbg',
+    type = 'executable',
+    command = os.getenv('HOME') .. '/Applications/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+  }
+  dap.configurations.typescript = {
+    {
+      name = 'Debug TypeScript with Firefox',
+      type = 'firefox',
+      request = 'launch',
+      reAttach = true,
+      url = 'http://localhost:3000',
+      webRoot = '${workspaceFolder}',
     }
-    dap.adapters.firefox = {
-        type = 'executable',
-        command = 'node',
-        args = { os.getenv('HOME') .. '/Applications/vscode-firefox-debug/dist/adapter.bundle.js' },
+  }
+  dap.configurations.node2 = {
+    {
+      name = 'Debug javascript with node',
+      type = 'node2',
+      request = 'attach',
+      reAttach = true,
+      protocol = 'inspector',
+      url = 'http://localhost:3000',
+      cwd = vim.fn.getcwd(),
+      skipFiles = { "<node_internals>/**/*.js" },
     }
-    dap.adapters.node2 = {
-        type = 'executable',
-        command = 'node',
-        args = { os.getenv('HOME') .. '/Applications/vscode-node-debug2/out/src/nodeDebug.js' },
+  }
+  dap.configurations.javascript = {
+    {
+      type = "chrome",
+      request = "attach",
+      program = "${file}",
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      protocol = "inspector",
+      port = 9222,
+      webRoot = "${workspaceFolder}"
     }
-    dap.adapters.cppdbg = {
-        id = 'cppdbg',
-        type = 'executable',
-        command = os.getenv('HOME') .. '/Applications/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+  }
+  dap.configurations.typescriptreact = {
+    {
+      type = "chrome",
+      request = "attach",
+      program = "${file}",
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      protocol = "inspector",
+      port = 9222,
+      webRoot = "${workspaceFolder}"
     }
-    dap.configurations.typescript = {
-        {
-            name = 'Debug TypeScript with Firefox',
-            type = 'firefox',
-            request = 'launch',
-            reAttach = true,
-            url = 'http://localhost:3000',
-            webRoot = '${workspaceFolder}',
-        }
-    }
-    dap.configurations.node2 = {
-        {
-            name = 'Debug javascript with node',
-            type = 'node2',
-            request = 'attach',
-            reAttach = true,
-            protocol = 'inspector',
-            url = 'http://localhost:3000',
-            cwd = vim.fn.getcwd(),
-            skipFiles = { "<node_internals>/**/*.js" },
-        }
-    }
-    dap.configurations.javascript = {
-        {
-            type = "chrome",
-            request = "attach",
-            program = "${file}",
-            cwd = vim.fn.getcwd(),
-            sourceMaps = true,
-            protocol = "inspector",
-            port = 9222,
-            webRoot = "${workspaceFolder}"
-        }
-    }
-    dap.configurations.typescriptreact = {
-        {
-            type = "chrome",
-            request = "attach",
-            program = "${file}",
-            cwd = vim.fn.getcwd(),
-            sourceMaps = true,
-            protocol = "inspector",
-            port = 9222,
-            webRoot = "${workspaceFolder}"
-        }
-    }
-    dap.configurations.cpp = {
-        {
-            name = "Launch file",
-            type = "cppdbg",
-            request = "launch",
-            program = function()
-                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-            end,
-            cwd = '${workspaceFolder}',
-            stopOnEntry = true,
-        },
-        {
-            name = 'Attach to gdbserver :1234',
-            type = 'cppdbg',
-            request = 'launch',
-            MIMode = 'gdb',
-            miDebuggerServerAddress = 'localhost:1234',
-            miDebuggerPath = '/usr/bin/gdb',
-            cwd = '${workspaceFolder}',
-            program = function()
-                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-            end,
-        },
-    }
+  }
+  -- dap.configurations.cpp = {
+  --   {
+  --     name = "Launch file",
+  --     type = "cppdbg",
+  --     request = "launch",
+  --     program = function()
+  --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+  --     end,
+  --     cwd = '${workspaceFolder}',
+  --     stopOnEntry = true,
+  --   },
+  --   {
+  --     name = 'Attach to gdbserver :1234',
+  --     type = 'cppdbg',
+  --     request = 'launch',
+  --     MIMode = 'gdb',
+  --     miDebuggerServerAddress = 'localhost:1234',
+  --     miDebuggerPath = '/usr/bin/gdb',
+  --     cwd = '${workspaceFolder}',
+  --     program = function()
+  --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+  --     end,
+  --   },
+  -- }
 end
 
 -- Additional Plugins
 lvim.plugins = {
-    {
-        "phaazon/hop.nvim",
-        event = "BufRead",
-        config = function()
-            require("hop").setup {
-                keys = 'asdghklqwertyuiopzxcvbnmfj1234567890'
-            }
-            vim.api.nvim_set_keymap("n", "f", ":HopChar2<cr>", { silent = true })
-            vim.api.nvim_set_keymap("n", "F", ":HopWord<cr>", { silent = true })
-        end,
-    },
-    {
-        "ray-x/lsp_signature.nvim",
-        event = "BufRead",
-        config = function()
-            require("lsp_signature").on_attach()
-            --   require "lsp_signature".setup()
-        end,
-    },
-    {
-        "windwp/nvim-ts-autotag",
-        event = "InsertEnter",
-        config = function()
-            require("nvim-ts-autotag").setup()
-        end,
-    },
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        event = "BufRead",
-        config = function()
-            require("indent_blankline").setup {
-                char = "│",
-                show_trailing_blankline_indent = false,
-                show_first_indent_level = true,
-                space_char_blankline = " ",
-                show_current_context = true,
-                use_treesitter = true,
-                buftype_exclude = { "alpha", "terminal", "NvimTree" },
-                filetype_exclude = {
-                    "alpha",
-                    "help",
-                    "terminal",
-                    "dashboard",
-                    "NvimTree",
-                    "lspinfo",
-                    "NormalFloat",
-                },
-                context_patterns = {
-                    '^for',
-                    '^if',
-                    '^object',
-                    '^table',
-                    '^while',
-                    'arguments',
-                    'block',
-                    'class',
-                    'declaration',
-                    'expression',
-                    'function',
-                    'jsx_attribute',
-                    'jsx_closing_element',
-                    'jsx_element',
-                    'jsx_fragment',
-                    'jsx_opening_element',
-                    'jsx_self_closing_element',
-                    'method',
-                    'pattern',
-                    'primary_expression',
-                    'statement',
-                    'switch_body',
-                },
-            }
-            vim.api.nvim_set_hl(0, "IndentBlanklineChar", { foreground = "#24283b" })
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { foreground = "#999999" })
+  {
+    "phaazon/hop.nvim",
+    event = "BufRead",
+    config = function()
+      require("hop").setup {
+        keys = 'asdghklqwertyuiopzxcvbnmfj1234567890'
+      }
+      vim.api.nvim_set_keymap("n", "f", ":HopChar2<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "F", ":HopWord<cr>", { silent = true })
+    end,
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function()
+      require("lsp_signature").on_attach()
+      --   require "lsp_signature".setup()
+    end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufRead",
+    config = function()
+      require("indent_blankline").setup {
+        char = "│",
+        show_trailing_blankline_indent = false,
+        show_first_indent_level = true,
+        space_char_blankline = " ",
+        show_current_context = true,
+        use_treesitter = true,
+        buftype_exclude = { "alpha", "terminal", "NvimTree" },
+        filetype_exclude = {
+          "alpha",
+          "help",
+          "terminal",
+          "dashboard",
+          "NvimTree",
+          "lspinfo",
+          "NormalFloat",
+        },
+        context_patterns = {
+          '^for',
+          '^if',
+          '^object',
+          '^table',
+          '^while',
+          'arguments',
+          'block',
+          'class',
+          'declaration',
+          'expression',
+          'function',
+          'jsx_attribute',
+          'jsx_closing_element',
+          'jsx_element',
+          'jsx_fragment',
+          'jsx_opening_element',
+          'jsx_self_closing_element',
+          'method',
+          'pattern',
+          'primary_expression',
+          'statement',
+          'switch_body',
+        },
+      }
+      vim.api.nvim_set_hl(0, "IndentBlanklineChar", { foreground = "#24283b" })
+      -- vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { foreground = "#999999" })
+    end
+  },
+  {
+    "norcalli/nvim-colorizer.lua",
+    event = "BufRead",
+    config = function()
+      require("colorizer").setup({ "*" }, {
+        mode = "background",
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+      })
+    end,
+  },
+  {
+    "tzachar/cmp-tabnine",
+    config = function()
+      local tabnine = require "cmp_tabnine.config"
+      tabnine:setup {
+        max_lines = 1000,
+        max_num_results = 3,
+        sort = true,
+        ignored_file_types = {
+          html = true,
+          json = true,
+          yaml = true,
+        }
+      }
+    end,
+    run = "./install.sh",
+    requires = "hrsh7th/nvim-cmp",
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    event = "BufRead",
+    config = function()
+      require('ufo').setup({
+        provider_selector = function() -- func(bfnr, filetype, buftype)
+          return { 'treesitter', 'indent' }
         end
-    },
-    {
-        "norcalli/nvim-colorizer.lua",
-        event = "BufRead",
-        config = function()
-            require("colorizer").setup({ "*" }, {
-                mode = "background",
-                RGB = true, -- #RGB hex codes
-                RRGGBB = true, -- #RRGGBB hex codes
-                RRGGBBAA = true, -- #RRGGBBAA hex codes
-                rgb_fn = true, -- CSS rgb() and rgba() functions
-                hsl_fn = true, -- CSS hsl() and hsla() functions
-                css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-                css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
-            })
-        end,
-    },
-    {
-        "tzachar/cmp-tabnine",
-        config = function()
-            local tabnine = require "cmp_tabnine.config"
-            tabnine:setup {
-                max_lines = 1000,
-                max_num_results = 3,
-                sort = true,
-                ignored_file_types = {
-                    html = true,
-                    json = true,
-                    yaml = true,
-                }
-            }
-        end,
-        run = "./install.sh",
-        requires = "hrsh7th/nvim-cmp",
-    },
-    {
-        "kevinhwang91/nvim-ufo",
-        event = "BufRead",
-        config = function()
-            require('ufo').setup({
-                provider_selector = function() -- func(bfnr, filetype, buftype)
-                    return { 'treesitter', 'indent' }
-                end
-            })
-        end,
-        requires = "kevinhwang91/promise-async",
-    },
-    {
-        "mattn/emmet-vim",
-        event = "BufRead",
-    },
-    {
-        "AndrewRadev/tagalong.vim",
-        event = "BufRead",
-    },
-    {
-        "tpope/vim-surround",
-        event = "BufRead",
-    },
-    {
-        "sindrets/diffview.nvim",
-        event = "BufRead",
-    },
-    {
-        "AndrewRadev/splitjoin.vim",
-        event = "BufRead",
-    },
-    {
-        "folke/tokyonight.nvim",
-    },
-    {
-        "gpanders/editorconfig.nvim",
-        event = "InsertEnter",
-    },
-    {
-        "karb94/neoscroll.nvim",
-        event = "WinScrolled",
-        config = function()
-            require("neoscroll").setup({
-                hide_cursor = true,
-                stop_eof = true,
-            })
-        end,
-    },
-    {
-        "folke/trouble.nvim",
-        cmd = "TroubleToggle",
-    },
-    {
-        "ethanholz/nvim-lastplace",
-        event = "BufRead",
-        config = function()
-            require("nvim-lastplace").setup({
-                lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
-                lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
-                lastplace_open_folds = true,
-            })
-        end,
-    },
+      })
+    end,
+    requires = "kevinhwang91/promise-async",
+  },
+  {
+    "mattn/emmet-vim",
+    event = "BufRead",
+  },
+  {
+    "AndrewRadev/tagalong.vim",
+    event = "BufRead",
+  },
+  {
+    "tpope/vim-surround",
+    event = "BufRead",
+  },
+  {
+    "sindrets/diffview.nvim",
+    event = "BufRead",
+  },
+  {
+    "AndrewRadev/splitjoin.vim",
+    event = "BufRead",
+  },
+  {
+    "folke/tokyonight.nvim",
+  },
+  {
+    "gpanders/editorconfig.nvim",
+    event = "InsertEnter",
+  },
+  {
+    "karb94/neoscroll.nvim",
+    event = "WinScrolled",
+    config = function()
+      require("neoscroll").setup({
+        hide_cursor = true,
+        stop_eof = true,
+      })
+    end,
+  },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  {
+    "ethanholz/nvim-lastplace",
+    event = "BufRead",
+    config = function()
+      require("nvim-lastplace").setup({
+        lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
+        lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
+        lastplace_open_folds = true,
+      })
+    end,
+  },
 }
 
 -- vim.api.nvim_echo({ { 'first chunk and ', 'name' }, { 'second chunk to echo', 'None' } }, false, {})
@@ -555,69 +581,69 @@ lvim.plugins = {
 
 -- autocommands cause the save format broken
 lvim.autocommands = {
-    -- {
-    --     "BufEnter", {
-    --         pattern = "*",
-    --         callback = function()
-    --             -- need to get total buffers before open alpha
-    --             local bufTable = count_bufs_by_type()
-    --             local bufnr = vim.api.nvim_get_current_buf()
-    --             local bufname = vim.api.nvim_buf_get_name(bufnr)
-    --             local bufmodified = vim.api.nvim_buf_get_option(bufnr, "modified")
-    --             local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
+  -- {
+  --     "BufEnter", {
+  --         pattern = "*",
+  --         callback = function()
+  --             -- need to get total buffers before open alpha
+  --             local bufTable = count_bufs_by_type()
+  --             local bufnr = vim.api.nvim_get_current_buf()
+  --             local bufname = vim.api.nvim_buf_get_name(bufnr)
+  --             local bufmodified = vim.api.nvim_buf_get_option(bufnr, "modified")
+  --             local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
 
-    --             -- print(
-    --             --     'buf number', bufTable.normal,
-    --             --     'bufnr:', bufnr, ' / ',
-    --             --     'filetype:', ft, ' / ',
-    --             --     'bufmodified:', bufmodified, ' / '
-    --             -- );
-    --             local should_open_alpha = bufname == "" and not bufmodified and ft == "" and bufTable.normal <= 1
-    --             if should_open_alpha then
-    --                 vim.cmd("Alpha")
-    --             end
-    --         end,
-    --     }
-    -- },
-    {
-        "FileType", {
-            pattern = "alpha",
-            command = "setlocal nofoldenable",
-        }
-    },
-    {
-        "ColorScheme", {
-            pattern = "*",
-            callback = function()
-                local theme_colors = require("tokyonight.colors").setup()
-                local groups_use_bg = {
-                    "TelescopeBorder",
-                    "TelescopeNormal",
-                }
-                for _, name in ipairs(groups_use_bg) do
-                    vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
-                end
-
-                local groups_use_dark_bg = {
-                    "BufferLineFill",
-                    "MsgArea",
-                    "NvimTree",
-                    "NvimTreeEndOfBuffer",
-                    "NvimTreeNormal",
-                    "NvimTreeNormalNC",
-                    "NvimTreeStatusLine",
-                    "NvimTreeStatusLineNC",
-                    "PanelHeading",
-                    "StatusLine",
-                    "StatusLineNC",
-                    "VertSplit",
-                }
-                for _, name in ipairs(groups_use_dark_bg) do
-                    vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
-                end
-
-                vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
-            end,
-        },
+  --             -- print(
+  --             --     'buf number', bufTable.normal,
+  --             --     'bufnr:', bufnr, ' / ',
+  --             --     'filetype:', ft, ' / ',
+  --             --     'bufmodified:', bufmodified, ' / '
+  --             -- );
+  --             local should_open_alpha = bufname == "" and not bufmodified and ft == "" and bufTable.normal <= 1
+  --             if should_open_alpha then
+  --                 vim.cmd("Alpha")
+  --             end
+  --         end,
+  --     }
+  -- },
+  {
+    "FileType", {
+      pattern = "alpha",
+      command = "setlocal nofoldenable",
     }
+  },
+  {
+    "ColorScheme", {
+      pattern = "*",
+      callback = function()
+        local theme_colors = require("tokyonight.colors").setup()
+        local groups_use_bg = {
+          "TelescopeBorder",
+          "TelescopeNormal",
+        }
+        for _, name in ipairs(groups_use_bg) do
+          vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
+        end
+
+        local groups_use_dark_bg = {
+          "BufferLineFill",
+          "MsgArea",
+          "NvimTree",
+          "NvimTreeEndOfBuffer",
+          "NvimTreeNormal",
+          "NvimTreeNormalNC",
+          "NvimTreeStatusLine",
+          "NvimTreeStatusLineNC",
+          "PanelHeading",
+          "StatusLine",
+          "StatusLineNC",
+          "VertSplit",
+        }
+        for _, name in ipairs(groups_use_dark_bg) do
+          vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
+        end
+
+        vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
+      end,
+    },
+  }
 }
