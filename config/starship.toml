@@ -24,8 +24,8 @@ style = "blue"
 
 [character]
 success_symbol = "[❯](bold green)"
-error_symbol = "[❯](red)"
-vicmd_symbol = "[](green)"
+error_symbol = "[❯](bold red)"
+vicmd_symbol = "[](bold green)"
 
 [git_branch]
 format = "[$branch]($style)"
@@ -36,22 +36,21 @@ format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
 
 [git_status]
-style = "cyan"
-conflicted = " (red)"
-ahead = "[ ${count}](blue) "
-behind = "[ ${count}](red) "
+style = "bright-black"
+conflicted = "[ ${count}](red)"
 untracked = "[ ${count}](yellow) "
-stashed = "[ ${count}](purple) "
 modified = "[ ${count}](blue) "
 staged = "[ ${count}](green) "
 renamed = "[ ${count}](yellow) "
 deleted = "[ ${count}](gray) "
+diverged = "[${ahead_count} ${behind_count}](bright-black)"
+stashed = "[ ${count}](bright-black) "
 format = "[[(* $conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
 
 [cmd_duration]
+style = "bright-black"
 format = "[$duration]($style) "
-style = "yellow"
 
 [python]
-format = "[$virtualenv]($style) "
 style = "bright-black"
+format = "[$virtualenv]($style) "
