@@ -84,6 +84,12 @@ lvim.builtin.which_key.mappings["c"] = {
   t = { "<cmd>ColorizerToggle<CR>", "Toggle Colors" },
   r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
 }
+lvim.builtin.which_key.mappings["S"] = {
+  name = "Session",
+  c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
+  l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
+  Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+}
 lvim.builtin.which_key.mappings["x"] = {
   name = "Diagnostics",
   x = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
@@ -182,49 +188,55 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 
 -- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.nvimtree.setup.view.number = true
-lvim.builtin.nvimtree.setup.view.relativenumber = false
+lvim.builtin.nvimtree.setup.view.relativenumber = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.width = 45 -- For some reason, put view width inside setup does not work :D
 lvim.builtin.nvimtree.setup.git.enable = true -- we need this for git.ignore has effect
+lvim.builtin.nvimtree.setup.git.ignore = true
 lvim.builtin.nvimtree.setup.hijack_cursor = true
 lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
 lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
 lvim.builtin.nvimtree.setup.renderer.special_files = {}
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
-lvim.builtin.nvimtree.setup.renderer.icons.glyphs.git = {
-  unstaged = "",
-  staged = "",
-  unmerged = "",
-  renamed = "",
-  untracked = "",
-  deleted = "",
-  ignored = "",
+lvim.builtin.nvimtree.setup.renderer.icons.glyphs = {
+  default = "",
+  symlink = "",
+  bookmark = "",
+  git = {
+    unstaged = "",
+    staged = "",
+    unmerged = "",
+    renamed = "",
+    untracked = "",
+    deleted = "",
+    ignored = "",
+  },
+  folder = {
+    arrow_closed = "",
+    arrow_open = "",
+    default = "",
+    open = "",
+    empty = "",
+    empty_open = "",
+    symlink = "",
+    symlink_open = "",
+  },
 }
 lvim.builtin.nvimtree.setup.filters = {
-  dotfiles = true,
+  dotfiles = false,
   custom = { ".DS_Store" },
   exclude = { ".env" }
 }
-lvim.builtin.nvimtree.icons = {
-  -- git = {
-  --   unstaged  = "",
-  --   staged    = "",
-  --   unmerged  = "",
-  --   renamed   = "",
-  --   deleted   = "",
-  --   untracked = "",
-  --   ignored   = "",
-  -- },
-  folder = {
-    arrow_open   = "",
-    arrow_closed = "",
-    default      = "",
-    open         = "",
-    empty        = "",
-    empty_open   = "",
-    symlink      = "",
-    symlink_open = "",
-  }
+lvim.builtin.nvimtree.setup.diagnostics = {
+  enable = true,
+  show_on_dirs = false,
+  debounce_delay = 50,
+  icons = {
+    hint = "",
+    info = "",
+    warning = "",
+    error = "",
+  },
 }
 
 -- local tree_cb = require "nvim-tree.config".nvim_tree_callback
@@ -559,6 +571,17 @@ lvim.plugins = {
         lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
         lastplace_open_folds = true,
       })
+    end,
+  },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    module = "persistence",
+    config = function()
+      require("persistence").setup {
+        dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
+        options = { "buffers", "curdir", "tabpages", "winsize" },
+      }
     end,
   },
 }
