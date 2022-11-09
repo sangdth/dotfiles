@@ -28,7 +28,7 @@ error_symbol = "[❯](bold red)"
 vicmd_symbol = "[](bold green)"
 
 [git_branch]
-format = "[$branch]($style)"
+format = "[$branch]($style) "
 style = "bright-black"
 
 [git_state]
@@ -37,15 +37,15 @@ style = "bright-black"
 
 [git_status]
 style = "bright-black"
-conflicted = "[ ${count}](red)"
+conflicted = "[ ${count}](red) "
 untracked = "[ ${count}](yellow) "
 modified = "[ ${count}](blue) "
 staged = "[ ${count}](green) "
 renamed = "[ ${count}](yellow) "
 deleted = "[ ${count}](gray) "
-diverged = "[${ahead_count} ${behind_count}](bright-black)"
+diverged = "[${ahead_count} ${behind_count}](bright-black) "
 stashed = "[ ${count}](bright-black) "
-format = "[[(* $conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+format = "[[(* $conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style) "
 
 [cmd_duration]
 style = "bright-black"
