@@ -12,8 +12,8 @@ $git_branch\
 $git_state\
 $git_status\
 $cmd_duration\
+$battery\
 $line_break\
-$python\
 $character"""
 
 scan_timeout = 300
@@ -28,12 +28,13 @@ error_symbol = "[❯](bold red)"
 vicmd_symbol = "[](bold green)"
 
 [git_branch]
-format = "[$branch]($style) "
-style = "bright-black"
+symbol = " "
+style = "bright-yellow"
+format = "[$symbol$branch]($style) "
 
 [git_state]
+style = "bright-yellow"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
 
 [git_status]
 style = "bright-black"
@@ -43,14 +44,21 @@ modified = "[ ${count}](blue) "
 staged = "[ ${count}](green) "
 renamed = "[ ${count}](yellow) "
 deleted = "[ ${count}](gray) "
-diverged = "[${ahead_count} ${behind_count}](bright-black) "
+ahead = "[${ahead_count}]($style)"
+behind = "[${behind_count}]($style)"
+diverged = "[${ahead_count} ${behind_count}]($style) "
 stashed = "[ ${count}](bright-black) "
-format = "[[(* $conflicted$untracked$modified$staged$renamed$deleted)](218) ($diverged$stashed)]($style) "
+format = "[[(* $all_status)](218) ($diverged$stashed)]($style) "
 
 [cmd_duration]
 style = "bright-black"
 format = "[$duration]($style) "
 
-[python]
-style = "bright-black"
-format = "[$virtualenv]($style) "
+[battery]
+full_symbol = " "
+charging_symbol = " "
+discharging_symbol = " "
+
+[[battery.display]]
+threshold = 99
+style = "bold blue"
