@@ -1,5 +1,6 @@
 vim.opt.autoindent = true
 vim.opt.cmdheight = 2
+vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fillchars = "eob: "
@@ -16,6 +17,7 @@ vim.opt.number = true
 vim.opt.redrawtime = 1500
 vim.opt.relativenumber = true
 vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+vim.opt.smartindent = true -- make indenting smarter again
 vim.opt.shiftwidth = 2
 vim.opt.shortmess = "a"
 vim.opt.showcmd = true
@@ -26,6 +28,8 @@ vim.opt.timeoutlen = 300
 vim.opt.ttimeoutlen = 10 -- https://vi.stackexchange.com/a/24938/19109
 vim.opt.updatetime = 200
 vim.opt.whichwrap = "<,>,[,]"
+
+vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings" }
 
 -- General
 lvim.colorscheme = "tokyonight-night"
@@ -189,8 +193,9 @@ lvim.builtin.gitsigns.opts.current_line_blame = true
 -- lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.nvimtree.setup.view.number = true
 lvim.builtin.nvimtree.setup.view.relativenumber = true
+lvim.builtin.nvimtree.setup.view.adaptive_size = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.view.width = 45 -- For some reason, put view width inside setup does not work :D
+lvim.builtin.nvimtree.setup.view.width = 35 -- For some reason, put view width inside setup does not work :D
 lvim.builtin.nvimtree.setup.git.enable = true -- we need this for git.ignore has effect
 lvim.builtin.nvimtree.setup.git.ignore = true
 lvim.builtin.nvimtree.setup.hijack_cursor = true
@@ -237,6 +242,36 @@ lvim.builtin.nvimtree.setup.diagnostics = {
     warning = "",
     error = "",
   },
+}
+
+lvim.icons.ui.LineLeft = "│"
+lvim.builtin.indentlines.options.char = "│"
+lvim.builtin.indentlines.options.show_current_context = true
+lvim.builtin.indentlines.options.use_treesitter = true
+lvim.builtin.indentlines.options.space_char_blankline = " "
+lvim.builtin.indentlines.options.context_patterns = {
+  '^for',
+  '^if',
+  '^object',
+  '^table',
+  '^while',
+  'arguments',
+  'block',
+  'class',
+  'declaration',
+  'expression',
+  'function',
+  'jsx_attribute',
+  'jsx_closing_element',
+  'jsx_element',
+  'jsx_fragment',
+  'jsx_opening_element',
+  'jsx_self_closing_element',
+  'method',
+  'pattern',
+  'primary_expression',
+  'statement',
+  'switch_body',
 }
 
 -- local tree_cb = require "nvim-tree.config".nvim_tree_callback
@@ -425,56 +460,56 @@ lvim.plugins = {
       require("nvim-ts-autotag").setup()
     end,
   },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufRead",
-    config = function()
-      require("indent_blankline").setup {
-        char = "│",
-        show_trailing_blankline_indent = false,
-        show_first_indent_level = true,
-        space_char_blankline = " ",
-        show_current_context = true,
-        use_treesitter = true,
-        buftype_exclude = { "alpha", "terminal", "NvimTree" },
-        filetype_exclude = {
-          "alpha",
-          "help",
-          "terminal",
-          "dashboard",
-          "NvimTree",
-          "lspinfo",
-          "NormalFloat",
-        },
-        context_patterns = {
-          '^for',
-          '^if',
-          '^object',
-          '^table',
-          '^while',
-          'arguments',
-          'block',
-          'class',
-          'declaration',
-          'expression',
-          'function',
-          'jsx_attribute',
-          'jsx_closing_element',
-          'jsx_element',
-          'jsx_fragment',
-          'jsx_opening_element',
-          'jsx_self_closing_element',
-          'method',
-          'pattern',
-          'primary_expression',
-          'statement',
-          'switch_body',
-        },
-      }
-      vim.api.nvim_set_hl(0, "IndentBlanklineChar", { foreground = "#24283b" })
-      -- vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { foreground = "#999999" })
-    end
-  },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("indent_blankline").setup {
+  --       char = "│",
+  --       show_trailing_blankline_indent = false,
+  --       show_first_indent_level = true,
+  --       space_char_blankline = " ",
+  --       show_current_context = true,
+  --       use_treesitter = true,
+  --       buftype_exclude = { "alpha", "terminal", "NvimTree" },
+  --       filetype_exclude = {
+  --         "alpha",
+  --         "help",
+  --         "terminal",
+  --         "dashboard",
+  --         "NvimTree",
+  --         "lspinfo",
+  --         "NormalFloat",
+  --       },
+  --       context_patterns = {
+  --         '^for',
+  --         '^if',
+  --         '^object',
+  --         '^table',
+  --         '^while',
+  --         'arguments',
+  --         'block',
+  --         'class',
+  --         'declaration',
+  --         'expression',
+  --         'function',
+  --         'jsx_attribute',
+  --         'jsx_closing_element',
+  --         'jsx_element',
+  --         'jsx_fragment',
+  --         'jsx_opening_element',
+  --         'jsx_self_closing_element',
+  --         'method',
+  --         'pattern',
+  --         'primary_expression',
+  --         'statement',
+  --         'switch_body',
+  --       },
+  --     }
+  --     vim.api.nvim_set_hl(0, "IndentBlanklineChar", { foreground = "#24283b" })
+  --     -- vim.api.nvim_set_hl(0, "IndentBlanklineContextChar", { foreground = "#999999" })
+  --   end
+  -- },
   {
     "norcalli/nvim-colorizer.lua",
     event = "BufRead",
@@ -542,9 +577,6 @@ lvim.plugins = {
     event = "BufRead",
   },
   {
-    "folke/tokyonight.nvim",
-  },
-  {
     "gpanders/editorconfig.nvim",
     event = "InsertEnter",
   },
@@ -586,53 +618,59 @@ lvim.plugins = {
   },
 }
 
--- vim.api.nvim_echo({ { 'first chunk and ', 'name' }, { 'second chunk to echo', 'None' } }, false, {})
 -- local count_bufs_by_type = function(loaded_only)
---     loaded_only = (loaded_only == nil and true or loaded_only)
---     local count = { normal = 0, acwrite = 0, help = 0, nofile = 0,
---         nowrite = 0, quickfix = 0, terminal = 0, prompt = 0 }
---     local buftypes = vim.api.nvim_list_bufs()
---     for _, bufname in pairs(buftypes) do
---         if (not loaded_only) or vim.api.nvim_buf_is_loaded(bufname) then
---             local buftype = vim.api.nvim_buf_get_option(bufname, 'buftype')
---             buftype = buftype ~= '' and buftype or 'normal'
---             count[buftype] = count[buftype] + 1
---         end
+--   loaded_only = (loaded_only == nil and true or loaded_only)
+--   local count = { normal = 0, acwrite = 0, help = 0, nofile = 0,
+--     nowrite = 0, quickfix = 0, terminal = 0, prompt = 0 }
+--   local buftypes = vim.api.nvim_list_bufs()
+--   for _, bufname in pairs(buftypes) do
+--     if (not loaded_only) or vim.api.nvim_buf_is_loaded(bufname) then
+--       local buftype = vim.api.nvim_buf_get_option(bufname, 'buftype')
+--       buftype = buftype ~= '' and buftype or 'normal'
+--       count[buftype] = count[buftype] + 1
 --     end
---     return count
+--   end
+--   return count
 -- end
 
 -- autocommands cause the save format broken
 lvim.autocommands = {
-  -- {
-  --     "BufEnter", {
-  --         pattern = "*",
-  --         callback = function()
-  --             -- need to get total buffers before open alpha
-  --             local bufTable = count_bufs_by_type()
-  --             local bufnr = vim.api.nvim_get_current_buf()
-  --             local bufname = vim.api.nvim_buf_get_name(bufnr)
-  --             local bufmodified = vim.api.nvim_buf_get_option(bufnr, "modified")
-  --             local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
-
-  --             -- print(
-  --             --     'buf number', bufTable.normal,
-  --             --     'bufnr:', bufnr, ' / ',
-  --             --     'filetype:', ft, ' / ',
-  --             --     'bufmodified:', bufmodified, ' / '
-  --             -- );
-  --             local should_open_alpha = bufname == "" and not bufmodified and ft == "" and bufTable.normal <= 1
-  --             if should_open_alpha then
-  --                 vim.cmd("Alpha")
-  --             end
-  --         end,
-  --     }
-  -- },
   {
-    "FileType", {
+    "BufAdd", {
+      pattern = "*",
+      callback = function(args)
+        local api = vim.api
+        local bufnr = args.buf
+        local bufname = api.nvim_buf_get_name(bufnr)
+        local bufmodified = api.nvim_buf_get_option(bufnr, "modified")
+        local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
+
+        if ft == "" and bufname == "" and not bufmodified then
+          local normal_buffers = vim.tbl_filter(function(buf)
+            return api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" and buf ~= bufnr
+          end, api.nvim_list_bufs())
+
+          if #normal_buffers == 1 then
+            vim.schedule(function()
+              vim.cmd("Alpha")
+              vim.cmd("bd " .. bufnr)
+            end)
+          end
+        end
+      end,
+    },
+  },
+  {
+    "FileType",
+    {
       pattern = "alpha",
-      command = "setlocal nofoldenable",
-    }
+      callback = function()
+        vim.cmd [[
+            setlocal nofoldenable
+            set nobuflisted
+          ]]
+      end,
+    },
   },
   {
     "ColorScheme", {

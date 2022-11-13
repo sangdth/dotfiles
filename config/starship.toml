@@ -1,9 +1,6 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# Don't print a new line at the start of the prompt
-# add_newline = true
-
 format = """
 $username\
 $hostname\
@@ -20,7 +17,7 @@ scan_timeout = 300
 command_timeout = 1400
 
 [directory]
-style = "blue"
+style = "bold blue"
 
 [character]
 success_symbol = "[❯](bold green)"
@@ -28,7 +25,7 @@ error_symbol = "[❯](bold red)"
 vicmd_symbol = "[](bold green)"
 
 [git_branch]
-symbol = " "
+symbol = " "
 style = "bright-yellow"
 format = "[$symbol$branch]($style) "
 
@@ -48,7 +45,7 @@ ahead = "[${ahead_count}]($style)"
 behind = "[${behind_count}]($style)"
 diverged = "[${ahead_count} ${behind_count}]($style) "
 stashed = "[ ${count}](bright-black) "
-format = "[[(* $all_status)](218) ($diverged$stashed)]($style) "
+format = '([$all_status$ahead_behind]($style) )'
 
 [cmd_duration]
 style = "bright-black"
@@ -60,5 +57,5 @@ charging_symbol = " "
 discharging_symbol = " "
 
 [[battery.display]]
-threshold = 99
-style = "bold blue"
+threshold = 30
+style = "red"
