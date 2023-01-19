@@ -13,8 +13,8 @@ $battery\
 $line_break\
 $character"""
 
-scan_timeout = 300
-command_timeout = 1400
+scan_timeout = 30
+command_timeout = 800
 
 [directory]
 style = "bold blue"
@@ -51,11 +51,11 @@ format = '([$all_status$ahead_behind]($style) )'
 style = "bright-black"
 format = "[$duration]($style) "
 
-[battery]
-full_symbol = " "
-charging_symbol = " "
-discharging_symbol = " "
+# [battery]
+# full_symbol = " "
+# charging_symbol = " "
+# discharging_symbol = " "
 
-[[battery.display]]
-threshold = 30
-style = "red"
+# [[battery.display]]
+# threshold = 30
+# style = "red"
