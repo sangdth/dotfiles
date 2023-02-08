@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 export TERM="xterm-256color"
@@ -26,11 +33,12 @@ else
   export EDITOR='lvim'
 fi
 
+export XDG_CONFIG_HOME="$HOME/.config"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Disable oh-my-zsh theme
-ZSH_THEME=""
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Trying to disable the permission prompt
 ZSH_DISABLE_COMPFIX="true"
@@ -56,9 +64,17 @@ VI_MODE_SET_CURSOR="false"
 # INSERT_MODE_INDICATOR="%F{green}+%f"
 
 plugins=(
+  zsh-prompt-benchmark
   zsh-autosuggestions
   zsh-syntax-highlighting # must be the last
 )
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+eval "$(fnm env --use-on-cd)"
+eval "$(twilio autocomplete:script zsh)"
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/dotfiles/paths
@@ -79,10 +95,4 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
-eval "$(fnm env --use-on-cd)"
-eval "$(starship init zsh)"
-eval "$(twilio autocomplete:script zsh)"
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

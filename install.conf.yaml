@@ -9,45 +9,14 @@
     - [git submodule update --init --recursive, Installing submodules]
 
 - link:
-    ~/.zshrc: zshrc
+    ~/.config/bat: config/bat
+    ~/.config/fd/ignore: config/fd/ignore
+    ~/.config/lazygit: config/lazygit
+    ~/.config/lvim: config/lvim
+    ~/.config/ripgrep/config: config/ripgrep/config
     ~/.agignore: agignore
     ~/.gitconfig: gitconfig
     ~/.gitignore_global: gitignore_global
     ~/.hushlogin: hushlogin
-
-# - brew:
-#     - bat
-#     - fnm
-#     - fzf
-#     - git-delta
-#     - luarocks
-#     - lsd
-#     - neovim
-#     - mercurial
-#     - watchman
-
-# - shell:
-#     - [fnm install 16, Installing Node.js...]
-#     - [
-#         bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) -y,
-#         Installing LunarVim,
-#       ]
-#     - [
-#         cd ~/Library/Fonts && curl -fLo "Fira Code Retina Nerd Font Complete.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Retina/complete/Fira%20Code%20Retina%20Nerd%20Font%20Complete.ttf,
-#         Downloading FiraCode font,
-#       ]
-#     - [
-#         cd ~/Library/Fonts && curl -fLo "Fira Code Retina Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/Retina/complete/Fira%20Code%20Retina%20Nerd%20Font%20Complete%20Mono.ttf,
-#         Downloading FiraCode Mono font,
-#       ]
-
-- link:
-    ~/.config/lvim: config/lvim
-    ~/.config/starship.toml: config/starship.toml
-    ~/.config/ripgrep/config: config/ripgrep/config
-    ~/.config/fd/ignore: config/fd/ignore
-# - shell:
-#     - [
-#         npm install -g npm expo-cli eslint_d eas-cli,
-#         Installing useful npm packpages,
-#       ]
+    ~/.p10k.zsh: p10k.zsh
+    ~/.zshrc: zshrc
