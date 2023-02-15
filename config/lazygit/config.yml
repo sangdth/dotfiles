@@ -1,4 +1,11 @@
+os:
+  editCommand: 'lvim'
+  editCommandTemplate: '{{editor}} +{{line}} -- {{filename}}'
+
 git:
   paging:
     colorArg: always
     pager: delta --dark --paging=never
+
+gui:
+  showIcons: true

@@ -8,9 +8,11 @@
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
 
+# this is edited directly from lazygit
 - link:
     ~/.config/bat: config/bat
     ~/.config/fd/ignore: config/fd/ignore
+    ~/.config/lazydocker: config/lazydocker
     ~/.config/lazygit: config/lazygit
     ~/.config/lvim: config/lvim
     ~/.config/ripgrep/config: config/ripgrep/config

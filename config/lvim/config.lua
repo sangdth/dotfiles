@@ -69,6 +69,27 @@ lvim.keys.visual_mode["<A-k>"] = ":m '<-2<CR>gv=gv"
 -- Sort list in visual mode
 lvim.keys.visual_mode["ss"] = ":'<,'>sort<CR>"
 
+local lazydocker_toggle = function()
+  local Terminal = require("toggleterm.terminal").Terminal
+  local lazydocker = Terminal:new {
+    cmd = "lazydocker",
+    hidden = true,
+    direction = "float",
+    float_opts = {
+      border = "none",
+      width = 1000,
+      height = 100,
+    },
+    -- error if using vim. directly here, don't know why
+    -- on_open = function(_)
+    --     vim.cmd "startinsert!"
+    -- end,
+    -- on_close = function(_) end,
+    count = 99,
+  }
+  lazydocker:toggle()
+end
+
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["q"] = { ":BufferKill<CR>", "Close current buffer" }
 lvim.builtin.which_key.mappings["gdo"] = { ":DiffviewOpen<CR>", "Open Git Diffview" }
@@ -83,8 +104,9 @@ lvim.builtin.which_key.mappings["tf"] = { "<cmd>lua require'jester'.run_file()<C
 lvim.builtin.which_key.mappings["bc"] = { "<cmd>BufferKill<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["c"] = {
   name = "Colorizer",
-  t = { "<cmd>ColorizerToggle<CR>", "Toggle Colors" },
+  t = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
   r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
+  d = { lazydocker_toggle, "Toggle Lazydocker" },
 }
 lvim.builtin.which_key.mappings["S"] = {
   name = "Session",
@@ -184,11 +206,14 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = actions.move_selection_previous,
   },
 }
-
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.size = 12
-lvim.builtin.terminal.direction = "horizontal"
 lvim.builtin.terminal.open_mapping = "<c-t>"
+lvim.builtin.terminal.direction = "float"
+lvim.builtin.terminal.float_opts = {
+  border = "none",
+  width = 1000,
+  height = 100,
+}
 
 lvim.builtin.gitsigns.active = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
@@ -392,6 +417,7 @@ lvim.plugins = {
   {
     "phaazon/hop.nvim",
     event = "BufRead",
+    lazy = true,
     config = function()
       require("hop").setup {
         keys = 'asdghklqwertyuiopzxcvbnmfj1234567890'
@@ -403,6 +429,7 @@ lvim.plugins = {
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
+    lazy = true,
     config = function()
       require("lsp_signature").on_attach()
     end,
@@ -410,6 +437,7 @@ lvim.plugins = {
   {
     "windwp/nvim-ts-autotag",
     event = "InsertEnter",
+    lazy = true,
     config = function()
       require("nvim-ts-autotag").setup()
     end,
@@ -417,6 +445,7 @@ lvim.plugins = {
   {
     "norcalli/nvim-colorizer.lua",
     event = "BufRead",
+    lazy = true,
     config = function()
       require("colorizer").setup({ "css", "scss", "html", "javascript" }, {
         mode = "background",
@@ -433,6 +462,7 @@ lvim.plugins = {
   {
     "tzachar/cmp-tabnine",
     event = "InsertEnter",
+    lazy = true,
     config = function()
       local tabnine = require "cmp_tabnine.config"
       tabnine:setup {
@@ -452,6 +482,7 @@ lvim.plugins = {
   {
     "kevinhwang91/nvim-ufo",
     event = "BufRead",
+    lazy = true,
     config = function()
       require('ufo').setup({
         provider_selector = function() -- func(bfnr, filetype, buftype)
@@ -464,26 +495,32 @@ lvim.plugins = {
   {
     "AndrewRadev/tagalong.vim",
     event = "BufRead",
+    lazy = true,
   },
   {
     "tpope/vim-surround",
     event = "BufRead",
+    lazy = true,
   },
   {
     "sindrets/diffview.nvim",
     event = "BufRead",
+    lazy = true,
   },
   {
     "AndrewRadev/splitjoin.vim",
     event = "BufRead",
+    lazy = true,
   },
   {
     "gpanders/editorconfig.nvim",
     event = "InsertEnter",
+    lazy = true,
   },
   {
     "karb94/neoscroll.nvim",
     event = "WinScrolled",
+    lazy = true,
     config = function()
       require("neoscroll").setup({
         -- All these keys will be mapped to their corresponding default scrolling animation
@@ -506,6 +543,7 @@ lvim.plugins = {
   {
     "ethanholz/nvim-lastplace",
     event = "BufRead",
+    lazy = true,
     config = function()
       require("nvim-lastplace").setup({
         lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
@@ -528,6 +566,7 @@ lvim.plugins = {
   {
     "windwp/nvim-spectre",
     event = "BufRead",
+    lazy = true,
     config = function()
       require("spectre").setup()
     end,
@@ -535,16 +574,32 @@ lvim.plugins = {
   {
     "folke/lsp-colors.nvim",
     event = "BufRead",
+    lazy = true,
   },
   {
     "p00f/nvim-ts-rainbow",
+    event = "BufRead",
+    lazy = true,
   },
   {
     "David-Kunz/jester",
+    lazy = true,
+    event = "BufRead",
     config = function()
       require("jester").setup({
         cmd = "jest -t --coverage=false '$result' -- $file",
       })
     end
   },
+  {
+    "AckslD/nvim-neoclip.lua",
+    lazy = true,
+    event = "BufRead",
+    dependencies = "kkharji/sqlite.lua",
+    config = function()
+      require("neoclip").setup({
+        enable_persistent_history = true,
+      })
+    end,
+  }
 }
