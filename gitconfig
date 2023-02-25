@@ -62,6 +62,10 @@
 [pull]
 	rebase = true
 
+[push]
+	autoSetupRemote = true
+    recurseSubmodules = on-demand
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -74,5 +78,3 @@
 [mergetool]
 	keepBackup = false
 
-[push]
-	autoSetupRemote = true

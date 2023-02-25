@@ -47,14 +47,16 @@ lvim.builtin.breadcrumbs.active = false
 lvim.keys.normal_mode["<C-s>"] = ":w<CR>"
 lvim.keys.normal_mode["<C-a>"] = "<cmd>ToggleTermToggleAll<CR>"
 lvim.keys.normal_mode["sa"] = "<cmd>Telescope live_grep<CR>"
+lvim.keys.normal_mode["sda"] = "<cmd>Telescope dir live_grep<CR>"
 lvim.keys.normal_mode["sf"] = "<cmd>Telescope find_files<CR>"
+lvim.keys.normal_mode["sdf"] = "<cmd>Telescope dir find_files<CR>"
 lvim.keys.normal_mode["sg"] = "<cmd>Telescope git_files<CR>"
 lvim.keys.normal_mode["sb"] = "<cmd>Telescope buffers<CR>"
 lvim.keys.normal_mode["sh"] = "<cmd>Telescope current_buffer_fuzzy_find<CR>"
 lvim.keys.normal_mode["sr"] = "<cmd>Telescope oldfiles<CR>"
 lvim.keys.normal_mode["sk"] = "<cmd>SplitjoinJoin<CR>"
 lvim.keys.normal_mode["sj"] = "<cmd>SplitjoinSplit<CR>"
-lvim.keys.normal_mode["cl"] = "+yiwoconsole.log('### <word>: ', <word>a);<Esc>"
+-- lvim.keys.normal_mode["cl"] = "+yiwoconsole.log('### <word>: ', <word>a);<Esc>"
 lvim.keys.normal_mode["<Up>"] = ":cprev<CR>"
 lvim.keys.normal_mode["<Down>"] = ":cnext<CR>"
 lvim.keys.normal_mode["<Left>"] = "<cmd>BufferLineCyclePrev<CR>"
@@ -69,44 +71,29 @@ lvim.keys.visual_mode["<A-k>"] = ":m '<-2<CR>gv=gv"
 -- Sort list in visual mode
 lvim.keys.visual_mode["ss"] = ":'<,'>sort<CR>"
 
-local lazydocker_toggle = function()
-  local Terminal = require("toggleterm.terminal").Terminal
-  local lazydocker = Terminal:new {
-    cmd = "lazydocker",
-    hidden = true,
-    direction = "float",
-    float_opts = {
-      border = "none",
-      width = 1000,
-      height = 100,
-    },
-    -- error if using vim. directly here, don't know why
-    -- on_open = function(_)
-    --     vim.cmd "startinsert!"
-    -- end,
-    -- on_close = function(_) end,
-    count = 99,
-  }
-  lazydocker:toggle()
-end
+vim.keymap.set('n', 'cl', function()
+  local word = vim.fn.expand("<cword>")
+  local newRow = "console.log('### " .. word .. ": ', {" .. word .. "});"
+  vim.cmd.norm("o" .. newRow)
+end, { silent = true })
 
 -- Use which-key to add extra bindings with the leader-key prefix
+lvim.builtin.which_key.mappings["f"] = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTree" }
+lvim.builtin.which_key.mappings["n"] = { ":noh<CR>", "Clear highlight" }
 lvim.builtin.which_key.mappings["q"] = { ":BufferKill<CR>", "Close current buffer" }
 lvim.builtin.which_key.mappings["gdo"] = { ":DiffviewOpen<CR>", "Open Git Diffview" }
 lvim.builtin.which_key.mappings["gdc"] = { ":DiffviewClose<CR>", "Close Git Diffview" }
 lvim.builtin.which_key.mappings["gdf"] = { ":DiffviewToggleFiles<CR>", "Toggle Git Diffview files" }
 lvim.builtin.which_key.mappings["gdh"] = { ":DiffviewFileHistory<CR>", "Git Diffview file history" }
-lvim.builtin.which_key.mappings["n"] = { ":noh<CR>", "Clear highlight" }
-lvim.builtin.which_key.mappings["f"] = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTree" }
 lvim.builtin.which_key.mappings["ll"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show diagnostics" }
-lvim.builtin.which_key.mappings["th"] = { "<cmd>lua require'jester'.run()<CR>", "Run test under cursor" }
-lvim.builtin.which_key.mappings["tf"] = { "<cmd>lua require'jester'.run_file()<CR>", "Run all tests in current file" }
+lvim.builtin.which_key.mappings["jh"] = { "<cmd>lua require'jester'.run()<CR>", "Run test under cursor" }
+lvim.builtin.which_key.mappings["ja"] = { "<cmd>lua require'jester'.run_file()<CR>", "Run all tests in current file" }
 lvim.builtin.which_key.mappings["bc"] = { "<cmd>BufferKill<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["c"] = {
   name = "Colorizer",
   t = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
   r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
-  d = { lazydocker_toggle, "Toggle Lazydocker" },
+  d = { "<cmd>lua require'custom.lazydocker'.toggle()<CR>", "Toggle Lazydocker" },
 }
 lvim.builtin.which_key.mappings["S"] = {
   name = "Session",
@@ -114,16 +101,16 @@ lvim.builtin.which_key.mappings["S"] = {
   l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
   Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
 }
-lvim.builtin.which_key.mappings["x"] = {
+lvim.builtin.which_key.mappings["t"] = {
   name = "Diagnostics",
-  x = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
-  W = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+  t = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
+  w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
   D = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
   q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
   l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
   d = { "<cmd>TroubleToggle lsp_definitions<cr>", "definitions" },
   r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
-  t = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
+  T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
 
 lvim.builtin.project.patterns = { ".git" }
@@ -144,7 +131,11 @@ lvim.builtin.bufferline.options.indicator_icon = nil
 lvim.builtin.bufferline.options.always_show_bufferline = true
 
 local components = require "lvim.core.lualine.components"
-components.diff.symbols = { added = " 落", modified = " ", removed = "  " }
+components.diff.symbols = {
+  added = " 落",
+  modified = " ",
+  removed = " ",
+}
 lvim.builtin.lualine.options.theme = "tokyonight"
 lvim.builtin.lualine.options.disabled_filetypes = { "packer", "NvimTree" }
 lvim.builtin.lualine.extensions = { "quickfix", "nvim-tree" }
@@ -194,8 +185,9 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
   i = {
-    ["<C-j>"] = actions.move_selection_next,
-    ["<C-k>"] = actions.move_selection_previous,
+    -- ["<C-j>"] = actions.move_selection_next,
+    -- ["<C-k>"] = actions.move_selection_previous,
+    -- conflict with lazygit
     ["<C-n>"] = actions.cycle_history_next,
     ["<C-p>"] = actions.cycle_history_prev,
     ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
@@ -206,6 +198,10 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = actions.move_selection_previous,
   },
 }
+lvim.builtin.telescope.on_config_done = function(telescope)
+  pcall(telescope.load_extension, "dir") -- load the extension princejoogie/dir-telescope.nvim
+end
+
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.open_mapping = "<c-t>"
 lvim.builtin.terminal.direction = "float"
@@ -218,12 +214,17 @@ lvim.builtin.terminal.float_opts = {
 lvim.builtin.gitsigns.active = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
+-- Project.nvim change the cwd, while waiting for a way to make it respects git submodule.
+-- I disabled it for now
+lvim.builtin.project.active = false
+
 lvim.builtin.nvimtree.setup.view.number = true
 lvim.builtin.nvimtree.setup.view.relativenumber = true
 lvim.builtin.nvimtree.setup.view.adaptive_size = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.git.enable = true -- we need this for git.ignore has effect
 lvim.builtin.nvimtree.setup.git.ignore = true
+lvim.builtin.nvimtree.setup.git.timeout = 400 -- some big repo need longer than 200ms
 lvim.builtin.nvimtree.setup.hijack_cursor = true
 lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
 lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
@@ -308,7 +309,9 @@ lvim.builtin.treesitter.rainbow.disable = { "jsx" } -- idk why no effect
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
+  "cpp",
   "css",
+  "cmake",
   "go",
   "graphql",
   "java",
@@ -319,6 +322,7 @@ lvim.builtin.treesitter.ensure_installed = {
   "rust",
   "typescript",
   "yaml",
+  "vim",
 }
 
 lvim.lsp.diagnostics.virtual_text = true
@@ -343,74 +347,74 @@ linters.setup {
 
 lvim.builtin.dap.active = true
 lvim.builtin.dap.breakpoint.text = "🛑"
-lvim.builtin.dap.on_config_done = function(dap)
-  dap.adapters.chrome = {
-    type = 'executable',
-    command = 'node',
-    args = { os.getenv('HOME') .. '/Applications/vscode-chrome-debug/out/src/chromeDebug.js' },
-  }
-  dap.adapters.firefox = {
-    type = 'executable',
-    command = 'node',
-    args = { os.getenv('HOME') .. '/Applications/vscode-firefox-debug/dist/adapter.bundle.js' },
-  }
-  dap.adapters.node2 = {
-    type = 'executable',
-    command = 'node',
-    args = { os.getenv('HOME') .. '/Applications/vscode-node-debug2/out/src/nodeDebug.js' },
-  }
-  dap.adapters.cppdbg = {
-    id = 'cppdbg',
-    type = 'executable',
-    command = os.getenv('HOME') .. '/Applications/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
-  }
-  dap.configurations.typescript = {
-    {
-      name = 'Debug TypeScript with Firefox',
-      type = 'firefox',
-      request = 'launch',
-      reAttach = true,
-      url = 'http://localhost:3000',
-      webRoot = '${workspaceFolder}',
-    }
-  }
-  dap.configurations.node2 = {
-    {
-      name = 'Debug javascript with node',
-      type = 'node2',
-      request = 'attach',
-      reAttach = true,
-      protocol = 'inspector',
-      url = 'http://localhost:3000',
-      cwd = vim.fn.getcwd(),
-      skipFiles = { "<node_internals>/**/*.js" },
-    }
-  }
-  dap.configurations.javascript = {
-    {
-      type = "chrome",
-      request = "attach",
-      program = "${file}",
-      cwd = vim.fn.getcwd(),
-      sourceMaps = true,
-      protocol = "inspector",
-      port = 9222,
-      webRoot = "${workspaceFolder}"
-    }
-  }
-  dap.configurations.typescriptreact = {
-    {
-      type = "chrome",
-      request = "attach",
-      program = "${file}",
-      cwd = vim.fn.getcwd(),
-      sourceMaps = true,
-      protocol = "inspector",
-      port = 9222,
-      webRoot = "${workspaceFolder}"
-    }
-  }
-end
+-- lvim.builtin.dap.on_config_done = function(dap)
+--   dap.adapters.chrome = {
+--     type = 'executable',
+--     command = 'node',
+--     args = { os.getenv('HOME') .. '/Applications/vscode-chrome-debug/out/src/chromeDebug.js' },
+--   }
+--   dap.adapters.firefox = {
+--     type = 'executable',
+--     command = 'node',
+--     args = { os.getenv('HOME') .. '/Applications/vscode-firefox-debug/dist/adapter.bundle.js' },
+--   }
+--   dap.adapters.node2 = {
+--     type = 'executable',
+--     command = 'node',
+--     args = { os.getenv('HOME') .. '/Applications/vscode-node-debug2/out/src/nodeDebug.js' },
+--   }
+--   dap.adapters.cppdbg = {
+--     id = 'cppdbg',
+--     type = 'executable',
+--     command = os.getenv('HOME') .. '/Applications/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+--   }
+--   dap.configurations.typescript = {
+--     {
+--       name = 'Debug TypeScript with Firefox',
+--       type = 'firefox',
+--       request = 'launch',
+--       reAttach = true,
+--       url = 'http://localhost:3000',
+--       webRoot = '${workspaceFolder}',
+--     }
+--   }
+--   dap.configurations.node2 = {
+--     {
+--       name = 'Debug javascript with node',
+--       type = 'node2',
+--       request = 'attach',
+--       reAttach = true,
+--       protocol = 'inspector',
+--       url = 'http://localhost:3000',
+--       cwd = vim.fn.getcwd(),
+--       skipFiles = { "<node_internals>/**/*.js" },
+--     }
+--   }
+--   dap.configurations.javascript = {
+--     {
+--       type = "chrome",
+--       request = "attach",
+--       program = "${file}",
+--       cwd = vim.fn.getcwd(),
+--       sourceMaps = true,
+--       protocol = "inspector",
+--       port = 9222,
+--       webRoot = "${workspaceFolder}"
+--     }
+--   }
+--   dap.configurations.typescriptreact = {
+--     {
+--       type = "chrome",
+--       request = "attach",
+--       program = "${file}",
+--       cwd = vim.fn.getcwd(),
+--       sourceMaps = true,
+--       protocol = "inspector",
+--       port = 9222,
+--       webRoot = "${workspaceFolder}"
+--     }
+--   }
+-- end
 
 -- Additional Plugins
 lvim.plugins = {
@@ -428,7 +432,7 @@ lvim.plugins = {
   },
   {
     "ray-x/lsp_signature.nvim",
-    event = "BufRead",
+    event = "InsertEnter",
     lazy = true,
     config = function()
       require("lsp_signature").on_attach()
@@ -494,13 +498,30 @@ lvim.plugins = {
   },
   {
     "AndrewRadev/tagalong.vim",
-    event = "BufRead",
+    event = "InsertEnter",
     lazy = true,
   },
   {
-    "tpope/vim-surround",
+    'echasnovski/mini.nvim',
+    version = "*",
     event = "BufRead",
     lazy = true,
+    config = function()
+      require('mini.cursorword').setup({ delay = 200 })
+
+      require('mini.surround').setup({
+        mappings = {
+          add = 'as', -- Add surrounding in Normal and Visual modes
+          delete = 'ds', -- Delete surrounding
+          replace = 'cs', -- Replace surrounding
+          find = '', -- Find surrounding (to the right)
+          find_left = '', -- Find surrounding (to the left)
+          highlight = '', -- Highlight surrounding
+          update_n_lines = '', -- Update `n_lines`
+        },
+        search_method = 'cover_or_next',
+      })
+    end,
   },
   {
     "sindrets/diffview.nvim",
@@ -514,30 +535,12 @@ lvim.plugins = {
   },
   {
     "gpanders/editorconfig.nvim",
-    event = "InsertEnter",
+    event = "BufWrite",
     lazy = true,
-  },
-  {
-    "karb94/neoscroll.nvim",
-    event = "WinScrolled",
-    lazy = true,
-    config = function()
-      require("neoscroll").setup({
-        -- All these keys will be mapped to their corresponding default scrolling animation
-        mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>', '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        hide_cursor = true, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
-        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = nil, -- Default easing function
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
-      })
-    end,
   },
   {
     "folke/trouble.nvim",
+    lazy = true,
     cmd = "TroubleToggle",
   },
   {
@@ -554,7 +557,8 @@ lvim.plugins = {
   },
   {
     "folke/persistence.nvim",
-    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    -- this will only start session saving when an actual file was opened
+    event = "BufReadPre",
     lazy = true,
     config = function()
       require("persistence").setup {
@@ -567,17 +571,13 @@ lvim.plugins = {
     "windwp/nvim-spectre",
     event = "BufRead",
     lazy = true,
+    dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("spectre").setup()
     end,
   },
   {
     "folke/lsp-colors.nvim",
-    event = "BufRead",
-    lazy = true,
-  },
-  {
-    "p00f/nvim-ts-rainbow",
     event = "BufRead",
     lazy = true,
   },
@@ -592,14 +592,23 @@ lvim.plugins = {
     end
   },
   {
-    "AckslD/nvim-neoclip.lua",
+    "princejoogie/dir-telescope.nvim",
     lazy = true,
-    event = "BufRead",
-    dependencies = "kkharji/sqlite.lua",
+    event = "VimEnter",
+    -- telescope.nvim is a required dependency
+    dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
-      require("neoclip").setup({
-        enable_persistent_history = true,
+      require("dir-telescope").setup({
+        hidden = true,
+        respect_gitignore = true,
       })
     end,
-  }
+  },
+  {
+    "gbprod/yanky.nvim",
+    event = "BufRead",
+    config = function()
+      require("yanky").setup()
+    end,
+  },
 }

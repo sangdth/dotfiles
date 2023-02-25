@@ -74,7 +74,6 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 eval "$(fnm env --use-on-cd)"
-eval "$(twilio autocomplete:script zsh)"
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/dotfiles/paths
