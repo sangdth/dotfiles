@@ -14,3 +14,5 @@ export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:$HOME/dotfiles/scripts
+
+export PATH=$PATH:./node_modules/.bin

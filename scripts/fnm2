@@ -7,9 +7,12 @@
 
 FNM_STATUS_CODE=$?
 
+echo $-
+
 if [[ "$1" == "install" && "$FNM_STATUS_CODE" == "0" ]]; then
   # TODO: Check for the --reinstall-global from $* then check for content in default-packages
-  # CAREFUL: on Mac OS, the paths with --parseable has space in "Application Support",
+
+  # NOTE: on Mac OS, the paths with --parseable has space in "Application Support",
   # thus make the `awk print` with 3, it might be different from other OS.
   CURRENT_GLOBAL_PKGS=$(npm ls -g --parseable | sed 's/node_modules\// /g' | awk '{print $3}' | xargs)
 

@@ -54,26 +54,20 @@ lvim.keys.normal_mode["sg"] = "<cmd>Telescope git_files<CR>"
 lvim.keys.normal_mode["sb"] = "<cmd>Telescope buffers<CR>"
 lvim.keys.normal_mode["sh"] = "<cmd>Telescope current_buffer_fuzzy_find<CR>"
 lvim.keys.normal_mode["sr"] = "<cmd>Telescope oldfiles<CR>"
-lvim.keys.normal_mode["sk"] = "<cmd>SplitjoinJoin<CR>"
-lvim.keys.normal_mode["sj"] = "<cmd>SplitjoinSplit<CR>"
--- lvim.keys.normal_mode["cl"] = "+yiwoconsole.log('### <word>: ', <word>a);<Esc>"
+lvim.keys.normal_mode["sk"] = "<cmd>TSJJoin<CR>"
+lvim.keys.normal_mode["sj"] = "<cmd>TSJSplit<CR>"
+lvim.keys.normal_mode["sm"] = "<cmd>TSJToggle<CR>"
 lvim.keys.normal_mode["<Up>"] = ":cprev<CR>"
 lvim.keys.normal_mode["<Down>"] = ":cnext<CR>"
 lvim.keys.normal_mode["<Left>"] = "<cmd>BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<Right>"] = "<cmd>BufferLineCycleNext<CR>"
-
--- Map the moving lines, remember set the escape sequence in your keyboard/terminal
-lvim.keys.normal_mode["<A-j>"] = ":m .+1<CR>=="
-lvim.keys.normal_mode["<A-k>"] = ":m .-2<CR>=="
-lvim.keys.visual_mode["<A-j>"] = ":m '>+1<CR>gv=gv"
-lvim.keys.visual_mode["<A-k>"] = ":m '<-2<CR>gv=gv"
 
 -- Sort list in visual mode
 lvim.keys.visual_mode["ss"] = ":'<,'>sort<CR>"
 
 vim.keymap.set('n', 'cl', function()
   local word = vim.fn.expand("<cword>")
-  local newRow = "console.log('### " .. word .. ": ', {" .. word .. "});"
+  local newRow = "console.log('### " .. word .. ": ', { " .. word .. " });"
   vim.cmd.norm("o" .. newRow)
 end, { silent = true })
 
@@ -95,7 +89,9 @@ lvim.builtin.which_key.mappings["c"] = {
   r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
   d = { "<cmd>lua require'custom.lazydocker'.toggle()<CR>", "Toggle Lazydocker" },
 }
-lvim.builtin.which_key.mappings["S"] = {
+lvim.builtin.which_key.mappings["Sa"] = { "<cmd>lua require('spectre').open()<CR>", "Search and replace global" }
+lvim.builtin.which_key.mappings["Sh"] = { "viw:lua require('spectre').open_file_search()<CR>" }
+lvim.builtin.which_key.mappings["X"] = {
   name = "Session",
   c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
   l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
@@ -113,7 +109,7 @@ lvim.builtin.which_key.mappings["t"] = {
   T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
 
-lvim.builtin.project.patterns = { ".git" }
+lvim.builtin.project.active = false
 
 -- My working place use 4 spaces indentation
 local is_work_dir = string.find(vim.fn.getcwd(), "/Users/sangdang/Lokalise")
@@ -271,8 +267,8 @@ lvim.builtin.nvimtree.setup.diagnostics = {
   },
 }
 
-lvim.icons.ui.LineLeft = "│"
 lvim.builtin.indentlines.options.char = "│"
+lvim.builtin.indentlines.options.context_char = "│"
 lvim.builtin.indentlines.options.show_current_context = true
 lvim.builtin.indentlines.options.use_treesitter = true
 lvim.builtin.indentlines.options.space_char_blankline = " "
@@ -327,7 +323,7 @@ lvim.builtin.treesitter.ensure_installed = {
 
 lvim.lsp.diagnostics.virtual_text = true
 
-require("lvim.lsp.manager").setup("emmet_ls")
+-- require("lvim.lsp.manager").setup("emmet_ls")
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -340,7 +336,7 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   {
-    exe = "eslint_d",
+    exe = "eslint",
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
   },
 }
@@ -528,11 +524,11 @@ lvim.plugins = {
     event = "BufRead",
     lazy = true,
   },
-  {
-    "AndrewRadev/splitjoin.vim",
-    event = "BufRead",
-    lazy = true,
-  },
+  -- {
+  --   "AndrewRadev/splitjoin.vim",
+  --   event = "BufRead",
+  --   lazy = true,
+  -- },
   {
     "gpanders/editorconfig.nvim",
     event = "BufWrite",
@@ -611,4 +607,23 @@ lvim.plugins = {
       require("yanky").setup()
     end,
   },
+  {
+    "iamcco/markdown-preview.nvim",
+    event = "BufRead",
+    ft = "markdown",
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  },
+  {
+    'Wansmer/treesj',
+    event = "BufRead",
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('treesj').setup({
+        use_default_keymaps = false,
+        max_join_length = 999,
+      })
+    end,
+  }
 }
