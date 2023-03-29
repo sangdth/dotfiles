@@ -144,7 +144,7 @@ lvim.builtin.lualine.sections = {
     components.lsp,
     {
       "filetype",
-      colored = true, -- Displays filetype icon in color if set to true
+      colored = true,   -- Displays filetype icon in color if set to true
       icon_only = true, -- Display only an icon for filetype
     },
   },
@@ -266,6 +266,8 @@ lvim.builtin.nvimtree.setup.diagnostics = {
     error = "",
   },
 }
+-- https://discord.com/channels/701530051140780102/704077577920446636/1089452567681040384
+lvim.builtin.nvimtree.setup.update_focused_file.ignore_list = { "lazy" }
 
 lvim.builtin.indentlines.options.char = "│"
 lvim.builtin.indentlines.options.context_char = "│"
@@ -300,7 +302,7 @@ lvim.builtin.indentlines.options.context_patterns = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = true
-lvim.builtin.treesitter.rainbow.enable = true
+lvim.builtin.treesitter.rainbow.enable = false
 lvim.builtin.treesitter.rainbow.disable = { "jsx" } -- idk why no effect
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
@@ -323,7 +325,8 @@ lvim.builtin.treesitter.ensure_installed = {
 
 lvim.lsp.diagnostics.virtual_text = true
 
--- require("lvim.lsp.manager").setup("emmet_ls")
+require("lvim.lsp.manager").setup("emmet_ls")
+-- require('luasnip.loaders.from_vscode').load({ paths = { "~/.config/lvim/snippets" } })
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -341,7 +344,7 @@ linters.setup {
   },
 }
 
-lvim.builtin.dap.active = true
+lvim.builtin.dap.active = false
 lvim.builtin.dap.breakpoint.text = "🛑"
 -- lvim.builtin.dap.on_config_done = function(dap)
 --   dap.adapters.chrome = {
@@ -412,6 +415,16 @@ lvim.builtin.dap.breakpoint.text = "🛑"
 --   }
 -- end
 
+lvim.autocommands = {
+  {
+    "BufEnter",
+    {
+      pattern = { "*" },
+      command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
+    }
+  },
+}
+
 -- Additional Plugins
 lvim.plugins = {
   {
@@ -449,13 +462,13 @@ lvim.plugins = {
     config = function()
       require("colorizer").setup({ "css", "scss", "html", "javascript" }, {
         mode = "background",
-        RGB = true, -- #RGB hex codes
-        RRGGBB = true, -- #RRGGBB hex codes
+        RGB = true,      -- #RGB hex codes
+        RRGGBB = true,   -- #RRGGBB hex codes
         RRGGBBAA = true, -- #RRGGBBAA hex codes
-        rgb_fn = true, -- CSS rgb() and rgba() functions
-        hsl_fn = true, -- CSS hsl() and hsla() functions
-        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        rgb_fn = true,   -- CSS rgb() and rgba() functions
+        hsl_fn = true,   -- CSS hsl() and hsla() functions
+        css = true,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true,   -- Enable all CSS *functions*: rgb_fn, hsl_fn
       })
     end,
   },
@@ -507,12 +520,12 @@ lvim.plugins = {
 
       require('mini.surround').setup({
         mappings = {
-          add = 'as', -- Add surrounding in Normal and Visual modes
-          delete = 'ds', -- Delete surrounding
-          replace = 'cs', -- Replace surrounding
-          find = '', -- Find surrounding (to the right)
-          find_left = '', -- Find surrounding (to the left)
-          highlight = '', -- Highlight surrounding
+          add = 'as',          -- Add surrounding in Normal and Visual modes
+          delete = 'ds',       -- Delete surrounding
+          replace = 'cs',      -- Replace surrounding
+          find = '',           -- Find surrounding (to the right)
+          find_left = '',      -- Find surrounding (to the left)
+          highlight = '',      -- Highlight surrounding
           update_n_lines = '', -- Update `n_lines`
         },
         search_method = 'cover_or_next',
@@ -625,5 +638,18 @@ lvim.plugins = {
         max_join_length = 999,
       })
     end,
-  }
+  },
+  -- The hologram does not work in iTerm2
+  -- {
+  --   "giusgad/pets.nvim",
+  --   lazy = true,
+  --   event = "VimEnter",
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "giusgad/hologram.nvim",
+  --   },
+  --   config = function()
+  --     require("pets").setup({})
+  --   end,
+  -- },
 }

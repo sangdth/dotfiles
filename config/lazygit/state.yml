@@ -1,15 +1,16 @@
 lastupdatecheck: 0
 recentrepos:
+- /Users/sangdang/dotfiles
+- /Users/sangdang/Lokalise/lokalise-main
 - /Users/sangdang/Projects/lakihelppi/dashboard
+- /Users/sangdang/Lokalise/louis
+- /Users/sangdang/Lokalise/npm-package-template
+- /Users/sangdang/Lokalise/web-starter-template
 - /Users/sangdang/Projects/issueradar
 - /Users/sangdang/Projects/lakihelppi/foundations
-- /Users/sangdang/Lokalise/web-starter-template
-- /Users/sangdang/Lokalise/louis
-- /Users/sangdang/Lokalise/lokalise-main
 - /Users/sangdang/Projects/rassue
 - /Users/sangdang/Projects/scroll-and-float
 - /Users/sangdang/Projects/tree-sitter-mdx
-- /Users/sangdang/dotfiles
 startuppopupversion: 5
 customcommandshistory: []
 hidecommandlog: true
