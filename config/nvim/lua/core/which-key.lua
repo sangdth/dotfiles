@@ -17,6 +17,7 @@ local opts = {
 
 local mappings = {
   e = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
+  n = { ":noh<CR>", "Clear highlight" },
 }
 
 local vopts = {
