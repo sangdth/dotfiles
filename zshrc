@@ -73,8 +73,6 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-eval "$(fnm env --use-on-cd)"
-
 source $ZSH/oh-my-zsh.sh
 source $HOME/dotfiles/paths
 source $HOME/dotfiles/aliases
