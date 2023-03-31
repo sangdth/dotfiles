@@ -34,8 +34,8 @@ vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings
 -- General
 lvim.colorscheme = "tokyonight-night"
 lvim.leader = "space"
-lvim.line_wrap_cursor_movement = false
 lvim.log.level = "warn"
+lvim.line_wrap_cursor_movement = false
 lvim.format_on_save = true
 
 -- Control the core plugins here
@@ -118,6 +118,7 @@ local exceptions = {
   yml = true,
   yaml = true,
 }
+
 if is_work_dir and exceptions[vim.bo.filetype] == nil then
   vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
   vim.opt.expandtab = false
@@ -299,34 +300,14 @@ lvim.builtin.indentlines.options.context_patterns = {
   'switch_body',
 }
 
-lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = true
 lvim.builtin.treesitter.rainbow.enable = false
-lvim.builtin.treesitter.rainbow.disable = { "jsx" } -- idk why no effect
-lvim.builtin.treesitter.ensure_installed = {
-  "bash",
-  "c",
-  "cpp",
-  "css",
-  "cmake",
-  "go",
-  "graphql",
-  "java",
-  "javascript",
-  "json",
-  "lua",
-  "python",
-  "rust",
-  "typescript",
-  "yaml",
-  "vim",
-}
+lvim.builtin.treesitter.ensure_installed = "all"
 
 lvim.lsp.diagnostics.virtual_text = true
 
 require("lvim.lsp.manager").setup("emmet_ls")
--- require('luasnip.loaders.from_vscode').load({ paths = { "~/.config/lvim/snippets" } })
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -449,8 +430,8 @@ lvim.plugins = {
   },
   {
     "windwp/nvim-ts-autotag",
-    event = "InsertEnter",
-    lazy = true,
+    event = 'BufReadPost',
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("nvim-ts-autotag").setup()
     end,
@@ -631,7 +612,7 @@ lvim.plugins = {
   {
     'Wansmer/treesj',
     event = "BufRead",
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,

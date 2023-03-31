@@ -13,18 +13,33 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +0 ~/dotfiles/config/lvim/config.lua
+badd +63 ~/Projects/lakihelppi/dashboard/components/CaseModal/CaseModal.tsx
+badd +124 ~/Projects/lakihelppi/dashboard/components/Combobox/Combobox.tsx
+badd +49 ~/Projects/lakihelppi/dashboard/pages/cases/index.tsx
+badd +30 ~/Projects/lakihelppi/dashboard/components/VirtualTable/FilterMenu.tsx
 argglobal
 %argdel
-edit ~/dotfiles/config/lvim/config.lua
+edit ~/Projects/lakihelppi/dashboard/components/VirtualTable/FilterMenu.tsx
+let s:save_splitbelow = &splitbelow
+let s:save_splitright = &splitright
+set splitbelow splitright
+let &splitbelow = s:save_splitbelow
+let &splitright = s:save_splitright
+wincmd t
+let s:save_winminheight = &winminheight
+let s:save_winminwidth = &winminwidth
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
 argglobal
-let s:l = 615 - ((44 * winheight(0) + 26) / 53)
+balt ~/Projects/lakihelppi/dashboard/pages/cases/index.tsx
+let s:l = 7 - ((6 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 615
-normal! 023|
-lcd ~/dotfiles/config/lvim
+keepjumps 7
+normal! 010|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -32,12 +47,15 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
+let &winminheight = s:save_winminheight
+let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 doautoall SessionLoadPost
 unlet SessionLoad
 " vim: set ft=vim :

@@ -3,7 +3,7 @@ let s:so_save = &g:so | let s:siso_save = &g:siso | setg so=0 siso=0 | setl so=-
 let v:this_session=expand("<sfile>:p")
 silent only
 silent tabonly
-cd ~/Projects/lakihelppi/dashboard
+cd ~/dotfiles
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
@@ -13,18 +13,18 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +0 ~/dotfiles/config/lvim/config.lua
+badd +314 ~/.config/lvim/config.lua
 argglobal
 %argdel
-edit ~/dotfiles/config/lvim/config.lua
+edit ~/.config/lvim/config.lua
 argglobal
-let s:l = 615 - ((44 * winheight(0) + 26) / 53)
+balt ~/.config/lvim/config.lua
+let s:l = 314 - ((27 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 615
-normal! 023|
-lcd ~/dotfiles/config/lvim
+keepjumps 314
+normal! 02|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
