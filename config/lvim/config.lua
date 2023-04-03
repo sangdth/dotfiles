@@ -195,9 +195,6 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = actions.move_selection_previous,
   },
 }
-lvim.builtin.telescope.on_config_done = function(telescope)
-  pcall(telescope.load_extension, "dir") -- load the extension princejoogie/dir-telescope.nvim
-end
 
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.open_mapping = "<c-t>"
@@ -303,6 +300,7 @@ lvim.builtin.indentlines.options.context_patterns = {
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = true
 lvim.builtin.treesitter.rainbow.enable = false
+lvim.builtin.treesitter.autotag = true
 lvim.builtin.treesitter.ensure_installed = "all"
 
 lvim.lsp.diagnostics.virtual_text = true
@@ -420,63 +418,64 @@ lvim.plugins = {
       vim.api.nvim_set_keymap("n", "F", ":HopWord<cr>", { silent = true })
     end,
   },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "InsertEnter",
-    lazy = true,
-    config = function()
-      require("lsp_signature").on_attach()
-    end,
-  },
+  -- {
+  --   "ray-x/lsp_signature.nvim",
+  --   event = "InsertEnter",
+  --   lazy = true,
+  --   config = function()
+  --     require("lsp_signature").on_attach()
+  --   end,
+  -- },
   {
     "windwp/nvim-ts-autotag",
     event = 'BufReadPost',
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    requires = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("nvim-ts-autotag").setup()
     end,
   },
-  {
-    "norcalli/nvim-colorizer.lua",
-    event = "BufRead",
-    lazy = true,
-    config = function()
-      require("colorizer").setup({ "css", "scss", "html", "javascript" }, {
-        mode = "background",
-        RGB = true,      -- #RGB hex codes
-        RRGGBB = true,   -- #RRGGBB hex codes
-        RRGGBBAA = true, -- #RRGGBBAA hex codes
-        rgb_fn = true,   -- CSS rgb() and rgba() functions
-        hsl_fn = true,   -- CSS hsl() and hsla() functions
-        css = true,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true,   -- Enable all CSS *functions*: rgb_fn, hsl_fn
-      })
-    end,
-  },
-  {
-    "tzachar/cmp-tabnine",
-    event = "InsertEnter",
-    lazy = true,
-    config = function()
-      local tabnine = require "cmp_tabnine.config"
-      tabnine:setup {
-        max_lines = 1000,
-        max_num_results = 3,
-        sort = true,
-        ignored_file_types = {
-          html = true,
-          json = true,
-          yaml = true,
-        }
-      }
-    end,
-    build = "./install.sh",
-    dependencies = "hrsh7th/nvim-cmp",
-  },
+  -- {
+  --   "norcalli/nvim-colorizer.lua",
+  --   event = "BufRead",
+  --   lazy = true,
+  --   config = function()
+  --     require("colorizer").setup({ "css", "scss", "html", "javascript" }, {
+  --       mode = "background",
+  --       RGB = true,      -- #RGB hex codes
+  --       RRGGBB = true,   -- #RRGGBB hex codes
+  --       RRGGBBAA = true, -- #RRGGBBAA hex codes
+  --       rgb_fn = true,   -- CSS rgb() and rgba() functions
+  --       hsl_fn = true,   -- CSS hsl() and hsla() functions
+  --       css = true,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+  --       css_fn = true,   -- Enable all CSS *functions*: rgb_fn, hsl_fn
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   "tzachar/cmp-tabnine",
+  --   event = "InsertEnter",
+  --   lazy = true,
+  --   requires = "hrsh7th/nvim-cmp",
+  --   config = function()
+  --     local tabnine = require "cmp_tabnine.config"
+  --     tabnine:setup {
+  --       max_lines = 1000,
+  --       max_num_results = 3,
+  --       sort = true,
+  --       ignored_file_types = {
+  --         html = true,
+  --         json = true,
+  --         yaml = true,
+  --       }
+  --     }
+  --   end,
+  --   build = "./install.sh",
+  -- },
   {
     "kevinhwang91/nvim-ufo",
     event = "BufRead",
     lazy = true,
+    requires = { "kevinhwang91/promise-async" },
     config = function()
       require('ufo').setup({
         provider_selector = function() -- func(bfnr, filetype, buftype)
@@ -484,135 +483,113 @@ lvim.plugins = {
         end
       })
     end,
-    dependencies = "kevinhwang91/promise-async",
   },
   {
     "AndrewRadev/tagalong.vim",
     event = "InsertEnter",
     lazy = true,
   },
-  {
-    'echasnovski/mini.nvim',
-    version = "*",
-    event = "BufRead",
-    lazy = true,
-    config = function()
-      require('mini.cursorword').setup({ delay = 200 })
-
-      require('mini.surround').setup({
-        mappings = {
-          add = 'as',          -- Add surrounding in Normal and Visual modes
-          delete = 'ds',       -- Delete surrounding
-          replace = 'cs',      -- Replace surrounding
-          find = '',           -- Find surrounding (to the right)
-          find_left = '',      -- Find surrounding (to the left)
-          highlight = '',      -- Highlight surrounding
-          update_n_lines = '', -- Update `n_lines`
-        },
-        search_method = 'cover_or_next',
-      })
-    end,
-  },
-  {
-    "sindrets/diffview.nvim",
-    event = "BufRead",
-    lazy = true,
-  },
   -- {
-  --   "AndrewRadev/splitjoin.vim",
+  --   'echasnovski/mini.nvim',
+  --   version = "*",
+  --   event = "BufRead",
+  --   lazy = true,
+  --   config = function()
+  --     require('mini.cursorword').setup({ delay = 200 })
+
+  --     require('mini.surround').setup({
+  --       mappings = {
+  --         add = 'as',          -- Add surrounding in Normal and Visual modes
+  --         delete = 'ds',       -- Delete surrounding
+  --         replace = 'cs',      -- Replace surrounding
+  --         find = '',           -- Find surrounding (to the right)
+  --         find_left = '',      -- Find surrounding (to the left)
+  --         highlight = '',      -- Highlight surrounding
+  --         update_n_lines = '', -- Update `n_lines`
+  --       },
+  --       search_method = 'cover_or_next',
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   "sindrets/diffview.nvim",
   --   event = "BufRead",
   --   lazy = true,
   -- },
-  {
-    "gpanders/editorconfig.nvim",
-    event = "BufWrite",
-    lazy = true,
-  },
-  {
-    "folke/trouble.nvim",
-    lazy = true,
-    cmd = "TroubleToggle",
-  },
-  {
-    "ethanholz/nvim-lastplace",
-    event = "BufRead",
-    lazy = true,
-    config = function()
-      require("nvim-lastplace").setup({
-        lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
-        lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
-        lastplace_open_folds = true,
-      })
-    end,
-  },
+  -- {
+  --   "gpanders/editorconfig.nvim",
+  --   event = "BufWrite",
+  --   lazy = true,
+  -- },
+  -- {
+  --   "folke/trouble.nvim",
+  --   lazy = true,
+  --   cmd = "TroubleToggle",
+  -- },
+  -- {
+  --   "ethanholz/nvim-lastplace",
+  --   event = "BufRead",
+  --   lazy = true,
+  --   config = function()
+  --     require("nvim-lastplace").setup({
+  --       lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
+  --       lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
+  --       lastplace_open_folds = true,
+  --     })
+  --   end,
+  -- },
   {
     "folke/persistence.nvim",
-    -- this will only start session saving when an actual file was opened
     event = "BufReadPre",
     lazy = true,
+    module = "persistence",
     config = function()
-      require("persistence").setup {
-        dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
-        options = { "buffers", "curdir", "tabpages", "winsize" },
-      }
+      require("persistence").setup()
     end,
   },
-  {
-    "windwp/nvim-spectre",
-    event = "BufRead",
-    lazy = true,
-    dependencies = "nvim-lua/plenary.nvim",
-    config = function()
-      require("spectre").setup()
-    end,
-  },
-  {
-    "folke/lsp-colors.nvim",
-    event = "BufRead",
-    lazy = true,
-  },
-  {
-    "David-Kunz/jester",
-    lazy = true,
-    event = "BufRead",
-    config = function()
-      require("jester").setup({
-        cmd = "jest -t --coverage=false '$result' -- $file",
-      })
-    end
-  },
-  {
-    "princejoogie/dir-telescope.nvim",
-    lazy = true,
-    event = "VimEnter",
-    -- telescope.nvim is a required dependency
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("dir-telescope").setup({
-        hidden = true,
-        respect_gitignore = true,
-      })
-    end,
-  },
-  {
-    "gbprod/yanky.nvim",
-    event = "BufRead",
-    config = function()
-      require("yanky").setup()
-    end,
-  },
-  {
-    "iamcco/markdown-preview.nvim",
-    event = "BufRead",
-    ft = "markdown",
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-  },
+  -- {
+  --   "windwp/nvim-spectre",
+  --   event = "BufRead",
+  --   lazy = true,
+  --   requires = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require("spectre").setup()
+  --   end,
+  -- },
+  -- {
+  --   "folke/lsp-colors.nvim",
+  --   event = "BufRead",
+  --   lazy = true,
+  -- },
+  -- {
+  --   "David-Kunz/jester",
+  --   lazy = true,
+  --   event = "BufRead",
+  --   config = function()
+  --     require("jester").setup({
+  --       cmd = "jest -t --coverage=false '$result' -- $file",
+  --     })
+  --   end
+  -- },
+  -- {
+  --   "gbprod/yanky.nvim",
+  --   event = "BufRead",
+  --   config = function()
+  --     require("yanky").setup()
+  --   end,
+  -- },
+  -- {
+  --   "iamcco/markdown-preview.nvim",
+  --   event = "BufRead",
+  --   ft = "markdown",
+  --   build = function()
+  --     vim.fn["mkdp#util#install"]()
+  --   end,
+  -- },
   {
     'Wansmer/treesj',
     event = "BufRead",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    requires = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,
@@ -620,17 +597,4 @@ lvim.plugins = {
       })
     end,
   },
-  -- The hologram does not work in iTerm2
-  -- {
-  --   "giusgad/pets.nvim",
-  --   lazy = true,
-  --   event = "VimEnter",
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "giusgad/hologram.nvim",
-  --   },
-  --   config = function()
-  --     require("pets").setup({})
-  --   end,
-  -- },
 }
