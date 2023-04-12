@@ -306,13 +306,10 @@ lvim.builtin.treesitter.ensure_installed = {
   "lua",
   "vim",
   "javascript",
-  "typescript",
-  "help"
+  "typescript"
 }
 
 lvim.lsp.diagnostics.virtual_text = true
-
-require("lvim.lsp.manager").setup("emmet_ls")
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -401,15 +398,15 @@ lvim.builtin.dap.breakpoint.text = "🛑"
 --   }
 -- end
 
--- lvim.autocommands = {
---   {
---     "BufEnter",
---     {
---       pattern = { "*" },
---       command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
---     }
---   },
--- }
+lvim.autocommands = {
+  {
+    "BufEnter",
+    {
+      pattern = { "*" },
+      command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
+    }
+  },
+}
 
 -- Additional Plugins
 lvim.plugins = {
@@ -436,7 +433,7 @@ lvim.plugins = {
   {
     "windwp/nvim-ts-autotag",
     event = 'BufRead',
-    requires = { "nvim-treesitter/nvim-treesitter" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("nvim-ts-autotag").setup()
     end,
@@ -462,7 +459,7 @@ lvim.plugins = {
   --   "tzachar/cmp-tabnine",
   --   event = "InsertEnter",
   --   lazy = true,
-  --   requires = "hrsh7th/nvim-cmp",
+  --   dependencies = "hrsh7th/nvim-cmp",
   --   config = function()
   --     local tabnine = require "cmp_tabnine.config"
   --     tabnine:setup {
@@ -482,7 +479,7 @@ lvim.plugins = {
     "kevinhwang91/nvim-ufo",
     event = "BufRead",
     lazy = true,
-    requires = { "kevinhwang91/promise-async" },
+    dependencies = { "kevinhwang91/promise-async" },
     config = function()
       require('ufo').setup({
         provider_selector = function() -- func(bfnr, filetype, buftype)
@@ -539,7 +536,6 @@ lvim.plugins = {
     "folke/persistence.nvim",
     event = "BufReadPre",
     lazy = true,
-    module = "persistence",
     config = function()
       require("persistence").setup()
     end,
@@ -548,7 +544,7 @@ lvim.plugins = {
   --   "windwp/nvim-spectre",
   --   event = "BufRead",
   --   lazy = true,
-  --   requires = { "nvim-lua/plenary.nvim" },
+  --   dependencies = { "nvim-lua/plenary.nvim" },
   --   config = function()
   --     require("spectre").setup()
   --   end,
@@ -586,7 +582,7 @@ lvim.plugins = {
   {
     'Wansmer/treesj',
     event = "BufRead",
-    requires = { "nvim-treesitter/nvim-treesitter" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,
@@ -596,7 +592,7 @@ lvim.plugins = {
   },
   {
     "ray-x/sad.nvim",
-    requires = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
+    dependencies = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
     event = 'VimEnter',
     config = function()
       require("sad").setup {}
