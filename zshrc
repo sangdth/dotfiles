@@ -96,12 +96,13 @@ fi
 
 _fzf_complete_git() {
   if [[ $@ == 'git checkout -b'* ]]; then
+    ME=""
+    GIT_CHECKOUT="git checkout -b "
+    STATUS_QUERY="status NOT IN (Done, Dismissed, Released, 'In Progress', 'Ready for release')"
+
     ARGS="$(echo $@ | sed 's/git checkout -b //g')"
 
     read SCOPE CODE <<< $(echo "$ARGS" | awk -F/ '{print $1,$2}')
-
-    ME=""
-    STATUS_QUERY="status NOT IN (Done, Dismissed, Released, 'In Progress', 'Ready for release')"
 
     if [[ $ARGS == "" ]]; then
       ME="-a$(jira me)"
@@ -109,12 +110,13 @@ _fzf_complete_git() {
     elif [[ $CODE == "" ]]; then
       PROJECT_QUERY="project IN ($SCOPE)" # Allow to use `FF` only without feature/
     else
+      GIT_CHECKOUT="git checkout -b $SCOPE/"
       PROJECT_QUERY="project IN ($CODE)"
     fi
 
     local tasks
     tasks=$(jira issue list --plain --no-headers --columns key,summary $ME -q "$STATUS_QUERY AND $PROJECT_QUERY")
-      _fzf_complete --ansi --reverse --multi --prompt="fzf> " -- "git checkout -b $SCOPE/" < <(
+      _fzf_complete --ansi --reverse --multi --prompt="fzf> " -- "$GIT_CHECKOUT" < <(
         echo $tasks | sed 's/[[:space:]]/-/g' | tr -dc '[:alnum:]-\n'
       )
   fi
