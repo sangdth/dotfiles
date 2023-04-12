@@ -301,7 +301,14 @@ lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = true
 lvim.builtin.treesitter.rainbow.enable = false
 lvim.builtin.treesitter.autotag = true
-lvim.builtin.treesitter.ensure_installed = "all"
+lvim.builtin.treesitter.ensure_installed = {
+  "c",
+  "lua",
+  "vim",
+  "javascript",
+  "typescript",
+  "help"
+}
 
 lvim.lsp.diagnostics.virtual_text = true
 
@@ -394,15 +401,15 @@ lvim.builtin.dap.breakpoint.text = "🛑"
 --   }
 -- end
 
-lvim.autocommands = {
-  {
-    "BufEnter",
-    {
-      pattern = { "*" },
-      command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
-    }
-  },
-}
+-- lvim.autocommands = {
+--   {
+--     "BufEnter",
+--     {
+--       pattern = { "*" },
+--       command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
+--     }
+--   },
+-- }
 
 -- Additional Plugins
 lvim.plugins = {
