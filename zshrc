@@ -93,3 +93,29 @@ if type brew &>/dev/null; then
 fi
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+_fzf_complete_git() {
+  if [[ $@ == 'git checkout -b'* ]]; then
+    ARGS="$(echo $@ | sed 's/git checkout -b //g')"
+
+    read SCOPE CODE <<< $(echo "$ARGS" | awk -F/ '{print $1,$2}')
+
+    ME=""
+    STATUS_QUERY="status NOT IN (Done, Dismissed, Released, 'In Progress', 'Ready for release')"
+
+    if [[ $ARGS == "" ]]; then
+      ME="-a$(jira me)"
+      PROJECT_QUERY="project IS NOT EMPTY"
+    elif [[ $CODE == "" ]]; then
+      PROJECT_QUERY="project IN ($SCOPE)" # Allow to use `FF` only without feature/
+    else
+      PROJECT_QUERY="project IN ($CODE)"
+    fi
+
+    local tasks
+    tasks=$(jira issue list --plain --no-headers --columns key,summary $ME -q "$STATUS_QUERY AND $PROJECT_QUERY")
+      _fzf_complete --ansi --reverse --multi --prompt="fzf> " -- "git checkout -b $SCOPE/" < <(
+        echo $tasks | sed 's/[[:space:]]/-/g' | tr -dc '[:alnum:]-\n'
+      )
+  fi
+}

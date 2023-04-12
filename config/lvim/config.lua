@@ -214,7 +214,7 @@ lvim.builtin.project.active = false
 
 lvim.builtin.nvimtree.setup.view.number = true
 lvim.builtin.nvimtree.setup.view.relativenumber = true
-lvim.builtin.nvimtree.setup.view.adaptive_size = true
+lvim.builtin.nvimtree.setup.view.adaptive_size = false
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.git.enable = true -- we need this for git.ignore has effect
 lvim.builtin.nvimtree.setup.git.ignore = true
@@ -418,17 +418,17 @@ lvim.plugins = {
       vim.api.nvim_set_keymap("n", "F", ":HopWord<cr>", { silent = true })
     end,
   },
-  -- {
-  --   "ray-x/lsp_signature.nvim",
-  --   event = "InsertEnter",
-  --   lazy = true,
-  --   config = function()
-  --     require("lsp_signature").on_attach()
-  --   end,
-  -- },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    lazy = true,
+    config = function()
+      require("lsp_signature").on_attach()
+    end,
+  },
   {
     "windwp/nvim-ts-autotag",
-    event = 'BufReadPost',
+    event = 'BufRead',
     requires = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("nvim-ts-autotag").setup()
@@ -489,38 +489,28 @@ lvim.plugins = {
     event = "InsertEnter",
     lazy = true,
   },
-  -- {
-  --   'echasnovski/mini.nvim',
-  --   version = "*",
-  --   event = "BufRead",
-  --   lazy = true,
-  --   config = function()
-  --     require('mini.cursorword').setup({ delay = 200 })
+  {
+    'echasnovski/mini.nvim',
+    version = "*",
+    event = "BufRead",
+    lazy = true,
+    config = function()
+      require('mini.cursorword').setup({ delay = 200 })
 
-  --     require('mini.surround').setup({
-  --       mappings = {
-  --         add = 'as',          -- Add surrounding in Normal and Visual modes
-  --         delete = 'ds',       -- Delete surrounding
-  --         replace = 'cs',      -- Replace surrounding
-  --         find = '',           -- Find surrounding (to the right)
-  --         find_left = '',      -- Find surrounding (to the left)
-  --         highlight = '',      -- Highlight surrounding
-  --         update_n_lines = '', -- Update `n_lines`
-  --       },
-  --       search_method = 'cover_or_next',
-  --     })
-  --   end,
-  -- },
-  -- {
-  --   "sindrets/diffview.nvim",
-  --   event = "BufRead",
-  --   lazy = true,
-  -- },
-  -- {
-  --   "gpanders/editorconfig.nvim",
-  --   event = "BufWrite",
-  --   lazy = true,
-  -- },
+      require('mini.surround').setup({
+        mappings = {
+          add = 'as',          -- Add surrounding in Normal and Visual modes
+          delete = 'ds',       -- Delete surrounding
+          replace = 'cs',      -- Replace surrounding
+          find = '',           -- Find surrounding (to the right)
+          find_left = '',      -- Find surrounding (to the left)
+          highlight = '',      -- Highlight surrounding
+          update_n_lines = '', -- Update `n_lines`
+        },
+        search_method = 'cover_or_next',
+      })
+    end,
+  },
   -- {
   --   "folke/trouble.nvim",
   --   lazy = true,
@@ -528,7 +518,7 @@ lvim.plugins = {
   -- },
   -- {
   --   "ethanholz/nvim-lastplace",
-  --   event = "BufRead",
+  --   event = "BufReadPost",
   --   lazy = true,
   --   config = function()
   --     require("nvim-lastplace").setup({
@@ -578,14 +568,14 @@ lvim.plugins = {
   --     require("yanky").setup()
   --   end,
   -- },
-  -- {
-  --   "iamcco/markdown-preview.nvim",
-  --   event = "BufRead",
-  --   ft = "markdown",
-  --   build = function()
-  --     vim.fn["mkdp#util#install"]()
-  --   end,
-  -- },
+  {
+    "iamcco/markdown-preview.nvim",
+    event = "BufRead",
+    ft = "markdown",
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  },
   {
     'Wansmer/treesj',
     event = "BufRead",
@@ -596,5 +586,13 @@ lvim.plugins = {
         max_join_length = 999,
       })
     end,
+  },
+  {
+    "ray-x/sad.nvim",
+    requires = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
+    event = 'VimEnter',
+    config = function()
+      require("sad").setup {}
+    end
   },
 }
