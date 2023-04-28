@@ -1,4 +1,4 @@
-quitOnTopLevelReturn: true
+quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
 os:
   editCommand: "lvim"
