@@ -25,6 +25,8 @@ export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/config"
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 export GIT_TERMINAL_PROMPT=1
 
+export GIT_PAGER="delta"
+
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -98,7 +100,7 @@ _fzf_complete_git() {
   if [[ $@ == 'git checkout -b'* ]]; then
     ME=""
     GIT_CHECKOUT="git checkout -b "
-    STATUS_QUERY="status NOT IN (Done, Dismissed, Released, 'In Progress', 'Ready for release')"
+    STATUS_QUERY="status NOT IN (Done, Dismissed, Released, 'Ready for release')"
 
     ARGS="$(echo $@ | sed 's/git checkout -b //g')"
 

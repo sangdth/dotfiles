@@ -30,6 +30,7 @@ alias dc='docker-compose'
 alias dcrun='docker-compose run --rm'
 alias npmlist='npm list --location=global --depth=0'
 alias lok='~/Lokalise/lokalise-main/bin/dev-console'
+alias lmain='cd ~/Lokalise/lokalise-main'
 alias openlocal='ngrok http --region=us --hostname=ants.ngrok.io' # -region=eu -subdomain=sa -host-header=rewrite 3000'
 
 alias luamake='~/.config/lua-language-server/3rd/luamake/luamake'
@@ -44,15 +45,6 @@ alias findmongo='lsof -iTCP -sTCP:LISTEN | grep mongod'
 # Control spotlight
 alias togglespotlight='sudo mdutil -a -i off'
 alias upgradenvm='curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash'
-
-# Get week number
-alias week='date +%V'
-
-# Stopwatch
-alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
-
-# Get macOS Software Updates, and update installed Ruby gems, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
 
 # Get my current IP addresses
 alias myip="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com"
@@ -91,8 +83,8 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
 
 # Show/hide hidden files in Finder
-alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
-alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+alias showfiles="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+alias hidefiles="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
 
 # Hide/show all desktop icons (useful when presenting)
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"

@@ -1,11 +1,12 @@
 lastupdatecheck: 0
 recentrepos:
 - /Users/sangdang/dotfiles
-- /Users/sangdang/Projects/lakihelppi/cli
 - /Users/sangdang/Lokalise/lokalise-main
+- /Users/sangdang/Projects/lakihelppi/dashboard
+- /Users/sangdang/Projects/lakihelppi/react-activity-feed
 - /Users/sangdang/Projects/lakihelppi/tonttu
 - /Users/sangdang/Projects/nestjs-init
-- /Users/sangdang/Projects/lakihelppi/dashboard
+- /Users/sangdang/Projects/lakihelppi/cli
 - /Users/sangdang/Lokalise/styled
 - /Users/sangdang/Lokalise/louis
 - /Users/sangdang/Lokalise/npm-package-template

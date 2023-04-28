@@ -1,11 +1,33 @@
+quitOnTopLevelReturn: true
+promptToReturnFromSubprocess: false
 os:
-  editCommand: 'lvim'
-  editCommandTemplate: '{{editor}} +{{line}} -- {{filename}}'
-
+  editCommand: "lvim"
+  editCommandTemplate: "{{editor}} +{{line}} -- {{filename}}"
 git:
+  commitPrefixes:
+    lokalise-main:
+      pattern: "^\\w+\\/(\\w+-\\w+).*"
+      replace: "$1 "
   paging:
     colorArg: always
     pager: delta --dark --paging=never
-
 gui:
   showIcons: true
+  sidePanelWidth: 0.25
+  mainPanelSplitMode: "vertical"
+  theme:
+    inactiveBorderColor:
+      - "#292c3e"
+    selectedLineBgColor:
+      - "#292e42"
+    selectedRangeBgColor:
+      - "#292e42"
+  authorColors:
+    "Sang Dang": yellow
+    "*": blue
+  branchColors:
+    feature: white
+    bugfix: white
+    develop: blue
+    master: magenta
+    main: magenta
