@@ -5,8 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# You may need to manually set your language environment
-export LANG=en_US.UTF-8
+export LANG="en_US.UTF-8"
 export TERM="xterm-256color"
 export ZSH="$HOME/.oh-my-zsh"
 export FZF_BASE="/opt/homebrew/bin/fzf"
@@ -21,10 +20,8 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/config"
 
-# ssh
 export SSH_KEY_PATH="~/.ssh/id_rsa"
 export GIT_TERMINAL_PROMPT=1
-
 export GIT_PAGER="delta"
 
 # Preferred editor for local and remote sessions
@@ -62,11 +59,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # not work well with starship
 VI_MODE_SET_CURSOR="false"
-# MODE_INDICATOR="%F{white}+%f"
-# INSERT_MODE_INDICATOR="%F{green}+%f"
 
 plugins=(
-  zsh-prompt-benchmark
   zsh-autosuggestions
   zsh-syntax-highlighting # must be the last
 )
@@ -123,3 +117,8 @@ _fzf_complete_git() {
       )
   fi
 }
+
+
+# AWS config variables
+export AWS_SDK_LOAD_CONFIG=true
+

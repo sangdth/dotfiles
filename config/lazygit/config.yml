@@ -13,7 +13,7 @@ git:
     pager: delta --dark --paging=never
 gui:
   showIcons: true
-  sidePanelWidth: 0.25
+  sidePanelWidth: 0.3
   mainPanelSplitMode: "vertical"
   theme:
     inactiveBorderColor:

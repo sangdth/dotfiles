@@ -1,4 +1,8 @@
 -- Global configs
+vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
 vim.opt.autoindent = true
 vim.opt.cmdheight = 2
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
@@ -11,7 +15,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 99 -- Using ufo provider need a large value
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
-vim.opt.formatoptions = "crjql"
+vim.opt.formatoptions = "cro" -- "crjql"
 vim.opt.lazyredraw = true
 vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.number = true
@@ -29,6 +33,8 @@ vim.opt.timeoutlen = 300
 vim.opt.ttimeoutlen = 10 -- https://vi.stackexchange.com/a/24938/19109
 vim.opt.updatetime = 200
 vim.opt.whichwrap = "<,>,[,]"
+
+vim.diagnostic.config({ virtual_text = true })
 
 vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings" }
 
@@ -63,7 +69,6 @@ lvim.keys.normal_mode["<Down>"] = ":cnext<CR>"
 lvim.keys.normal_mode["<Left>"] = "<cmd>BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<Right>"] = "<cmd>BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<C-b>"] = "<cmd>lua require'dap'.toggle_breakpoint()<CR>"
-lvim.keys.normal_mode["<C-c>"] = "<cmd>lua require'dap'.continue()<CR>"
 
 -- Sort list in visual mode
 lvim.keys.visual_mode["ss"] = ":'<,'>sort<CR>"
@@ -74,6 +79,10 @@ vim.keymap.set('n', 'cl', function()
   vim.cmd.norm("o" .. newRow)
 end, { silent = true })
 
+vim.keymap.set("n", "rn", function()
+  return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true })
+
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["f"] = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTree" }
 lvim.builtin.which_key.mappings["n"] = { ":noh<CR>", "Clear highlight" }
@@ -82,7 +91,6 @@ lvim.builtin.which_key.mappings["gdo"] = { ":DiffviewOpen<CR>", "Open Git Diffvi
 lvim.builtin.which_key.mappings["gdc"] = { ":DiffviewClose<CR>", "Close Git Diffview" }
 lvim.builtin.which_key.mappings["gdf"] = { ":DiffviewToggleFiles<CR>", "Toggle Git Diffview files" }
 lvim.builtin.which_key.mappings["gdh"] = { ":DiffviewFileHistory<CR>", "Git Diffview file history" }
-lvim.builtin.which_key.mappings["ll"] = { "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show diagnostics" }
 lvim.builtin.which_key.mappings["jh"] = { "<cmd>lua require'jester'.run()<CR>", "Run test under cursor" }
 lvim.builtin.which_key.mappings["ja"] = { "<cmd>lua require'jester'.run_file()<CR>", "Run all tests in current file" }
 lvim.builtin.which_key.mappings["bc"] = { "<cmd>BufferKill<CR>", "Close Buffer" }
@@ -112,10 +120,8 @@ lvim.builtin.which_key.mappings["t"] = {
   T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
 
-lvim.builtin.project.active = false
-
 -- My working place use 4 spaces indentation
-local is_work_dir = string.find(vim.fn.getcwd(), "/Users/sangdang/Lokalise")
+local is_work_dir = string.find(vim.fn.getcwd(), os.getenv('HOME') .. "/Lokalise")
 local exceptions = {
   json = true,
   yml = true,
@@ -198,6 +204,9 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = actions.move_selection_previous,
   },
 }
+lvim.builtin.telescope.on_config_done = function(telescope)
+  pcall(telescope.load_extension, "projects")
+end
 
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.open_mapping = "<c-t>"
@@ -211,8 +220,7 @@ lvim.builtin.terminal.float_opts = {
 lvim.builtin.gitsigns.active = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
--- Project.nvim change the cwd, while waiting for a way to make it respects git submodule.
--- I disabled it for now
+-- Project.nvim change the cwd on git submodules
 lvim.builtin.project.active = false
 
 lvim.builtin.nvimtree.setup.view.number = true
@@ -224,7 +232,7 @@ lvim.builtin.nvimtree.setup.git.ignore = true
 lvim.builtin.nvimtree.setup.git.timeout = 1000 -- some big repo need longer than 200ms
 lvim.builtin.nvimtree.setup.hijack_cursor = true
 lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
-lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
+lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = false
 lvim.builtin.nvimtree.setup.renderer.special_files = {}
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.renderer.icons.glyphs = {
@@ -241,8 +249,8 @@ lvim.builtin.nvimtree.setup.renderer.icons.glyphs = {
     ignored = "",
   },
   folder = {
-    arrow_closed = "",
-    arrow_open = "",
+    arrow_closed = "",
+    arrow_open = "",
     default = "",
     open = "",
     empty = "",
@@ -268,7 +276,7 @@ lvim.builtin.nvimtree.setup.diagnostics = {
   },
 }
 -- https://discord.com/channels/701530051140780102/704077577920446636/1089452567681040384
-lvim.builtin.nvimtree.setup.update_focused_file.ignore_list = { "lazy" }
+-- lvim.builtin.nvimtree.setup.update_focused_file.ignore_list = { "lazy" }
 
 lvim.builtin.indentlines.options.char = "│"
 lvim.builtin.indentlines.options.context_char = "│"
@@ -304,9 +312,6 @@ lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = true
 lvim.builtin.treesitter.rainbow.enable = false
 lvim.builtin.treesitter.autotag = true
--- lvim.builtin.treesitter.ensure_installed = "all"
-
-lvim.lsp.diagnostics.virtual_text = true
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -322,78 +327,15 @@ linters.setup {
     exe = "eslint_d",
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
   },
+  {
+    exe = "golangci-lint",
+    filetypes = { "go" },
+  },
 }
 
-lvim.builtin.dap.active = true
+lvim.builtin.dap.active = false
 lvim.builtin.dap.breakpoint.text = "⛔"
--- lvim.builtin.dap.on_config_done = function(dap)
---   dap.adapters.chrome = {
---     type = 'executable',
---     command = 'node',
---     args = { os.getenv('HOME') .. '/Applications/vscode-chrome-debug/out/src/chromeDebug.js' },
---   }
---   dap.adapters.firefox = {
---     type = 'executable',
---     command = 'node',
---     args = { os.getenv('HOME') .. '/Applications/vscode-firefox-debug/dist/adapter.bundle.js' },
---   }
---   dap.adapters.node2 = {
---     type = 'executable',
---     command = 'node',
---     args = { os.getenv('HOME') .. '/Applications/vscode-node-debug2/out/src/nodeDebug.js' },
---   }
---   dap.adapters.cppdbg = {
---     id = 'cppdbg',
---     type = 'executable',
---     command = os.getenv('HOME') .. '/Applications/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
---   }
---   dap.configurations.typescript = {
---     {
---       name = 'Debug TypeScript with Firefox',
---       type = 'firefox',
---       request = 'launch',
---       reAttach = true,
---       url = 'http://localhost:3000',
---       webRoot = '${workspaceFolder}',
---     }
---   }
---   dap.configurations.node2 = {
---     {
---       name = 'Debug javascript with node',
---       type = 'node2',
---       request = 'attach',
---       reAttach = true,
---       protocol = 'inspector',
---       url = 'http://localhost:3000',
---       cwd = vim.fn.getcwd(),
---       skipFiles = { "<node_internals>/**/*.js" },
---     }
---   }
---   dap.configurations.javascript = {
---     {
---       type = "chrome",
---       request = "attach",
---       program = "${file}",
---       cwd = vim.fn.getcwd(),
---       sourceMaps = true,
---       protocol = "inspector",
---       port = 9222,
---       webRoot = "${workspaceFolder}"
---     }
---   }
---   dap.configurations.typescriptreact = {
---     {
---       type = "chrome",
---       request = "attach",
---       program = "${file}",
---       cwd = vim.fn.getcwd(),
---       sourceMaps = true,
---       protocol = "inspector",
---       port = 9222,
---       webRoot = "${workspaceFolder}"
---     }
---   }
--- end
+lvim.builtin.dap.ui.auto_open = true
 
 lvim.autocommands = {
   {
@@ -403,7 +345,52 @@ lvim.autocommands = {
       command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
     }
   },
+  {
+    { "BufEnter", "BufWinEnter" },
+    {
+      pattern = { "*.go", "go.mod" },
+      command = "setlocal noexpandtab tabstop=4 shiftwidth=4",
+    },
+  },
+  {
+    "ColorScheme", {
+    pattern = "*",
+    callback = function()
+      local theme_colors = require("tokyonight.colors").setup()
+      local groups_use_bg = {
+        "TelescopeBorder",
+        "TelescopeNormal",
+      }
+      for _, name in ipairs(groups_use_bg) do
+        vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
+      end
+
+      local groups_use_dark_bg = {
+        "BufferLineFill",
+        "MsgArea",
+        "NvimTree",
+        "NvimTreeEndOfBuffer",
+        "NvimTreeNormal",
+        "NvimTreeNormalNC",
+        "NvimTreeStatusLine",
+        "NvimTreeStatusLineNC",
+        "PanelHeading",
+        "StatusLine",
+        "StatusLineNC",
+        "VertSplit",
+      }
+      for _, name in ipairs(groups_use_dark_bg) do
+        vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
+      end
+
+      vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
+    end,
+  },
+  },
 }
+
+-- local cmp = require "lvim.cmp"
+-- lvim.builtin.cmp.mappings = {}
 
 -- Additional Plugins
 lvim.plugins = {
@@ -429,17 +416,17 @@ lvim.plugins = {
   },
   {
     "windwp/nvim-ts-autotag",
-    event = 'BufRead',
     dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = 'BufRead',
     config = function()
       require("nvim-ts-autotag").setup()
     end,
   },
   {
     "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
     event = "BufRead",
     lazy = true,
-    dependencies = { "kevinhwang91/promise-async" },
     config = function()
       require('ufo').setup({
         provider_selector = function() -- func(bfnr, filetype, buftype)
@@ -475,23 +462,52 @@ lvim.plugins = {
       })
     end,
   },
-  -- {
-  --   "folke/trouble.nvim",
-  --   lazy = true,
-  --   cmd = "TroubleToggle",
-  -- },
-  -- {
-  --   "ethanholz/nvim-lastplace",
-  --   event = "BufReadPost",
-  --   lazy = true,
-  --   config = function()
-  --     require("nvim-lastplace").setup({
-  --       lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
-  --       lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
-  --       lastplace_open_folds = true,
-  --     })
-  --   end,
-  -- },
+  {
+    "folke/trouble.nvim",
+    lazy = true,
+    cmd = "TroubleToggle",
+  },
+  {
+    "natecraddock/sessions.nvim",
+    event = 'VimEnter',
+    config = function()
+      require("sessions").setup({
+        events = { "VimLeavePre", "BufRead" },
+        session_filepath = ".vim-session",
+      })
+    end
+  },
+  {
+    "natecraddock/workspaces.nvim",
+    event = 'VimEnter',
+    config = function()
+      require("workspaces").setup({
+        hooks = {
+          open_pre = {
+            "SessionsStop",
+            "silent %bdelete!",
+          },
+          open = {
+            function()
+              require("sessions").load(nil, { silent = true })
+            end
+          }
+        },
+      })
+    end
+  },
+  {
+    "ethanholz/nvim-lastplace",
+    event = "BufReadPost",
+    lazy = true,
+    config = function()
+      require("nvim-lastplace").setup({
+        lastplace_ignore_buftype = { "quickfix", "nofile", "help", "toggleterm", "nvimtree" },
+        lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
+        lastplace_open_folds = true,
+      })
+    end,
+  },
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
@@ -500,13 +516,6 @@ lvim.plugins = {
       require("persistence").setup()
     end,
   },
-  -- {
-  --   "gbprod/yanky.nvim",
-  --   event = "BufRead",
-  --   config = function()
-  --     require("yanky").setup()
-  --   end,
-  -- },
   {
     "iamcco/markdown-preview.nvim",
     event = "BufRead",
@@ -535,39 +544,116 @@ lvim.plugins = {
     end
   },
   {
-    "mxsdev/nvim-dap-vscode-js",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "microsoft/vscode-js-debug",
-    },
-    event = "BufRead",
-    lazy = true,
-    build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+    "codota/tabnine-nvim",
+    event = "InsertEnter",
+    build = "./dl_binaries.sh",
     config = function()
-      require("dap-vscode-js").setup({
-        -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-        -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
-        -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-        adapters = { 'pwa-node' }, -- which adapters to register in nvim-dap
-        -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
-        -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
-        -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+      require('tabnine').setup({
+        disable_auto_comment = true,
+        accept_keymap = "<Tab>",
+        dismiss_keymap = "<C-]>",
+        debounce_ms = 800,
+        suggestion_color = { gui = "#808080", cterm = 244 },
+        exclude_filetypes = { "TelescopePrompt" },
+        -- log_file_path = nil, -- absolute path to Tabnine log file
       })
-
-      for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
-        require("dap").configurations[language] = {
-          type = "pwa-node",
-          request = "attach",
-          program = "${file}",
-          processId = require 'dap.utils'.pick_process,
-          cwd = vim.fn.getcwd(),
-          sourceMaps = true,
-          protocol = "inspector",
-          port = 9222,
-          webRoot = "${workspaceFolder}",
-          remoteRoot = "/usr/src/app"
-        }
-      end
     end
   },
+  -- {
+  --   "tzachar/cmp-tabnine",
+  --   event = "InsertEnter",
+  --   dependencies = "hrsh7th/nvim-cmp",
+  --   build = "./install.sh",
+  -- },
+  {
+    -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        filetypes = {
+          javascript = true,
+          typescript = true,
+          javascriptreact = true,
+          typescriptreact = true,
+          json = true,
+          yaml = true,
+          go = true,
+          golang = true,
+          ["*"] = false,
+        },
+      })
+    end,
+  },
+  {
+    -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+    event = "InsertEnter",
+    config = function()
+      vim.defer_fn(function()
+        require("copilot").setup({
+          suggestion = { enabled = false },
+          panel = { enabled = false },
+        })
+        require("copilot_cmp").setup()
+      end, 100)
+    end,
+  },
+  {
+    "smjonas/inc-rename.nvim",
+    event = "BufRead",
+    config = function()
+      require("inc_rename").setup()
+    end,
+  },
+  -- {
+  --   "microsoft/vscode-js-debug",
+  --   lazy = true,
+  --   build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+  -- },
+  -- {
+  --   "mxsdev/nvim-dap-vscode-js",
+  --   dependencies = { "mfussenegger/nvim-dap" },
+  --   event = "BufRead",
+  --   lazy = true,
+  --   config = function()
+  --     require("dap-vscode-js").setup({
+  --       debugger_path = os.getenv("HOME") .. "/.local/share/lunarvim/site/pack/lazy/opt/vscode-js-debug",
+  --       adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost', 'node',
+  --         'chrome' },
+  --     })
+
+  --     for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
+  --       require("dap").configurations[language] = {
+  --         -- debug single Node.js files
+  --         {
+  --           type = "pwa-node",
+  --           request = "launch",
+  --           name = "Launch file",
+  --           program = "${file}",
+  --           cwd = "${workspaceFolder}",
+  --         },
+  --         -- debug node processes like express applications
+  --         {
+  --           type = "pwa-node",
+  --           request = "attach",
+  --           name = "Attach",
+  --           processId = require("dap.utils").pick_process,
+  --           cwd = "${workspaceFolder}",
+  --         },
+  --         -- debug web applications
+  --         {
+  --           type = "pwa-chrome",
+  --           request = "launch",
+  --           name = "Start Chrome with \"localhost\"",
+  --           url = "http://localhost:3000",
+  --           webRoot = "${workspaceFolder}",
+  --           userDataDir = "${workspaceFolder}/.vscode/vscode-chrome-debug-userdatadir"
+  --         },
+  --       }
+  --     end
+  --   end
+  -- },
 }
