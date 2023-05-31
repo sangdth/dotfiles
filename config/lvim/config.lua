@@ -98,7 +98,10 @@ lvim.builtin.which_key.mappings["c"] = {
   name = "Colorizer",
   t = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
   r = { "<cmd>ColorizerReloadAllBuffers<CR>", "Reload all Buffers" },
-  d = { "<cmd>lua require'custom.lazydocker'.toggle()<CR>", "Toggle Lazydocker" },
+}
+lvim.builtin.which_key.mappings["lz"] = {
+  d = { "<cmd>lua require'custom.lazydocker'.toggle()<CR>", "Toggle lazydocker" },
+  j = { "<cmd>lua require'custom.lazyjira'.toggle()<CR>", "Toggle lazyjira" },
 }
 -- lvim.builtin.which_key.mappings["Sa"] = { "<cmd>lua require('spectre').open()<CR>", "Search and replace global" }
 -- lvim.builtin.which_key.mappings["Sh"] = { "viw:lua require('spectre').open_file_search()<CR>" }
@@ -368,6 +371,7 @@ lvim.autocommands = {
       local groups_use_dark_bg = {
         "BufferLineFill",
         "MsgArea",
+        "NormalFloat",
         "NvimTree",
         "NvimTreeEndOfBuffer",
         "NvimTreeNormal",

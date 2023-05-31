@@ -70,6 +70,7 @@
   fmain = !git checkout -b master && git branch -D main
   sorrymaster = !git checkout -b main && git branch -D master
   sync = !git fetch origin --prune && git pull origin
+  save = !git commit -a --amend --no-edit
 
 [rebase]
   autoSquash = true
