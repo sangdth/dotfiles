@@ -64,24 +64,14 @@ lvim.keys.normal_mode["sr"] = "<cmd>Telescope oldfiles<CR>"
 lvim.keys.normal_mode["sk"] = "<cmd>TSJJoin<CR>"
 lvim.keys.normal_mode["sj"] = "<cmd>TSJSplit<CR>"
 lvim.keys.normal_mode["sm"] = "<cmd>TSJToggle<CR>"
-lvim.keys.normal_mode["<Up>"] = ":cprev<CR>"
-lvim.keys.normal_mode["<Down>"] = ":cnext<CR>"
+lvim.keys.normal_mode["<Up>"] = "<cmd>lua vim.diagnostic.goto_prev()<cr>"
+lvim.keys.normal_mode["<Down>"] = "<cmd>lua vim.diagnostic.goto_next()<cr>"
 lvim.keys.normal_mode["<Left>"] = "<cmd>BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<Right>"] = "<cmd>BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<C-b>"] = "<cmd>lua require'dap'.toggle_breakpoint()<CR>"
 
 -- Sort list in visual mode
 lvim.keys.visual_mode["ss"] = ":'<,'>sort<CR>"
-
-vim.keymap.set('n', 'cl', function()
-  local word = vim.fn.expand("<cword>")
-  local newRow = "console.log('### " .. word .. ": ', { " .. word .. " });"
-  vim.cmd.norm("o" .. newRow)
-end, { silent = true })
-
-vim.keymap.set("n", "rn", function()
-  return ":IncRename " .. vim.fn.expand("<cword>")
-end, { expr = true })
 
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["f"] = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTree" }
@@ -103,13 +93,19 @@ lvim.builtin.which_key.mappings["lz"] = {
   d = { "<cmd>lua require'custom.lazydocker'.toggle()<CR>", "Toggle lazydocker" },
   j = { "<cmd>lua require'custom.lazyjira'.toggle()<CR>", "Toggle lazyjira" },
 }
--- lvim.builtin.which_key.mappings["Sa"] = { "<cmd>lua require('spectre').open()<CR>", "Search and replace global" }
--- lvim.builtin.which_key.mappings["Sh"] = { "viw:lua require('spectre').open_file_search()<CR>" }
 lvim.builtin.which_key.mappings["X"] = {
   name = "Session",
   c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
   l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
   Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+}
+lvim.builtin.which_key.mappings["gp"] = {
+  name = "Goto Preview",
+  d = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Goto Preview Definition" },
+  t = { "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", "Goto Preview Type Definition" },
+  i = { "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", "Goto Preview Implementation" },
+  r = { "<cmd>lua require('goto-preview').goto_preview_references()<CR>", "Goto Preview References" },
+  q = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Goto Preview Close all Windows" },
 }
 lvim.builtin.which_key.mappings["t"] = {
   name = "Diagnostics",
@@ -356,6 +352,32 @@ lvim.autocommands = {
     },
   },
   {
+    { "BufEnter", "BufWinEnter" },
+    {
+      pattern = { "*.js", "*.ts", "*.jsx", "*.tsx" },
+      callback = function()
+        vim.keymap.set("n", "cl", function()
+          local word = vim.fn.expand("<cword>")
+          local newRow = "console.log('### " .. word .. ": ', { " .. word .. " });"
+          vim.cmd.norm("o" .. newRow)
+        end, { silent = true })
+      end
+    }
+  },
+  {
+    { "BufEnter", "BufWinEnter" },
+    {
+      pattern = { "*.go" },
+      callback = function()
+        vim.keymap.set("n", "cl", function()
+          local word = vim.fn.expand("<cword>")
+          local newRow = "fmt.Printf(\"### " .. word .. ": %s\", " .. word .. ")"
+          vim.cmd.norm("o" .. newRow)
+        end, { silent = true })
+      end
+    }
+  },
+  {
     "ColorScheme", {
     pattern = "*",
     callback = function()
@@ -388,6 +410,7 @@ lvim.autocommands = {
       end
 
       vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
+      vim.cmd("hi CursorLineNr guifg=" .. theme_colors.blue)
     end,
   },
   },
@@ -563,12 +586,12 @@ lvim.plugins = {
       })
     end
   },
-  -- {
-  --   "tzachar/cmp-tabnine",
-  --   event = "InsertEnter",
-  --   dependencies = "hrsh7th/nvim-cmp",
-  --   build = "./install.sh",
-  -- },
+  {
+    "tzachar/cmp-tabnine",
+    build = "./install.sh",
+    dependencies = "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+  },
   {
     -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
     "zbirenbaum/copilot.lua",
@@ -606,11 +629,57 @@ lvim.plugins = {
     end,
   },
   {
+    -- https://github.com/smjonas/inc-rename.nvim#readme
     "smjonas/inc-rename.nvim",
     event = "BufRead",
     config = function()
       require("inc_rename").setup()
+
+      vim.keymap.set("n", "rn", function()
+        return ":IncRename " .. vim.fn.expand("<cword>")
+      end, { expr = true })
     end,
+  },
+  {
+    -- https://github.com/mawkler/modicator.nvim#configuration
+    'mawkler/modicator.nvim',
+    dependencies = "folke/tokyonight.nvim",
+    -- event = "VimEnter",
+    -- lazy = false,
+    init = function()
+      vim.o.termguicolors = true -- Required for Modicator to work
+    end,
+    config = function()
+      local colors = require("tokyonight.colors").setup()
+
+      require('modicator').setup({
+        highlights = {
+          defaults = {
+            foreground = colors.blue,
+            bold = true,
+          },
+          modes = {
+            ['n'] = { foreground = colors.blue },
+            ['v'] = { foreground = colors.purple },
+            ['V'] = { foreground = colors.purple },
+            ['i'] = { foreground = colors.green },
+            ['R'] = { foreground = colors.red1 },
+          }
+        }
+      })
+    end,
+  },
+  {
+    -- https://github.com/rmagatti/goto-preview#readme
+    "rmagatti/goto-preview",
+    config = function()
+      require('goto-preview').setup {
+        width = 80,               -- Width of the floating window
+        height = 20,              -- Height of the floating window
+        default_mappings = false, -- Bind default mappings
+        preview_window_title = { enable = false },
+      }
+    end
   },
   -- {
   --   "microsoft/vscode-js-debug",

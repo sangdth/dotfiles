@@ -1,8 +1,10 @@
 quitOnTopLevelReturn: false
 promptToReturnFromSubprocess: false
 os:
-  editCommand: "lvim"
-  editCommandTemplate: "{{editor}} +{{line}} -- {{filename}}"
+  edit: "lvim {{filename}}"
+  editAtLine: "lvim +{{line}} {{filename}}"
+  editAtLineAndWait: "lvim +{{line}} {{filename}}"
+  editInTerminal: true
 git:
   commitPrefixes:
     lokalise-main:
@@ -23,7 +25,7 @@ gui:
     selectedRangeBgColor:
       - "#292e42"
   authorColors:
-    "Sang Dang": yellow
+    "Sang Dang": magenta
     "*": blue
   branchColors:
     feature: white

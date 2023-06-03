@@ -10,7 +10,6 @@ alias ls='lsd'
 alias la='lsd -la --group-dirs first --date relative --size short'
 alias lt='lsd --tree --ignore-glob node_modules --ignore-glob .git'
 
-alias git='bit'
 alias mv='mv -i'
 alias nest='npx --yes @nestjs/cli'
 alias pip='pip3'

@@ -53,12 +53,12 @@
   colorMoved = default
 
 [difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path = 
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
 
 [mergetool "sourcetree"]
-  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
 
 [color]
   ui = auto
@@ -70,7 +70,8 @@
   fmain = !git checkout -b master && git branch -D main
   sorrymaster = !git checkout -b main && git branch -D master
   sync = !git fetch origin --prune && git pull origin
-  save = !git commit -a --amend --no-edit
+  save = !bit save
+  switch = !bit switch
 
 [rebase]
   autoSquash = true
