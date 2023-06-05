@@ -16,3 +16,4 @@ yarn-error.log*
 
 .sessions
 .vim-session
+.git-blame-ignore-revs

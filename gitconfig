@@ -19,6 +19,9 @@
   pager = delta
   editor = lvim
 
+[blame]
+  ignoreRevsFile = ./.git-blame-ignore-revs
+
 [interactive]
   diffFilter = delta --color-only
 
