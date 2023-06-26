@@ -77,7 +77,7 @@ source $HOME/.cargo/env
 
 test -e "$HOME/.iterm2_shell_integration.zsh" && source "$HOME/.iterm2_shell_integration.zsh"
 
-[[ -s "/Users/sangdth/.gvm/scripts/gvm" ]] && source "/Users/sangdth/.gvm/scripts/gvm"
+[[ -s "/Users/sang/.gvm/scripts/gvm" ]] && source "/Users/sang/.gvm/scripts/gvm"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -90,37 +90,9 @@ fi
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-_fzf_complete_git() {
-  if [[ $@ == 'git checkout -b'* ]]; then
-    ME=""
-    GIT_CHECKOUT="git checkout -b "
-    STATUS_QUERY="status NOT IN (Done, Dismissed, Released, 'Ready for release')"
-
-    ARGS="$(echo $@ | sed 's/git checkout -b //g')"
-
-    read SCOPE CODE <<< $(echo "$ARGS" | awk -F/ '{print $1,$2}')
-
-    if [[ $ARGS == "" ]]; then
-      ME="-a$(jira me)"
-      PROJECT_QUERY="project IS NOT EMPTY"
-    elif [[ $CODE == "" ]]; then
-      PROJECT_QUERY="project IN ($SCOPE)" # Allow to use `FF` only without feature/
-    else
-      GIT_CHECKOUT="git checkout -b $SCOPE/"
-      PROJECT_QUERY="project IN ($CODE)"
-    fi
-
-    local tasks
-    tasks=$(jira issue list --plain --no-headers --columns key,summary $ME -q "$STATUS_QUERY AND $PROJECT_QUERY")
-      _fzf_complete --ansi --reverse --multi --prompt="fzf> " -- "$GIT_CHECKOUT" < <(
-        echo $tasks | sed 's/[[:space:]]/-/g' | tr -dc '[:alnum:]-\n'
-      )
-  fi
-}
-
-
-# AWS config variables
-export AWS_SDK_LOAD_CONFIG=true
-
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/bit bit
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

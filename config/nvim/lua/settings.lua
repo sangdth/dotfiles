@@ -1,10 +1,7 @@
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
-vim.opt.termguicolors = true -- set termguicolors to enable highlight groups
 vim.opt.autoindent = true
 vim.opt.cmdheight = 2
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
@@ -17,7 +14,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldlevel = 99 -- Using ufo provider need a large value
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
-vim.opt.formatoptions = "crjql"
+vim.opt.formatoptions = "cro" -- "crjql"
 vim.opt.lazyredraw = true
 vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.number = true
@@ -35,3 +32,5 @@ vim.opt.timeoutlen = 300
 vim.opt.ttimeoutlen = 10 -- https://vi.stackexchange.com/a/24938/19109
 vim.opt.updatetime = 200
 vim.opt.whichwrap = "<,>,[,]"
+
+vim.diagnostic.config({ virtual_text = true })

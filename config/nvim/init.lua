@@ -1,4 +1,3 @@
 require("settings")
--- require("keymappings")
+require("lsp")
 require("core.lazy")
-require("core.lsp")

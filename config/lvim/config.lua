@@ -416,9 +416,6 @@ lvim.autocommands = {
   },
 }
 
--- local cmp = require "lvim.cmp"
--- lvim.builtin.cmp.mappings = {}
-
 -- Additional Plugins
 lvim.plugins = {
   {
@@ -639,47 +636,6 @@ lvim.plugins = {
         return ":IncRename " .. vim.fn.expand("<cword>")
       end, { expr = true })
     end,
-  },
-  {
-    -- https://github.com/mawkler/modicator.nvim#configuration
-    'mawkler/modicator.nvim',
-    dependencies = "folke/tokyonight.nvim",
-    -- event = "VimEnter",
-    -- lazy = false,
-    init = function()
-      vim.o.termguicolors = true -- Required for Modicator to work
-    end,
-    config = function()
-      local colors = require("tokyonight.colors").setup()
-
-      require('modicator').setup({
-        highlights = {
-          defaults = {
-            foreground = colors.blue,
-            bold = true,
-          },
-          modes = {
-            ['n'] = { foreground = colors.blue },
-            ['v'] = { foreground = colors.purple },
-            ['V'] = { foreground = colors.purple },
-            ['i'] = { foreground = colors.green },
-            ['R'] = { foreground = colors.red1 },
-          }
-        }
-      })
-    end,
-  },
-  {
-    -- https://github.com/rmagatti/goto-preview#readme
-    "rmagatti/goto-preview",
-    config = function()
-      require('goto-preview').setup {
-        width = 80,               -- Width of the floating window
-        height = 20,              -- Height of the floating window
-        default_mappings = false, -- Bind default mappings
-        preview_window_title = { enable = false },
-      }
-    end
   },
   -- {
   --   "microsoft/vscode-js-debug",

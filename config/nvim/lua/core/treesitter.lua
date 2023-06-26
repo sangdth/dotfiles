@@ -10,7 +10,6 @@ end
 
 configs.setup {
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-  ensure_installed = "all",
   ignore_install = { "" }, 
   highlight = {
     enable = true, -- false will disable the whole extension
