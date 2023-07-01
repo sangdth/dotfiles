@@ -1,25 +1,7 @@
 lastupdatecheck: 0
 recentrepos:
-- /Users/sangdang/dotfiles
-- /Users/sangdang/Lokalise/lokalise-main
-- /Users/sangdang/Lokalise/louis
-- /Users/sangdang/Projects/lakihelppi/dashboard
-- /Users/sangdang/Projects/lakihelppi/tonttu
-- /Users/sangdang/Projects/ants
-- /Users/sangdang/Projects/lakihelppi/temp
-- /Users/sangdang/Projects/lazyjira
-- /Users/sangdang/Projects/lakihelppi/leadoo
-- /Users/sangdang/Projects/lakihelppi/react-activity-feed
-- /Users/sangdang/Projects/nestjs-init
-- /Users/sangdang/Projects/lakihelppi/cli
-- /Users/sangdang/Lokalise/styled
-- /Users/sangdang/Lokalise/npm-package-template
-- /Users/sangdang/Lokalise/web-starter-template
-- /Users/sangdang/Projects/issueradar
-- /Users/sangdang/Projects/lakihelppi/foundations
-- /Users/sangdang/Projects/rassue
-- /Users/sangdang/Projects/scroll-and-float
-- /Users/sangdang/Projects/tree-sitter-mdx
+- /Users/sang/dotfiles
+- /Users/sang/Projects/lakihelppi/lakihelppi
 startuppopupversion: 5
 customcommandshistory: []
 hidecommandlog: true

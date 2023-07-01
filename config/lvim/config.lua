@@ -39,7 +39,7 @@ vim.diagnostic.config({ virtual_text = true })
 vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings" }
 
 -- General
-lvim.colorscheme = "tokyonight-night"
+lvim.colorscheme = "tokyonight"
 lvim.leader = "space"
 lvim.log.level = "warn"
 lvim.line_wrap_cursor_movement = false
@@ -323,7 +323,7 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   {
-    exe = "eslint_d",
+    exe = "eslint",
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
   },
   {
@@ -381,7 +381,7 @@ lvim.autocommands = {
     "ColorScheme", {
     pattern = "*",
     callback = function()
-      local theme_colors = require("tokyonight.colors").setup()
+      local theme_colors = require("tokyonight.colors").setup({})
       local groups_use_bg = {
         "TelescopeBorder",
         "TelescopeNormal",
@@ -635,6 +635,21 @@ lvim.plugins = {
       vim.keymap.set("n", "rn", function()
         return ":IncRename " .. vim.fn.expand("<cword>")
       end, { expr = true })
+    end,
+  },
+  {
+    "chrisgrieser/nvim-spider",
+    lazy = true,
+    event = "BufRead",
+    config = function()
+      require("spider").setup({
+        skipInsignificantPunctuation = true
+      })
+
+      vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>", { desc = "Spider-w" })
+      vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>", { desc = "Spider-e" })
+      vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
+      vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>", { desc = "Spider-ge" })
     end,
   },
   -- {
