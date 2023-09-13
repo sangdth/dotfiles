@@ -1,7 +1,14 @@
 lastupdatecheck: 0
 recentrepos:
-- /Users/sang/dotfiles
 - /Users/sang/Projects/lakihelppi/lakihelppi
+- /Users/sang/Projects/sieutoc/nextjs-template
+- /Users/sang/Projects/sieutoc/platform
+- /Users/sang/Projects/sieutoc/themes
+- /Users/sang/dotfiles
+- /Users/sang/Projects/booksao/booksao
+- /Users/sang/Projects/kien
+- /Users/sang/Projects/lakihelppi/leadoo
 startuppopupversion: 5
 customcommandshistory: []
 hidecommandlog: true
+ignorewhitespaceindiffview: false

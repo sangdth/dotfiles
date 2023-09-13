@@ -137,9 +137,9 @@ lvim.builtin.bufferline.options.always_show_bufferline = true
 
 local components = require "lvim.core.lualine.components"
 components.diff.symbols = {
-  added = " 落",
-  modified = " ",
-  removed = " ",
+  added = "+",
+  modified = "~",
+  removed = "-",
 }
 lvim.builtin.lualine.options.theme = "tokyonight"
 lvim.builtin.lualine.options.disabled_filetypes = { "packer", "NvimTree" }
@@ -237,7 +237,7 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.renderer.icons.glyphs = {
   default = "",
   symlink = "",
-  bookmark = "",
+  -- bookmark = "",
   git = {
     unstaged = "",
     staged = "",
@@ -268,10 +268,10 @@ lvim.builtin.nvimtree.setup.diagnostics = {
   show_on_dirs = false,
   debounce_delay = 50,
   icons = {
-    hint = "",
-    info = "",
-    warning = "",
-    error = "",
+    -- hint = "",
+    -- info = "",
+    -- warning = "",
+    -- error = "",
   },
 }
 -- https://discord.com/channels/701530051140780102/704077577920446636/1089452567681040384
