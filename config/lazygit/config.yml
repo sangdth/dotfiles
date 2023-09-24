@@ -4,7 +4,6 @@ os:
   edit: "lvim {{filename}}"
   editAtLine: "lvim +{{line}} {{filename}}"
   editAtLineAndWait: "lvim +{{line}} {{filename}}"
-  editInTerminal: true
 git:
   commitPrefixes:
     lokalise-main:
@@ -14,16 +13,21 @@ git:
     colorArg: always
     pager: delta --dark --paging=never
 gui:
-  showIcons: true
+  nerdFontsVersion: "3"
   sidePanelWidth: 0.3
   mainPanelSplitMode: "vertical"
   theme:
     inactiveBorderColor:
-      - "#292c3e"
+      - "#4A5568"
     selectedLineBgColor:
-      - "#292e42"
+      - "#2D3748"
     selectedRangeBgColor:
-      - "#292e42"
+      - "#2D3748"
+    cherryPickedCommitBgColor:
+      - "#1f2335"
+    cherryPickedCommitFgColor:
+      - "#0BC5EA"
+      - bold
   authorColors:
     "Sang Dang": magenta
     "*": blue

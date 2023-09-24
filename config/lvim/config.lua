@@ -165,7 +165,10 @@ lvim.builtin.lualine.inactive_sections = {
 
 -- We use protected-mode (pcall) just in case the plugin wasn't loaded
 local _, actions = pcall(require, "telescope.actions")
-lvim.builtin.telescope.defaults.layout_config = { width = 0.8 }
+lvim.builtin.telescope.defaults.layout_config = {
+  width = 0.8,
+  height = 0.6,
+}
 lvim.builtin.telescope.defaults.path_display.shorten = 10
 lvim.builtin.telescope.defaults.selection_caret = " "
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
@@ -185,6 +188,7 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "vendor",
   "yarn.lock",
   "npm-lock.json",
+  "pnpm-lock.json",
   "package-lock.json",
 }
 lvim.builtin.telescope.defaults.mappings = {
@@ -195,7 +199,7 @@ lvim.builtin.telescope.defaults.mappings = {
     -- conflict with lazygit
     ["<C-n>"] = actions.cycle_history_next,
     ["<C-p>"] = actions.cycle_history_prev,
-    ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+    -- ["<CR>"] = actions.smart_send_to_qflist + actions.open_qflist,
   },
   -- for normal mode
   n = {
@@ -231,7 +235,7 @@ lvim.builtin.nvimtree.setup.git.ignore = true
 lvim.builtin.nvimtree.setup.git.timeout = 1000 -- some big repo need longer than 200ms
 lvim.builtin.nvimtree.setup.hijack_cursor = true
 lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
-lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = false
+lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
 lvim.builtin.nvimtree.setup.renderer.special_files = {}
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 lvim.builtin.nvimtree.setup.renderer.icons.glyphs = {
@@ -470,7 +474,7 @@ lvim.plugins = {
     event = "BufRead",
     lazy = true,
     config = function()
-      require('mini.cursorword').setup({ delay = 200 })
+      require('mini.cursorword').setup({ delay = 100 })
 
       require('mini.surround').setup({
         mappings = {
@@ -555,7 +559,7 @@ lvim.plugins = {
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,
-        max_join_length = 999,
+        max_join_length = 99,
       })
     end,
   },
@@ -607,6 +611,13 @@ lvim.plugins = {
           golang = true,
           ["*"] = false,
         },
+        suggestion = {
+          -- other options
+          keymap = {
+            -- other keymaps
+            accept = false
+          },
+        },
       })
     end,
   },
@@ -650,6 +661,22 @@ lvim.plugins = {
       vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>", { desc = "Spider-e" })
       vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
       vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>", { desc = "Spider-ge" })
+    end,
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    event = "VimEnter",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require('spectre').setup()
+
+      vim.keymap.set('n', '<leader>ss', '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
+      vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
+        { desc = "Search current word" })
+      vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>',
+        { desc = "Search current word" })
+      vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
+        { desc = "Search on current file" })
     end,
   },
   -- {
