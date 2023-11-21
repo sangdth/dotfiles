@@ -118,6 +118,10 @@ lvim.builtin.which_key.mappings["t"] = {
   r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
   T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
+lvim.builtin.which_key.mappings["C"] = {
+  name = "Python",
+  c = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Env" },
+}
 
 -- My working place use 4 spaces indentation
 local is_work_dir = string.find(vim.fn.getcwd(), os.getenv('HOME') .. "/Lokalise")
@@ -156,6 +160,7 @@ lvim.builtin.lualine.sections = {
       colored = true,   -- Displays filetype icon in color if set to true
       icon_only = true, -- Display only an icon for filetype
     },
+    'swenv',
   },
   lualine_y = {},
 }
@@ -323,6 +328,10 @@ formatters.setup {
     exe = "prettier", -- prettier_d_slim somehow ignore the eslint rules
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "json", "yaml" },
   },
+  {
+    exe = "black",
+    filetypes = { "python" },
+  },
 }
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
@@ -333,6 +342,10 @@ linters.setup {
   {
     exe = "golangci-lint",
     filetypes = { "go" },
+  },
+  {
+    exe = "flake8",
+    filetypes = { "python" }
   },
 }
 
@@ -679,6 +692,11 @@ lvim.plugins = {
         { desc = "Search on current file" })
     end,
   },
+  {
+    "AckslD/swenv.nvim",
+    event = "VimEnter",
+  },
+
   -- {
   --   "jackMort/ChatGPT.nvim",
   --   event = "VeryLazy",
