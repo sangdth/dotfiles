@@ -1,16 +1,11 @@
 lastupdatecheck: 0
 recentrepos:
-- /Users/sang/Projects/sieutoc/nextjs-template
-- /Users/sang/dotfiles
-- /Users/sang/Projects/issueradar/dashboard
-- /Users/sang/Projects/prep-master
-- /Users/sang/Projects/prep-master2
-- /Users/sang/Projects/sieutoc/platform
+- /Users/sang/Projects/sieutoc/taijutsu
 - /Users/sang/Projects/lakihelppi/lakihelppi
-- /Users/sang/Projects/sieutoc/themes
-- /Users/sang/Projects/booksao/booksao
-- /Users/sang/Projects/kien
-- /Users/sang/Projects/lakihelppi/leadoo
+- /Users/sang/Projects/sieutoc/platform
+- /Users/sang/Projects/sieutoc/customers/bemp
+- /Users/sang/Projects/lakihelppi/backup-cron
+- /Users/sang/dotfiles
 startuppopupversion: 5
 customcommandshistory:
 - qa

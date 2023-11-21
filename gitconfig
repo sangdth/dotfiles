@@ -10,17 +10,14 @@
   program = /usr/local/MacGPG2/bin/gpg2
 
 [commit]
-  template = /Users/sangdang/dotfiles/git/commit-template
+  template = /Users/sang/dotfiles/git/commit-template
   gpgsign = true
 
 [core]
-  excludesfile = /Users/sangdang/.gitignore_global
-  hooksPath = /Users/sangdang/dotfiles/git/hooks
+  excludesfile = /Users/sang/.gitignore_global
+  hooksPath = /Users/sang/dotfiles/git/hooks
   pager = delta
   editor = lvim
-
-[blame]
-  ignoreRevsFile = ./.git-blame-ignore-revs
 
 [interactive]
   diffFilter = delta --color-only
@@ -54,14 +51,6 @@
 
 [diff]
   colorMoved = default
-
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 
 [color]
   ui = auto

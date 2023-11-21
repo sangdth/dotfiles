@@ -34,7 +34,22 @@ vim.opt.ttimeoutlen = 10 -- https://vi.stackexchange.com/a/24938/19109
 vim.opt.updatetime = 200
 vim.opt.whichwrap = "<,>,[,]"
 
-vim.diagnostic.config({ virtual_text = true })
+local config = {
+  virtual_text = true, -- disable virtual text
+  update_in_insert = true,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = true,
+    style = "minimal",
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
+}
+
+vim.diagnostic.config(config)
 
 vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings" }
 
@@ -118,6 +133,10 @@ lvim.builtin.which_key.mappings["t"] = {
   r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
   T = { "<cmd>TroubleToggle lsp_type_definitions<cr>", "type definitions" },
 }
+lvim.builtin.which_key.mappings["C"] = {
+  name = "Python",
+  c = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Env" },
+}
 
 -- My working place use 4 spaces indentation
 local is_work_dir = string.find(vim.fn.getcwd(), os.getenv('HOME') .. "/Lokalise")
@@ -156,6 +175,7 @@ lvim.builtin.lualine.sections = {
       colored = true,   -- Displays filetype icon in color if set to true
       icon_only = true, -- Display only an icon for filetype
     },
+    'swenv',
   },
   lualine_y = {},
 }
@@ -283,6 +303,7 @@ lvim.builtin.nvimtree.setup.diagnostics = {
 
 lvim.builtin.indentlines.options.char = "│"
 lvim.builtin.indentlines.options.context_char = "│"
+lvim.builtin.indentlines.options.show_first_indent_level = false
 lvim.builtin.indentlines.options.show_current_context = true
 lvim.builtin.indentlines.options.use_treesitter = true
 lvim.builtin.indentlines.options.space_char_blankline = " "
@@ -323,7 +344,12 @@ formatters.setup {
     exe = "prettier", -- prettier_d_slim somehow ignore the eslint rules
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "json", "yaml" },
   },
+  {
+    exe = "black",
+    filetypes = { "python" },
+  }
 }
+
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   {
@@ -334,6 +360,10 @@ linters.setup {
     exe = "golangci-lint",
     filetypes = { "go" },
   },
+  {
+    exe = "flake8",
+    filetypes = { "python" }
+  }
 }
 
 lvim.builtin.dap.active = false
@@ -432,14 +462,6 @@ lvim.plugins = {
       }
       vim.api.nvim_set_keymap("n", "f", ":HopChar2<cr>", { silent = true })
       vim.api.nvim_set_keymap("n", "F", ":HopWord<cr>", { silent = true })
-    end,
-  },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "BufRead",
-    lazy = true,
-    config = function()
-      require("lsp_signature").on_attach()
     end,
   },
   {
@@ -678,6 +700,10 @@ lvim.plugins = {
       vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
         { desc = "Search on current file" })
     end,
+  },
+  {
+    "AckslD/swenv.nvim",
+    event = "VimEnter",
   },
   -- {
   --   "microsoft/vscode-js-debug",

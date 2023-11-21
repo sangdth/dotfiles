@@ -39,7 +39,7 @@ alias openlocal='ngrok http --region=us --hostname=ants.ngrok.io' # -region=eu -
 alias air='~/.local/bin/air'
 
 alias luamake='~/.config/lua-language-server/3rd/luamake/luamake'
-alias ngrok='~/Applications/ngrok'
+# alias ngrok='~/Applications/ngrok'
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
 # Control mongodb
