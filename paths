@@ -24,3 +24,5 @@ export NVM_DIR="$HOME/.config/nvm"
 
 # This loads avn (aiven cli)
 export PATH=$PATH:$HOME/Library/Python/3.9/bin
+
+export PATH="/opt/homebrew/opt/python@3.11/libexec/bin:$PATH"

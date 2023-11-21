@@ -680,6 +680,18 @@ lvim.plugins = {
     end,
   },
   -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("chatgpt").setup()
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   }
+  -- },
+  -- {
   --   "microsoft/vscode-js-debug",
   --   lazy = true,
   --   build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
