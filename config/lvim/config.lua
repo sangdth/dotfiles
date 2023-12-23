@@ -24,7 +24,6 @@ vim.opt.relativenumber = true
 vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.opt.smartindent = true -- make indenting smarter again
 vim.opt.shiftwidth = 2
-vim.opt.shortmess = "a"
 vim.opt.showcmd = true
 vim.opt.showmode = false
 vim.opt.synmaxcol = 150
@@ -141,9 +140,9 @@ lvim.builtin.bufferline.options.always_show_bufferline = true
 
 local components = require "lvim.core.lualine.components"
 components.diff.symbols = {
-  added = "+",
-  modified = "~",
-  removed = "-",
+  added = " ",
+  modified = " ",
+  removed = " ",
 }
 lvim.builtin.lualine.options.theme = "tokyonight"
 lvim.builtin.lualine.options.disabled_filetypes = { "packer", "NvimTree" }
@@ -212,6 +211,18 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = actions.move_selection_previous,
   },
 }
+lvim.builtin.telescope.defaults.vimgrep_arguments = {
+  "rg",
+  "--color=never",
+  "--no-heading",
+  "--with-filename",
+  "--line-number",
+  "--fixed-strings",
+  "--column",
+  "--smart-case",
+  "--hidden",
+  "--glob=!.git/",
+}
 lvim.builtin.telescope.on_config_done = function(telescope)
   pcall(telescope.load_extension, "projects")
 end
@@ -242,30 +253,32 @@ lvim.builtin.nvimtree.setup.hijack_cursor = true
 lvim.builtin.nvimtree.setup.hijack_unnamed_buffer_when_opening = true
 lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
 lvim.builtin.nvimtree.setup.renderer.special_files = {}
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
-lvim.builtin.nvimtree.setup.renderer.icons.glyphs = {
-  default = "",
-  symlink = "",
-  -- bookmark = "",
-  git = {
-    unstaged = "",
-    staged = "",
-    unmerged = "ﬤ",
-    renamed = "",
-    untracked = "",
-    deleted = "",
-    ignored = "",
-  },
-  folder = {
-    arrow_closed = "",
-    arrow_open = "",
-    default = "",
-    open = "",
-    empty = "",
-    empty_open = "",
-    symlink = "",
-    symlink_open = "",
-  },
+lvim.builtin.nvimtree.setup.renderer.icons = {
+  show = { git = true },
+  glyphs = {
+    default = "",
+    symlink = "",
+    bookmark = "",
+    git = {
+      unstaged = "",
+      staged = "",
+      unmerged = "",
+      renamed = "",
+      untracked = "",
+      deleted = "",
+      ignored = "",
+    },
+    folder = {
+      arrow_closed = "",
+      arrow_open = "",
+      default = "",
+      open = "",
+      empty = "",
+      empty_open = "",
+      symlink = "",
+      symlink_open = "",
+    },
+  }
 }
 lvim.builtin.nvimtree.setup.filters = {
   dotfiles = false,
@@ -277,10 +290,10 @@ lvim.builtin.nvimtree.setup.diagnostics = {
   show_on_dirs = false,
   debounce_delay = 50,
   icons = {
-    -- hint = "",
-    -- info = "",
-    -- warning = "",
-    -- error = "",
+    hint = "󰌶",
+    info = "",
+    warning = "",
+    error = "",
   },
 }
 -- https://discord.com/channels/701530051140780102/704077577920446636/1089452567681040384
@@ -344,7 +357,7 @@ linters.setup {
     filetypes = { "go" },
   },
   {
-    exe = "flake8",
+    exe = "black",
     filetypes = { "python" }
   },
 }

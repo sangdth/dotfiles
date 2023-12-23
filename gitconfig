@@ -3,8 +3,8 @@
 
 [user]
   name = Sang Dang
-  email = sangdth@gmail.com
-  signingkey = 72750EDFEE575EEEFD1C39B8B90A934F169E9CBE
+  email = sang@dang.to
+  signingkey = AA6A388340079D7254DEB159698E4AABAAA7BE6F
 
 [gpg]
   program = /usr/local/MacGPG2/bin/gpg2

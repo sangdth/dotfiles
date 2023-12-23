@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+alias npx='npx --yes'
 alias am='amplify'
 alias codemod='npx --yes @next/codemod'
 alias cp='cp -i'
@@ -31,15 +33,16 @@ alias mp='cd ~/Projects'
 alias dc='docker-compose'
 alias dcrun='docker-compose run --rm'
 alias npmlist='npm list --location=global --depth=0'
-alias lok='~/Lokalise/lokalise-main/bin/dev-console'
-alias lmain='cd ~/Lokalise/lokalise-main'
+
+alias ngrok='~/Applications/ngrok'
 alias openlocal='ngrok http --region=us --hostname=ants.ngrok.io' # -region=eu -subdomain=sa -host-header=rewrite 3000'
+
+alias redis='redis-cli'
 
 # For golang development
 alias air='~/.local/bin/air'
 
 alias luamake='~/.config/lua-language-server/3rd/luamake/luamake'
-alias ngrok='~/Applications/ngrok'
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
 # Control mongodb
@@ -76,9 +79,6 @@ jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
 
-# Trim new lines and copy to clipboard
-alias c="tr -d '\n' | pbcopy"
-
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 
@@ -103,35 +103,13 @@ alias plistbuddy="/usr/libexec/PlistBuddy"
 # Airport CLI alias
 alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
 
-# Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
-# (useful when executing time-consuming commands)
-alias badge="tput bel"
-
-# Intuitive map function
-# For example, to list all directories that contain a certain file:
-# find . -name .gitattributes | map dirname
-alias map="xargs -n1"
-
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 	alias "$method"="lwp-request -m '$method'"
 done
 
-# Make Grunt print stack traces by default
-command -v grunt > /dev/null && alias grunt="grunt --stack"
-
-# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
-alias stfu="osascript -e 'set volume output muted true'"
-alias pumpitup="osascript -e 'set volume output volume 100'"
-
-# Kill all the tabs in Chrome to free up memory
-# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
-
-# Lock the screen (when going AFK)
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
+
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
