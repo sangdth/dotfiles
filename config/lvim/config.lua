@@ -38,7 +38,7 @@ vim.diagnostic.config({ virtual_text = true })
 vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings" }
 
 -- General
-lvim.colorscheme = "tokyonight"
+lvim.colorscheme = "catppuccin-frappe"
 lvim.leader = "space"
 lvim.log.level = "warn"
 lvim.line_wrap_cursor_movement = false
@@ -46,8 +46,8 @@ lvim.format_on_save = true
 
 -- Control the core plugins here
 lvim.builtin.alpha.active = true
-lvim.builtin.autopairs.active = true
 lvim.builtin.breadcrumbs.active = false
+lvim.builtin.autopairs.active = true
 
 -- Keymappings [view all the defaults by pressing <leader>Lk]
 lvim.keys.normal_mode["<C-s>"] = ":w<CR>"
@@ -144,7 +144,7 @@ components.diff.symbols = {
   modified = " ",
   removed = " ",
 }
-lvim.builtin.lualine.options.theme = "tokyonight"
+lvim.builtin.lualine.options.theme = "catppuccin-frappe"
 lvim.builtin.lualine.options.disabled_filetypes = { "packer", "NvimTree" }
 lvim.builtin.lualine.extensions = { "quickfix", "nvim-tree" }
 lvim.builtin.lualine.sections = {
@@ -169,12 +169,15 @@ lvim.builtin.lualine.inactive_sections = {
 
 -- We use protected-mode (pcall) just in case the plugin wasn't loaded
 local _, actions = pcall(require, "telescope.actions")
+lvim.builtin.telescope.defaults.layout_strategy = 'vertical'
 lvim.builtin.telescope.defaults.layout_config = {
+  prompt_position = 'top',
   width = 0.8,
-  height = 0.6,
+  height = 0.9,
+  preview_height = 0.6,
 }
 lvim.builtin.telescope.defaults.path_display.shorten = 10
-lvim.builtin.telescope.defaults.selection_caret = " "
+lvim.builtin.telescope.defaults.selection_caret = "█ "
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "%.git/",
   "^.next/",
@@ -341,10 +344,10 @@ formatters.setup {
     exe = "prettier", -- prettier_d_slim somehow ignore the eslint rules
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "json", "yaml" },
   },
-  {
-    exe = "black",
-    filetypes = { "python" },
-  },
+  -- {
+  --   exe = "black",
+  --   filetypes = { "python" },
+  -- },
 }
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
@@ -356,24 +359,25 @@ linters.setup {
     exe = "golangci-lint",
     filetypes = { "go" },
   },
-  {
-    exe = "black",
-    filetypes = { "python" }
-  },
+  -- {
+  --   exe = "black",
+  --   filetypes = { "python" }
+  -- },
 }
 
 lvim.builtin.dap.active = false
 lvim.builtin.dap.breakpoint.text = "⛔"
 lvim.builtin.dap.ui.auto_open = true
 
+
 lvim.autocommands = {
-  {
-    "BufEnter",
-    {
-      pattern = { "*" },
-      command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
-    }
-  },
+  -- {
+  --   "BufEnter",
+  --   {
+  --     pattern = { "*" },
+  --     command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
+  --   }
+  -- },
   {
     { "BufEnter", "BufWinEnter" },
     {
@@ -407,47 +411,73 @@ lvim.autocommands = {
       end
     }
   },
-  {
-    "ColorScheme", {
-    pattern = "*",
-    callback = function()
-      local theme_colors = require("tokyonight.colors").setup({})
-      local groups_use_bg = {
-        "TelescopeBorder",
-        "TelescopeNormal",
-      }
-      for _, name in ipairs(groups_use_bg) do
-        vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
-      end
+  -- {
+  --   "ColorScheme",
+  --   {
+  --     pattern = "*",
+  --     callback = function()
+  --       local theme_colors = require("tokyonight.colors").setup({})
+  --       local groups_use_bg = {
+  --         "TelescopeBorder",
+  --         "TelescopeNormal",
+  --       }
+  --       for _, name in ipairs(groups_use_bg) do
+  --         vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg, name))
+  --       end
 
-      local groups_use_dark_bg = {
-        "BufferLineFill",
-        "MsgArea",
-        "NormalFloat",
-        "NvimTree",
-        "NvimTreeEndOfBuffer",
-        "NvimTreeNormal",
-        "NvimTreeNormalNC",
-        "NvimTreeStatusLine",
-        "NvimTreeStatusLineNC",
-        "PanelHeading",
-        "StatusLine",
-        "StatusLineNC",
-        "VertSplit",
-      }
-      for _, name in ipairs(groups_use_dark_bg) do
-        vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
-      end
+  --       local groups_use_dark_bg = {
+  --         "BufferLineFill",
+  --         "MsgArea",
+  --         "NormalFloat",
+  --         "NvimTree",
+  --         "NvimTreeEndOfBuffer",
+  --         "NvimTreeNormal",
+  --         "NvimTreeNormalNC",
+  --         "NvimTreeStatusLine",
+  --         "NvimTreeStatusLineNC",
+  --         "PanelHeading",
+  --         "StatusLine",
+  --         "StatusLineNC",
+  --         "VertSplit",
+  --       }
+  --       for _, name in ipairs(groups_use_dark_bg) do
+  --         vim.cmd(string.format("hi %s guibg=" .. theme_colors.bg_dark, name))
+  --       end
 
-      vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
-      vim.cmd("hi CursorLineNr guifg=" .. theme_colors.blue)
-    end,
-  },
-  },
+  --       vim.cmd("hi NvimTreeStatusLineNC guifg=" .. theme_colors.bg_dark)
+  --       vim.cmd("hi CursorLineNr guifg=" .. theme_colors.blue)
+  --     end,
+  --   },
+  -- },
 }
 
 -- Additional Plugins
 lvim.plugins = {
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          hop = true,
+          mini = {
+            enabled = true,
+            indentscope_color = "",
+          },
+          indent_blankline = {
+            enabled = true,
+            scope_color = "", -- catppuccin color (eg. `lavender`) Default: text
+            colored_indent_levels = false,
+          },
+        }
+      })
+    end
+  },
   {
     "phaazon/hop.nvim",
     event = "BufRead",
@@ -500,6 +530,8 @@ lvim.plugins = {
     event = "BufRead",
     lazy = true,
     config = function()
+      require('mini.animate').setup()
+
       require('mini.cursorword').setup({ delay = 100 })
 
       require('mini.surround').setup({
@@ -598,28 +630,6 @@ lvim.plugins = {
     end
   },
   {
-    "codota/tabnine-nvim",
-    event = "InsertEnter",
-    build = "./dl_binaries.sh",
-    config = function()
-      require('tabnine').setup({
-        disable_auto_comment = true,
-        accept_keymap = "<Tab>",
-        dismiss_keymap = "<C-]>",
-        debounce_ms = 800,
-        suggestion_color = { gui = "#808080", cterm = 244 },
-        exclude_filetypes = { "TelescopePrompt" },
-        -- log_file_path = nil, -- absolute path to Tabnine log file
-      })
-    end
-  },
-  {
-    "tzachar/cmp-tabnine",
-    build = "./install.sh",
-    dependencies = "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-  },
-  {
     -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -635,6 +645,8 @@ lvim.plugins = {
           yaml = true,
           go = true,
           golang = true,
+          python = true,
+          rust = true,
           ["*"] = false,
         },
         suggestion = {
@@ -705,10 +717,10 @@ lvim.plugins = {
         { desc = "Search on current file" })
     end,
   },
-  {
-    "AckslD/swenv.nvim",
-    event = "VimEnter",
-  },
+  -- {
+  --   "AckslD/swenv.nvim",
+  --   event = "VimEnter",
+  -- },
 
   -- {
   --   "jackMort/ChatGPT.nvim",
