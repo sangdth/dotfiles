@@ -5,34 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export LANG="en_US.UTF-8"
-export TERM="xterm-256color"
-export ZSH="$HOME/.oh-my-zsh"
-export FZF_BASE="/opt/homebrew/bin/fzf"
-export FZF_PREVIEW_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
-export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --follow --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --type file"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type directory"
-
-# For compilers to find llvm
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-
-export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/config"
-
-export SSH_KEY_PATH="~/.ssh/id_rsa"
-export GIT_TERMINAL_PROMPT=1
-export GIT_PAGER="delta"
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export VISUAL='lvim'
-  export EDITOR='lvim'
-fi
-
-export XDG_CONFIG_HOME="$HOME/.config"
+source $HOME/dotfiles/envs
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -103,3 +76,7 @@ export NVM_DIR="$HOME/.config/nvm"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
