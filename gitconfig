@@ -15,12 +15,11 @@
 
 [core]
   excludesfile = /Users/sangdang/.gitignore_global
-  hooksPath = /Users/sangdang/dotfiles/git/hooks
   pager = delta
   editor = lvim
 
 [blame]
-  ignoreRevsFile = ./.git-blame-ignore-revs
+  # ignoreRevsFile = ./.git-blame-ignore-revs
 
 [interactive]
   diffFilter = delta --color-only
@@ -94,3 +93,5 @@
 
 [mergetool]
   keepBackup = true
+[gitbutler]
+	signCommits = true

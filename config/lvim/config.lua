@@ -38,7 +38,7 @@ vim.diagnostic.config({ virtual_text = true })
 vim.api.nvim_clear_autocmds { pattern = { "alpha" }, group = "_filetype_settings" }
 
 -- General
-lvim.colorscheme = "catppuccin-mocha"
+-- lvim.colorscheme = "catppuccin-mocha"
 lvim.leader = "space"
 lvim.log.level = "warn"
 lvim.line_wrap_cursor_movement = false
@@ -240,7 +240,9 @@ lvim.builtin.terminal.float_opts = {
 }
 
 lvim.builtin.gitsigns.active = true
-lvim.builtin.gitsigns.opts.current_line_blame = true
+-- lvim.builtin.gitsigns.opts = {
+--   current_line_blame = true
+-- }
 
 -- Project.nvim change the cwd on git submodules
 lvim.builtin.project.active = false
@@ -337,6 +339,7 @@ lvim.builtin.treesitter.indent.enable = true
 lvim.builtin.treesitter.rainbow.enable = false
 lvim.builtin.treesitter.autotag = true
 
+
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -369,13 +372,55 @@ lvim.builtin.dap.active = false
 lvim.builtin.dap.breakpoint.text = "⛔"
 lvim.builtin.dap.ui.auto_open = true
 
+-- local mocha_palette = {
+--   rosewater = "#F5E0DC",
+--   flamingo = "#F2CDCD",
+--   pink = "#F5C2E7",
+--   mauve = "#CBA6F7",
+--   red = "#F38BA8",
+--   maroon = "#EBA0AC",
+--   peach = "#FAB387",
+--   yellow = "#F9E2AF",
+--   green = "#A6E3A1",
+--   teal = "#94E2D5",
+--   sky = "#89DCEB",
+--   sapphire = "#74C7EC",
+--   blue = "#89B4FA",
+--   lavender = "#B4BEFE",
+
+--   text = "#CDD6F4",
+--   subtext1 = "#BAC2DE",
+--   subtext0 = "#A6ADC8",
+--   overlay2 = "#9399B2",
+--   overlay1 = "#7F849C",
+--   overlay0 = "#6C7086",
+--   surface2 = "#585B70",
+--   surface1 = "#45475A",
+--   surface0 = "#313244",
+
+--   base = "#1E1E2E",
+--   mantle = "#181825",
+--   crust = "#11111B",
+-- }
 
 lvim.autocommands = {
   {
-    "BufEnter",
+    { "VimEnter" },
     {
       pattern = { "*" },
-      command = "highlight IndentBlanklineChar guifg=#282c3e gui=nocombine",
+      callback = function()
+        vim.cmd.colorscheme "catppuccin"
+      end
+    }
+  },
+  {
+    { "BufEnter", "BufWinEnter" },
+    {
+      pattern = { "*" },
+      callback = function()
+        local mocha = require("catppuccin.palettes").get_palette "mocha"
+        vim.cmd("hi NvimTreeIndentMarker gui=nocombine guifg=" .. mocha.surface0)
+      end
     }
   },
   {
@@ -459,12 +504,18 @@ lvim.plugins = {
     priority = 1000,
     config = function()
       require("catppuccin").setup({
+        flavour = "auto",
+        background = {
+          light = "latte",
+          dark = "mocha",
+        },
         integrations = {
           cmp = true,
           gitsigns = true,
-          nvimtree = true,
-          treesitter = true,
           hop = true,
+          nvimtree = true,
+          telescope = true,
+          treesitter = true,
           mini = {
             enabled = true,
             indentscope_color = "",
@@ -476,6 +527,14 @@ lvim.plugins = {
           },
         }
       })
+    end
+  },
+  {
+    "norcalli/nvim-colorizer.lua",
+    event = "BufRead",
+    lazy = true,
+    config = function()
+      require('colorizer').setup()
     end
   },
   {
@@ -645,17 +704,22 @@ lvim.plugins = {
           golang = true,
           python = true,
           rust = true,
+          lua = true,
           ["*"] = false,
         },
-        suggestion = {
-          -- other options
+        panel = {
+          enabled = true,
           keymap = {
-            -- other keymaps
-            accept = false
+            jump_prev = "<C-k>",
+            jump_next = "<C-j>",
+            accept = "<CR>",
+            refresh = "rr",
           },
         },
       })
     end,
+
+    -- suggest me a way to change the background
   },
   {
     -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
@@ -666,7 +730,7 @@ lvim.plugins = {
       vim.defer_fn(function()
         require("copilot").setup({
           suggestion = { enabled = false },
-          panel = { enabled = false },
+          -- panel = { enabled = false },
         })
         require("copilot_cmp").setup()
       end, 100)
@@ -743,24 +807,7 @@ lvim.plugins = {
         -- line_number_text    = "Line %s out of %s",        -- Format string rendered when `enable_line_number` is set to true (either string or function(line_number: number, line_count: number): string)
       })
     end,
-  }
-  -- {
-  --   "AckslD/swenv.nvim",
-  --   event = "VimEnter",
-  -- },
-
-  -- {
-  --   "jackMort/ChatGPT.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("chatgpt").setup()
-  --   end,
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   }
-  -- },
+  },
   -- {
   --   "microsoft/vscode-js-debug",
   --   lazy = true,

@@ -22,7 +22,7 @@ CASE_SENSITIVE="false"
 zstyle ':omz:update' mode auto
 
 # How often to auto-update (in days).
-zstyle ':omz:update' frequency 1
+zstyle ':omz:update' frequency 7
 
 # Display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"

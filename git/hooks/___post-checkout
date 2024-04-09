@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Git post checkout hook.
+# NOTE: Not use this any more, but keep for learning :D
 # ------------------------------------------------------
 # Update Node dependencies, if necessary
 
