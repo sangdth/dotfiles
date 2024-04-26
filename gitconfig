@@ -95,3 +95,5 @@
   keepBackup = true
 [gitbutler]
 	signCommits = true
+	aiModelProvider = anthropic
+	diffLengthLimit = 10000

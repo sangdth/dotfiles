@@ -106,6 +106,10 @@ lvim.builtin.which_key.mappings["gp"] = {
   r = { "<cmd>lua require('goto-preview').goto_preview_references()<CR>", "Goto Preview References" },
   q = { "<cmd>lua require('goto-preview').close_all_win()<CR>", "Goto Preview Close all Windows" },
 }
+lvim.builtin.which_key.mappings["r"] = {
+  name = "Restart",
+  l = { "<cmd>LspRestart<cr>", "Restart LSP" },
+}
 lvim.builtin.which_key.mappings["t"] = {
   name = "Diagnostics",
   t = { "<cmd>TroubleToggle<cr>", "toggle trouble" },
@@ -240,9 +244,9 @@ lvim.builtin.terminal.float_opts = {
 }
 
 lvim.builtin.gitsigns.active = true
--- lvim.builtin.gitsigns.opts = {
---   current_line_blame = true
--- }
+lvim.builtin.gitsigns.opts = {
+  current_line_blame = true
+}
 
 -- Project.nvim change the cwd on git submodules
 lvim.builtin.project.active = false

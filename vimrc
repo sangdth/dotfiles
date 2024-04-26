@@ -1,3 +1,7 @@
+" I do not use this config anymore
+" But keep it here as a good memory of beginning of time
+" with pure vim
+
 filetype off                    " required
 
 call plug#begin('~/.vim/plugged') 
