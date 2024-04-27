@@ -6,6 +6,7 @@ alias codemod='npx --yes @next/codemod'
 alias cp='cp -i'
 alias cl='clear'
 alias create-svelte-app='npx --yes degit sveltejs/template'
+alias prettier='npx --yes prettier'
 alias grep="GREP_COLOR='1;32' grep --color"
 
 alias ls='lsd'
