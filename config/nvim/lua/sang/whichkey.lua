@@ -3,6 +3,8 @@ local M = {
 }
 
 function M.config()
+  local wk = require "which-key"
+
   local mappings = {
     q = { "<cmd>lua require 'sang.bufferline'.buf_kill 'bd'<CR>", "Close buffer" },
     h = { "<cmd>nohlsearch<CR>", "NOHL" },
@@ -30,10 +32,6 @@ function M.config()
     l = {
       name = "LSP",
       a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-      f = {
-        "<cmd>lua vim.lsp.buf.format({async = true, filter = function(client) return client.name ~= 'typescript-tools' end})<cr>",
-        "Format",
-      },
       i = { "<cmd>LspInfo<cr>", "Info" },
       j = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Next Diagnostic" },
       h = { "<cmd>lua require('sang.lspconfig').toggle_inlay_hints()<cr>", "Hints" },
@@ -41,11 +39,10 @@ function M.config()
       l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
       q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
       r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-    }
+    },
   }
 
-  local which_key = require "which-key"
-  which_key.setup {
+  wk.setup {
     plugins = {
       marks = true,
       registers = true,
@@ -82,7 +79,7 @@ function M.config()
     prefix = "<leader>",
   }
 
-  which_key.register(mappings, opts)
+  wk.register(mappings, opts)
 end
 
 return M

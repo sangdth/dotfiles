@@ -1,7 +1,7 @@
 local M = {
-  'akinsho/bufferline.nvim',
+  "akinsho/bufferline.nvim",
   version = "*",
-  dependencies = 'nvim-tree/nvim-web-devicons',
+  dependencies = "nvim-tree/nvim-web-devicons",
 }
 
 -- Common kill function for bdelete and bwipeout
@@ -29,11 +29,12 @@ function M.buf_kill(kill_command, bufnr, force)
       choice = fn.confirm(fmt([[Save changes to "%s"?]], bufname), "&Yes\n&No\n&Cancel")
       if choice == 1 then
         vim.api.nvim_buf_call(bufnr, function()
-          vim.cmd("w")
+          vim.cmd "w"
         end)
       elseif choice == 2 then
         force = true
-      else return
+      else
+        return
       end
     elseif api.nvim_buf_get_option(bufnr, "buftype") == "terminal" then
       choice = fn.confirm(fmt([[Close "%s"?]], bufname), "&Yes\n&No\n&Cancel")
@@ -121,7 +122,7 @@ end
 -- end
 
 function M.config()
-  local icons = require("sang.icons")
+  local icons = require "sang.icons"
 
   -- TODO: Setup keymap for this
   -- require("keymappings").load(bufferline.keymap)

@@ -5,8 +5,8 @@ local M = {
 }
 M.config = function()
   local icons = require "sang.icons"
-
   local wk = require "which-key"
+
   wk.register {
     ["<leader>gj"] = { "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>", "Next Hunk" },
     ["<leader>gk"] = { "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>", "Prev Hunk" },
@@ -63,7 +63,8 @@ M.config = function()
       follow_files = true,
     },
     attach_to_untracked = true,
-    current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
+    current_line_blame = true,
+    current_line_blame_formatter = "<summary> [<author>, <author_time:%d.%m.%Y>]",
     update_debounce = 200,
     max_file_length = 40000,
     preview_config = {
