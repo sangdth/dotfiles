@@ -59,6 +59,7 @@ function M.config()
   local window = require "cmp.config.window"
   local luasnip = require "luasnip"
   local icons = require "sang.icons"
+  -- local T = require "sang.utils.table"
 
   require("luasnip/loaders/from_vscode").lazy_load()
 
@@ -143,6 +144,9 @@ function M.config()
         return vim_item
       end,
     },
+    -- sources = T.map(source_names, function(k)
+    --   return "name", k
+    -- end),
     sources = {
       { name = "buffer" },
       { name = "calc" },

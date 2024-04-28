@@ -21,4 +21,29 @@ function Table.contains(t, predicate)
   return Table.find_first(t, predicate) ~= nil
 end
 
+function Table.keys(t)
+  local keys = {}
+  for k, _ in pairs(t) do
+    table.insert(keys, k)
+  end
+  return keys
+end
+
+function Table.values(t)
+  local values = {}
+  for _, v in pairs(t) do
+    table.insert(values, v)
+  end
+  return values
+end
+
+-- function Table.map(t, predicate)
+--   local results = {}
+--   for k, v in pairs(t) do
+--     local n_k, n_v = predicate(k, v)
+--     table.insert(results, n_k, n_v)
+--   end
+--   return results
+-- end
+
 return Table
