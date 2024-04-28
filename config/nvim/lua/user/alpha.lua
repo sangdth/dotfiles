@@ -14,6 +14,8 @@ function M.config()
   end
 
   dashboard.section.header.val = {
+ [[                                                                               ]],
+ [[                                                                               ]],
  [[                                                      .                        ]],
  [[                                        .            @88o                      ]],
  [[    u.    u.                   _u.    88Nu.   u.     08P     ..    .     .     ]],

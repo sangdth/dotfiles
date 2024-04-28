@@ -9,7 +9,7 @@ local M = {
 ---@param kill_command? string defaults to "bd"
 ---@param bufnr? number defaults to the current buffer
 ---@param force? boolean defaults to false
-local function buf_kill(kill_command, bufnr, force)
+function M.buf_kill(kill_command, bufnr, force)
   kill_command = kill_command or "bd"
 
   local bo = vim.bo
@@ -141,7 +141,7 @@ function M.config()
       mode = "buffers", -- set to "tabs" to only show tabpages instead
       numbers = "none", -- can be "none" | "ordinal" | "buffer_id" | "both" | function
       close_command = function(bufnr) -- can be a string | function, see "Mouse actions"
-        buf_kill("bd", bufnr, false)
+        M.buf_kill("bd", bufnr, false)
       end,
       right_mouse_command = "vert sbuffer %d", -- can be a string | function, see "Mouse actions"
       left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"

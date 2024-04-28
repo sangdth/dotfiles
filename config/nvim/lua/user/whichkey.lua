@@ -4,7 +4,7 @@ local M = {
 
 function M.config()
   local mappings = {
-    q = { "<cmd>confirm q<CR>", "Quit" },
+    q = { "<cmd>lua require 'user.bufferline'.buf_kill 'bd'<CR>", "Close buffer" },
     h = { "<cmd>nohlsearch<CR>", "NOHL" },
     [";"] = { "<cmd>tabnew | terminal<CR>", "Term" },
     v = { "<cmd>vsplit<CR>", "Split" },
