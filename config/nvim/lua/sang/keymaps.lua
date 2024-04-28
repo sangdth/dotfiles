@@ -30,12 +30,15 @@ keymap("n", "sh", "<cmd>Telescope current_buffer_fuzzy_find<CR>", opts)
 -- Move current line / block with Alt-j/k
 keymap("n", "<A-j>", ":m .+1<CR>==", opts)
 keymap("n", "<A-k>", ":m .-2<CR>==", opts)
+keymap("v", "<A-j>", ":m '>+1<CR>gv-gv", opts)
+keymap("v", "<A-k>", ":m '<-2<CR>gv-gv", opts)
 keymap("i", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
 keymap("i", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
 
 -- Split and join brackets
 keymap("n", "sj", "<cmd>TSJSplit<CR>", opts)
 keymap("n", "sk", "<cmd>TSJJoin<CR>", opts)
+
 
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)

@@ -18,7 +18,7 @@ function M.config()
     window = {
       border = "rounded",
     },
-    icons = require("user.icons").kind,
+    icons = require("sang.icons").kind,
     lsp = { auto_attach = true },
   }
 

@@ -4,7 +4,7 @@ local M = {
   cmd = "Gitsigns",
 }
 M.config = function()
-  local icons = require "user.icons"
+  local icons = require "sang.icons"
 
   local wk = require "which-key"
   wk.register {

@@ -1,6 +1,6 @@
 local M = {}
 
-local table = require "user.utils.table"
+local table = require "sang.utils.table"
 
 local function is_client_active(name)
   local clients = vim.lsp.get_active_clients()
@@ -27,7 +27,7 @@ local function from_node_modules(command)
     return nil
   end
 
-  local join_paths = require("user.utils.path").join_paths
+  local join_paths = require("sang.utils.path").join_paths
   return join_paths(root_dir, "node_modules", ".bin", command)
 end
 

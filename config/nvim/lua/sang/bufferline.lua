@@ -121,7 +121,7 @@ end
 -- end
 
 function M.config()
-  local icons = require("user.icons")
+  local icons = require("sang.icons")
 
   -- TODO: Setup keymap for this
   -- require("keymappings").load(bufferline.keymap)

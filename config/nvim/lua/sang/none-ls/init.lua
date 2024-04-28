@@ -6,19 +6,34 @@ local M = {
 }
 
 function M.config()
-  local services = require "user.utils.services"
-  local lsp = require "user.lspconfig"
+  local lsp = require "sang.lspconfig"
   local null_ls = require "null-ls"
 
   local formatting = null_ls.builtins.formatting
   local diagnostics =  null_ls.builtins.diagnostics
 
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
   null_ls.setup {
     debug = false,
-    -- on_attach = M.common_on_attach,
+    capabilities = lsp.common_capabilities(),
     -- on_init = M.common_on_init,
     -- on_exit = M.common_on_exit,
-    capabilities = lsp.common_capabilities(),
+    --  on_attach = function(client, bufnr)
+    --     if client.supports_method("textDocument/formatting") then
+    --         vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    --         vim.api.nvim_create_autocmd("BufWritePre", {
+    --             group = augroup,
+    --             buffer = bufnr,
+    --
+    --             callback = function()
+    --                 -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+    --                 -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
+    --                 vim.lsp.buf.formatting_sync({ async = false })
+    --             end,
+    --         })
+    --     end
+    -- end,
     sources = {
       formatting.stylua,
       formatting.prettier,
@@ -45,8 +60,6 @@ function M.config()
     },
   }
 
-  services.register_sources(linters, null_ls.methods.DIAGNOSTICS)
-  services.register_sources(formatters, null_ls.methods.FORMATTING)
 end
 
 return M

@@ -47,7 +47,7 @@ end
 
 function M.config()
   local lspconfig = require "lspconfig"
-  local icons = require "user.icons"
+  local icons = require "sang.icons"
 
   local servers = {
     "lua_ls",
@@ -102,7 +102,7 @@ function M.config()
       capabilities = M.common_capabilities(),
     }
 
-    local require_ok, settings = pcall(require, "user.lspsettings." .. server)
+    local require_ok, settings = pcall(require, "sang.lspsettings." .. server)
     if require_ok then
       opts = vim.tbl_deep_extend("force", settings, opts)
     end

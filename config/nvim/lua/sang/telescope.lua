@@ -17,7 +17,7 @@ function M.config()
     ["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
   }
 
-  local icons = require "user.icons"
+  local icons = require "sang.icons"
   local actions = require "telescope.actions"
 
   require("telescope").setup {
