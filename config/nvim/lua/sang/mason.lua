@@ -14,8 +14,8 @@ function M.config()
   }
 
   require("mason-tool-installer").setup {
-    "eslint_d",
-    "prettierd",
+    "eslint",
+    "prettier",
   }
 
   require("mason-lspconfig").setup {

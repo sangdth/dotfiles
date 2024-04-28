@@ -7,13 +7,17 @@ local M = {
 }
 
 function M.config()
-  local lint = require("lint")
+  local lint = require "lint"
 
   lint.linters_by_ft = {
-    javascript = { "eslint_d" },
-    typescript = { "eslint_d" },
-    javascriptreact = { "eslint_d" },
-    typescriptreact = { "eslint_d" },
+    javascript = { "eslint" },
+    typescript = { "eslint" },
+    javascriptreact = { "eslint" },
+    typescriptreact = { "eslint" },
+    -- javascript = { "eslint_d" },
+    -- typescript = { "eslint_d" },
+    -- javascriptreact = { "eslint_d" },
+    -- typescriptreact = { "eslint_d" },
   }
 
   local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
@@ -30,4 +34,4 @@ function M.config()
   end, { desc = "Trigger linting for current file" })
 end
 
-return M;
+return M
