@@ -1,4 +1,5 @@
 .DS_Store
+.vim_session
 
 # Compiled Lua sources
 luac.out
