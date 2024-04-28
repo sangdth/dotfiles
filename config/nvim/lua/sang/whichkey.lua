@@ -4,7 +4,7 @@ local M = {
 
 function M.config()
   local mappings = {
-    q = { "<cmd>lua require 'user.bufferline'.buf_kill 'bd'<CR>", "Close buffer" },
+    q = { "<cmd>lua require 'sang.bufferline'.buf_kill 'bd'<CR>", "Close buffer" },
     h = { "<cmd>nohlsearch<CR>", "NOHL" },
     [";"] = { "<cmd>tabnew | terminal<CR>", "Term" },
     v = { "<cmd>vsplit<CR>", "Split" },
@@ -13,7 +13,7 @@ function M.config()
     f = { "<cmd>NvimTreeFocus<CR>", "Focus NvimTree" },
     g = {
       name = "Git",
-      g = { "<cmd>lua require 'user.toggleterm'.lazygit_toggle()<cr>", "Lazygit" },
+      g = { "<cmd>lua require 'sang.toggleterm'.lazygit_toggle()<cr>", "Lazygit" },
     },
     p = { name = "Plugins" },
     t = { name = "Test" },
@@ -36,7 +36,7 @@ function M.config()
       },
       i = { "<cmd>LspInfo<cr>", "Info" },
       j = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "Next Diagnostic" },
-      h = { "<cmd>lua require('user.lspconfig').toggle_inlay_hints()<cr>", "Hints" },
+      h = { "<cmd>lua require('sang.lspconfig').toggle_inlay_hints()<cr>", "Hints" },
       k = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "Prev Diagnostic" },
       l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
       q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
