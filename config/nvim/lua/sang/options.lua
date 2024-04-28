@@ -1,3 +1,8 @@
+vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
+vim.opt.autoindent = true
 vim.opt.backup = false -- creates a backup file
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.cmdheight = 1 -- more space in the neovim command line for displaying messages
@@ -28,6 +33,7 @@ vim.opt.cursorline = true -- highlight the current line
 vim.opt.number = true -- set numbered lines
 vim.opt.laststatus = 3
 vim.opt.showcmd = false
+vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.ruler = false
 vim.opt.relativenumber = true -- set relative numbered lines
 vim.opt.numberwidth = 4 -- set number column width to 2 {default 4}
@@ -37,18 +43,18 @@ vim.opt.scrolloff = 0
 vim.opt.sidescrolloff = 8
 vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applications
 vim.opt.title = false
--- colorcolumn = "80",
--- colorcolumn = "120",
 vim.opt.fillchars = vim.opt.fillchars + "eob: "
-vim.opt.fillchars:append {
-  stl = " ",
-}
-
+vim.opt.fillchars:append { stl = " " }
 vim.opt.shortmess:append "c"
+vim.opt.foldcolumn = "0"
+vim.opt.foldenable = true
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99 -- Using ufo provider need a large value
+vim.opt.foldlevelstart = 99
+vim.opt.foldmethod = "expr"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 
 vim.g.netrw_banner = 0
 vim.g.netrw_mouse = 2
-

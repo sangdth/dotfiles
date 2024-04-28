@@ -4,14 +4,15 @@ local M = {
 }
 
 function M.config()
+  local icons = require "sang.icons"
   local wk = require "which-key"
+
   wk.register {
-    ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
+    ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle NvimTree" },
   }
 
-  local icons = require "sang.icons"
-
   require("nvim-tree").setup {
+    hijack_cursor = true,
     hijack_netrw = false,
     sync_root_with_cwd = true,
     view = {
@@ -84,11 +85,16 @@ function M.config()
         max = vim.diagnostic.severity.ERROR,
       },
       icons = {
-        hint = icons.diagnostics.BoldHint,
-        info = icons.diagnostics.BoldInformation,
-        warning = icons.diagnostics.BoldWarning,
-        error = icons.diagnostics.BoldError,
+        hint = icons.diagnostics.Hint,
+        info = icons.diagnostics.Information,
+        warning = icons.diagnostics.Warning,
+        error = icons.diagnostics.Error,
       },
+    },
+    filters = {
+      dotfiles = false,
+      custom = { ".DS_Store" },
+      exclude = { ".env" },
     },
   }
 end
