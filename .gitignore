@@ -45,4 +45,6 @@ luac.out
 java-debug/
 vscode-java-test/
 
+./config/lazygit/state.yml
+
 lazy-lock.json
