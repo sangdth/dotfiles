@@ -19,10 +19,17 @@ function M.config()
 
   local icons = require "sang.icons"
   local actions = require "telescope.actions"
+  local previewers = require "telescope.previewers"
+  local sorters = require "telescope.sorters"
 
   require("telescope").setup {
     theme = "dropdown",
     defaults = {
+      file_previewer = previewers.vim_buffer_cat.new,
+      grep_previewer = previewers.vim_buffer_vimgrep.new,
+      qflist_previewer = previewers.vim_buffer_qflist.new,
+      file_sorter = sorters.get_fuzzy_file,
+      generic_sorter = sorters.get_generic_fuzzy_sorter,
       prompt_prefix = icons.ui.Telescope .. " ",
       selection_caret = icons.ui.Bar .. "  ",
       entry_prefix = "   ",
@@ -33,10 +40,11 @@ function M.config()
       winblend = 0,
       border = {},
       borderchars = nil,
+      sorting_strategy = nil,
       set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-      layout_strategy = "vertical",
+      layout_strategy = "horizontal",
       layout_config = {
-        prompt_position = 'top',
+        prompt_position = "bottom",
         width = 0.8,
         height = 0.9,
         preview_height = 0.6,
@@ -47,6 +55,7 @@ function M.config()
         "--no-heading",
         "--with-filename",
         "--line-number",
+        "--fixed-strings",
         "--column",
         "--smart-case",
         "--hidden",
