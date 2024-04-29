@@ -27,6 +27,7 @@ function M.config()
       "pyright",
       "bashls",
       "jsonls",
+      "yamlls",
       "rust_analyzer",
     },
   }

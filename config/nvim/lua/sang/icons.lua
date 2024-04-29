@@ -12,7 +12,7 @@ return {
     Field = " ",
     File = " ",
     Folder = "󰉋 ",
-    Function = "∫ ",
+    Function = "󰊕 ",
     Interface = " ",
     Key = " ",
     Keyword = " ",
@@ -46,7 +46,7 @@ return {
     FileStaged = " ",
     FileUnmerged = "",
     FileUnstaged = "",
-    FileUntracked = "U",
+    FileUntracked = "",
     Diff = " ",
     Repo = " ",
     Octoface = " ",
@@ -82,7 +82,7 @@ return {
     Circle = " ",
     Close = "󰅖",
     CloudDownload = " ",
-    Code = "",
+    Code = "󰗀",
     Comment = "",
     Dashboard = "",
     DebugConsole = " ",
@@ -157,4 +157,3 @@ return {
     CircuitBoard = " ",
   },
 }
-
