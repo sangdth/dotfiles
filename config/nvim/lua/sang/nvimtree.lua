@@ -13,10 +13,12 @@ function M.config()
 
   require("nvim-tree").setup {
     hijack_cursor = true,
-    hijack_netrw = false,
+    hijack_netrw = true,
+    hijack_unnamed_buffer_when_opening = true,
     sync_root_with_cwd = true,
     view = {
       relativenumber = true,
+      adaptive_size = true,
     },
     renderer = {
       add_trailing = false,
@@ -27,7 +29,7 @@ function M.config()
       root_folder_label = ":t",
       indent_width = 2,
       indent_markers = {
-        enable = false,
+        enable = true,
         inline_arrows = true,
         icons = {
           corner = "└",
@@ -74,7 +76,6 @@ function M.config()
       update_root = true,
       ignore_list = {},
     },
-
     diagnostics = {
       enable = true,
       show_on_dirs = false,
@@ -95,6 +96,11 @@ function M.config()
       dotfiles = false,
       custom = { ".DS_Store" },
       exclude = { ".env" },
+    },
+    git = {
+      enable = true, -- we need this for git.ignore has effect
+      ignore = true,
+      timeout = 1000, -- some big repo need longer than 200ms
     },
   }
 end
