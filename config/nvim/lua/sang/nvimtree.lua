@@ -15,7 +15,7 @@ function M.config()
     hijack_cursor = true,
     hijack_netrw = true,
     hijack_unnamed_buffer_when_opening = true,
-    sync_root_with_cwd = true,
+    sync_root_with_cwd = false,
     view = {
       relativenumber = true,
       adaptive_size = true,
@@ -73,7 +73,7 @@ function M.config()
     update_focused_file = {
       enable = true,
       debounce_delay = 15,
-      update_root = true,
+      update_root = false,
       ignore_list = {},
     },
     diagnostics = {

@@ -30,6 +30,7 @@ function M.config()
       qflist_previewer = previewers.vim_buffer_qflist.new,
       file_sorter = sorters.get_fuzzy_file,
       generic_sorter = sorters.get_generic_fuzzy_sorter,
+
       prompt_prefix = icons.ui.Telescope .. " ",
       selection_caret = icons.ui.Bar .. "  ",
       entry_prefix = "   ",
@@ -55,7 +56,7 @@ function M.config()
         "--no-heading",
         "--with-filename",
         "--line-number",
-        "--fixed-strings",
+        -- "--fixed-strings",
         "--column",
         "--smart-case",
         "--hidden",
@@ -105,7 +106,7 @@ function M.config()
         only_sort_text = true,
       },
       find_files = {
-        hidden = false,
+        hidden = true,
       },
       planets = {
         show_pluto = true,
@@ -118,18 +119,18 @@ function M.config()
       colorscheme = {
         enable_preview = true,
       },
-      lsp_references = {
-        initial_mode = "normal",
-      },
-      lsp_definitions = {
-        initial_mode = "normal",
-      },
-      lsp_declarations = {
-        initial_mode = "normal",
-      },
-      lsp_implementations = {
-        initial_mode = "normal",
-      },
+      -- lsp_references = {
+      --   initial_mode = "normal",
+      -- },
+      -- lsp_definitions = {
+      --   initial_mode = "normal",
+      -- },
+      -- lsp_declarations = {
+      --   initial_mode = "normal",
+      -- },
+      -- lsp_implementations = {
+      --   initial_mode = "normal",
+      -- },
       buffers = {
         previewer = false,
         initial_mode = "normal",
