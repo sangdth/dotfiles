@@ -269,11 +269,11 @@ lvim.builtin.nvimtree.setup.renderer.icons = {
     symlink = "",
     bookmark = "",
     git = {
-      unstaged = "",
+      unstaged = "",
       staged = "",
-      unmerged = "",
+      unmerged = "󰀚",
       renamed = "",
-      untracked = "",
+      untracked = "󰄰",
       deleted = "",
       ignored = "",
     },
@@ -690,56 +690,56 @@ lvim.plugins = {
       require("sad").setup {}
     end
   },
-  {
-    -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        filetypes = {
-          javascript = true,
-          typescript = true,
-          javascriptreact = true,
-          typescriptreact = true,
-          json = true,
-          yaml = true,
-          go = true,
-          golang = true,
-          python = true,
-          rust = true,
-          lua = true,
-          ["*"] = false,
-        },
-        panel = {
-          enabled = true,
-          keymap = {
-            jump_prev = "<C-k>",
-            jump_next = "<C-j>",
-            accept = "<CR>",
-            refresh = "rr",
-          },
-        },
-      })
-    end,
+  -- {
+  --   -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({
+  --       filetypes = {
+  --         javascript = true,
+  --         typescript = true,
+  --         javascriptreact = true,
+  --         typescriptreact = true,
+  --         json = true,
+  --         yaml = true,
+  --         go = true,
+  --         golang = true,
+  --         python = true,
+  --         rust = true,
+  --         lua = true,
+  --         ["*"] = false,
+  --       },
+  --       panel = {
+  --         enabled = true,
+  --         keymap = {
+  --           jump_prev = "<C-k>",
+  --           jump_next = "<C-j>",
+  --           accept = "<CR>",
+  --           refresh = "rr",
+  --         },
+  --       },
+  --     })
+  --   end,
 
-    -- suggest me a way to change the background
-  },
-  {
-    -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
-    "zbirenbaum/copilot-cmp",
-    dependencies = { "zbirenbaum/copilot.lua" },
-    event = "InsertEnter",
-    config = function()
-      vim.defer_fn(function()
-        require("copilot").setup({
-          suggestion = { enabled = false },
-          -- panel = { enabled = false },
-        })
-        require("copilot_cmp").setup()
-      end, 100)
-    end,
-  },
+  --   -- suggest me a way to change the background
+  -- },
+  -- {
+  --   -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
+  --   "zbirenbaum/copilot-cmp",
+  --   dependencies = { "zbirenbaum/copilot.lua" },
+  --   event = "InsertEnter",
+  --   config = function()
+  --     vim.defer_fn(function()
+  --       require("copilot").setup({
+  --         suggestion = { enabled = false },
+  --         -- panel = { enabled = false },
+  --       })
+  --       require("copilot_cmp").setup()
+  --     end, 100)
+  --   end,
+  -- },
   {
     -- https://github.com/smjonas/inc-rename.nvim#readme
     "smjonas/inc-rename.nvim",

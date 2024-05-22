@@ -1,7 +1,9 @@
 lastupdatecheck: 0
 recentrepos:
-- /Users/sang/dotfiles
 - /Users/sang/Projects/lakihelppi/lakihelppi
+- /Users/sang/Projects/demo-git
+- /Users/sang/Projects/lakihelppi/jitsi-docker
+- /Users/sang/dotfiles
 - /Users/sang/Projects/duelb/duelb
 - /Users/sang/Projects/lakihelppi/laki-in-shtf
 - /Users/sang/dotfiles/dotbot/lib/pyyaml

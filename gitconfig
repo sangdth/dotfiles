@@ -2,19 +2,19 @@
   defaultBranch = master
 
 [user]
-  name = Sang Dang
-  email = sang@dang.to
+	name = Sang Dang
+	email = sang@dang.to
   signingkey = AA6A388340079D7254DEB159698E4AABAAA7BE6F
 
 [gpg]
   program = /usr/local/MacGPG2/bin/gpg2
 
 [commit]
-  template = /Users/sangdang/dotfiles/git/commit-template
+	template = /Users/sangdang/dotfiles/git/commit-template
   gpgsign = true
 
 [core]
-  excludesfile = /Users/sangdang/.gitignore_global
+	excludesfile = /Users/sang/.gitignore_global
   pager = delta
   editor = lvim
 
