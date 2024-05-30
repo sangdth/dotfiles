@@ -3,7 +3,7 @@ return {
   event = "VeryLazy",
   main = "ibl",
   config = function()
-    local icons = require "utils.icons"
+    local icons = require "sang.utils.icons"
 
     require("ibl").setup {
       indent = {

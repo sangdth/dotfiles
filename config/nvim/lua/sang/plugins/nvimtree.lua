@@ -4,7 +4,7 @@ local M = {
 }
 
 function M.config()
-  local icons = require "sang.icons"
+  local icons = require "sang.utils.icons"
   local wk = require "which-key"
 
   wk.register {

@@ -49,7 +49,7 @@ end
 
 function M.config()
   local lspconfig = require "lspconfig"
-  local icons = require "sang.icons"
+  local icons = require "sang.utils.icons"
 
   local servers = {
     "lua_ls",

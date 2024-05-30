@@ -58,8 +58,8 @@ function M.config()
   local mapping = require "cmp.config.mapping"
   local window = require "cmp.config.window"
   local luasnip = require "luasnip"
-  local icons = require "sang.icons"
-  -- local T = require "sang.utils.table"
+  local icons = require "sang.utils.icons"
+  -- local T = require "utils.table"
 
   require("luasnip/loaders/from_vscode").lazy_load()
 

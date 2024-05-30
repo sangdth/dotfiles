@@ -1,6 +1,9 @@
 local M = {
   "nvim-telescope/telescope.nvim",
-  dependencies = { { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true } },
+  dependencies = {
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
+    { "nvim-lua/plenary.nvim" },
+  },
 }
 
 function M.config()
@@ -17,7 +20,7 @@ function M.config()
     ["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
   }
 
-  local icons = require "sang.icons"
+  local icons = require "sang.utils.icons"
   local actions = require "telescope.actions"
   local previewers = require "telescope.previewers"
   local sorters = require "telescope.sorters"
