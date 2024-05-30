@@ -48,7 +48,7 @@ function M.config()
         prompt_position = "bottom",
         width = 0.8,
         height = 0.9,
-        preview_height = 0.6,
+        -- preview_height = 0.6,
       },
       vimgrep_arguments = {
         "rg",

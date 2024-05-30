@@ -15,6 +15,7 @@ function M.config()
     javascriptreact = { "eslint" },
     typescriptreact = { "eslint" },
     svelte = { "eslint" },
+    python = { "ruff" },
   }
 
   local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
@@ -29,6 +30,10 @@ function M.config()
   vim.keymap.set("n", "<leader>le", function()
     lint.try_lint()
   end, { desc = "Trigger linting for current file" })
+
+  -- Set pylint to work in virtualenv
+  -- lint.linters.pylint.cmd = "python"
+  -- lint.linters.pylint.args = { "-m", "pylint", "-f", "json" }
 end
 
 return M

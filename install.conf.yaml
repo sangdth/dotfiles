@@ -15,7 +15,7 @@
     ~/.config/lazydocker: config/lazydocker
     ~/.config/lazygit: config/lazygit
     ~/.config/nvim: config/nvim
-    ~/.config/lvim: config/lvim
+    # ~/.config/lvim: config/lvim
     ~/.config/ripgrep/config: config/ripgrep/config
     ~/.agignore: agignore
     ~/.gitconfig: gitconfig

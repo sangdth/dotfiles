@@ -35,7 +35,7 @@ spec "sang.splitjoin"
 spec "sang.telescope"
 spec "sang.toggleterm"
 spec "sang.treesitter"
-spec "sang.ufo"
 spec "sang.whichkey"
+-- spec "sang.ufo"
 
 require "sang.lazy"
