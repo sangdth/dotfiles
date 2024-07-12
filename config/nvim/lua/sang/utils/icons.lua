@@ -71,7 +71,7 @@ return {
     BoldLineMiddle = "┃",
     BookMark = "",
     BoxChecked = "󰄲",
-    Bug = " ",
+    Bug = "󰨰 ",
     Calendar = " ",
     Check = "󰄬",
     ChevronRight = "",
@@ -154,6 +154,7 @@ return {
     Text = "󱩾",
   },
   misc = {
+    AI = " ",
     Robot = "󰚩 ",
     Squirrel = " ",
     Tag = "󰓼",

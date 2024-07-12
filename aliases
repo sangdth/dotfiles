@@ -99,6 +99,9 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
 
+# Flush DNS cache
+alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+
 # PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
 alias plistbuddy="/usr/libexec/PlistBuddy"
 

@@ -59,6 +59,8 @@ if type brew &>/dev/null; then
 fi
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# TODO: Should I use this dotfiles folder?
+[[ ! -f ~/dotfiles/scripts/yy.zsh ]] || source ~/dotfiles/scripts/yy.zsh
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/bit bit

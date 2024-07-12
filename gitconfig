@@ -95,5 +95,6 @@
   keepBackup = true
 [gitbutler]
 	signCommits = true
-	aiModelProvider = anthropic
-	diffLengthLimit = 10000
+	aiModelProvider = openai
+	diffLengthLimit = 5000
+	aiOpenAIKeyOption = butlerAPI

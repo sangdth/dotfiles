@@ -40,17 +40,17 @@ local M = {
 }
 
 local source_names = {
-  buffer = "(Buffer)",
-  calc = "(Calc)",
-  cmp_tabnine = "(Tabnine)",
-  copilot = "(Copilot)",
-  dotenv = "(env)",
-  emoji = "(Emoji)",
-  luasnip = "(Snippet)",
-  nvim_lsp = "(LSP)",
-  nvim_lua = "(Lua)",
-  path = "(Path)",
-  treesitter = "(TreeSitter)",
+  buffer = "",
+  calc = "󰇔",
+  cmp_tabnine = "",
+  copilot = "",
+  dotenv = "",
+  emoji = "",
+  luasnip = "",
+  nvim_lsp = "",
+  nvim_lua = "󰢱",
+  path = "",
+  treesitter = "󰐅",
 }
 
 function M.config()
@@ -137,7 +137,7 @@ function M.config()
         end
 
         if entry.source.name == "cmp_tabnine" then
-          vim_item.kind = icons.misc.Robot
+          vim_item.kind = icons.misc.AI
           vim_item.kind_hl_group = "CmpItemKindTabnine"
         end
 

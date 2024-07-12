@@ -93,8 +93,8 @@ function M.config()
       },
     },
     filters = {
-      dotfiles = false,
-      custom = { ".DS_Store" },
+      dotfiles = true,
+      custom = { ".DS_Store", "__init__.py", ".venv" },
       exclude = { ".env" },
     },
     git = {
