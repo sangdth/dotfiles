@@ -5,11 +5,6 @@ local M = {
 
 function M.config()
   local icons = require "sang.utils.icons"
-  local wk = require "which-key"
-
-  wk.register {
-    ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Toggle NvimTree" },
-  }
 
   require("nvim-tree").setup {
     hijack_cursor = true,
