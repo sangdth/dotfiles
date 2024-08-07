@@ -2,9 +2,7 @@ local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    {
-      "folke/neodev.nvim",
-    },
+    { "folke/neodev.nvim" },
   },
 }
 
@@ -23,7 +21,6 @@ M.on_attach = function(client, bufnr)
   lsp_keymaps(bufnr)
 
   if client.supports_method "textDocument/inlayHint" then
-    -- vim.lsp.inlay_hint.enable(bufnr, true)
     vim.lsp.inlay_hint.enable(true)
   end
 end
@@ -43,7 +40,6 @@ end
 
 M.toggle_inlay_hints = function()
   local bufnr = vim.api.nvim_get_current_buf()
-  -- vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr))
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = bufnr })
 end
 
@@ -68,9 +64,9 @@ function M.config()
       active = true,
       values = {
         { name = "DiagnosticSignError", text = icons.diagnostics.Error },
-        { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
         { name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
         { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
+        { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
       },
     },
     virtual_text = false,
@@ -89,7 +85,7 @@ function M.config()
 
   vim.diagnostic.config(default_diagnostic_config)
 
-  for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}) do
+  for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config() or {}, "signs", "values")) do
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
   end
 

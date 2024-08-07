@@ -31,6 +31,7 @@ vim.keymap.set("n", "sa", "<cmd>Telescope live_grep<CR>", opts)
 vim.keymap.set("n", "sf", "<cmd>Telescope find_files<CR>", opts)
 vim.keymap.set("n", "sb", "<cmd>Telescope buffers<CR>", opts)
 vim.keymap.set("n", "sh", "<cmd>Telescope current_buffer_fuzzy_find<CR>", opts)
+vim.keymap.set("n", "<leader>q", "<cmd>lua require 'utils.buff_kill'.buff_kill 'bd'<CR>")
 
 -- Move current line / block with Alt-j/k
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", opts)
@@ -79,3 +80,5 @@ vim.keymap.set({ "n", "o", "x" }, "<s-l>", "g_", opts)
 vim.keymap.set({ "n", "x" }, "j", "gj", opts)
 vim.keymap.set({ "n", "x" }, "k", "gk", opts)
 vim.keymap.set("n", "<leader>w", ":lua vim.wo.wrap = not vim.wo.wrap<CR>", opts)
+
+vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)

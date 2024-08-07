@@ -1,4 +1,4 @@
-vim.g.python3_host_prog = "/opt/homebrew/bin/python3"
+vim.g.python3_host_prog = "/Users/sang/.pyenv/shims/python3"
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
@@ -58,3 +58,6 @@ vim.cmd [[set iskeyword+=-]]
 
 vim.g.netrw_banner = 0
 vim.g.netrw_mouse = 2
+
+-- For debugging. Read log by using :LspLog
+-- vim.lsp.set_log_level "debug"

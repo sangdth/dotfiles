@@ -20,12 +20,12 @@ return {
       [[                                                                               ]],
       [[                                                                               ]],
       [[                                                                               ]],
+      [[                                                                               ]],
       [[                                       ▄                                       ]],
       [[                                     ▄▄█▄▄                                     ]],
       [[                                       █                                       ]],
       [[                                       █                                       ]],
       [[                                       ▀                                       ]],
-      [[                                                                               ]],
       [[                                                                               ]],
       [[                                                                               ]],
       [[                                                                               ]],
@@ -50,7 +50,6 @@ return {
     }
 
     dashboard.section.footer.val = ""
-
     dashboard.section.header.opts.hl = "Keyword"
     dashboard.section.buttons.opts.hl = "Include"
     dashboard.section.footer.opts.hl = "Type"
@@ -71,9 +70,8 @@ return {
     vim.api.nvim_create_autocmd({ "User" }, {
       pattern = { "AlphaReady" },
       callback = function()
-        vim.cmd [[
-      set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3
-    ]]
+        -- vim.cmd [[ set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3 ]]
+        vim.cmd "set laststatus=0"
       end,
     })
   end,
