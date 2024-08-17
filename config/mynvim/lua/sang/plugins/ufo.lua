@@ -6,11 +6,11 @@ local M = {
 }
 
 function M.config()
-  vim.o.foldcolumn = "0" -- '0' is not bad
+  vim.o.foldcolumn = "1" -- '0' is not bad
   vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
   vim.o.foldlevelstart = 99
   vim.o.foldenable = true
-  vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+  -- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
   -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
   vim.keymap.set("n", "zR", require("ufo").openAllFolds)
@@ -45,10 +45,11 @@ function M.config()
   end
 
   local ftMap = {
-    typescriptreact = { "lsp", "treesitter" },
+    typescriptreact = { "treesitter" },
     python = { "indent" },
     git = "",
   }
+
   require("ufo").setup {
     close_fold_kinds_for_ft = {},
     open_fold_hl_timeout = 400,

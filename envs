@@ -26,3 +26,4 @@ else
 fi
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export HOMEBREW_NO_ENV_HINTS=TRUE

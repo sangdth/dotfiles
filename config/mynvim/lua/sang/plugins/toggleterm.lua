@@ -8,6 +8,7 @@ function M.config()
     { nil, "<M-1>", "Horizontal Terminal", "horizontal", 0.3 },
     { nil, "<M-2>", "Vertical Terminal", "vertical", 0.4 },
     { nil, "<M-3>", "Float Terminal", "float", nil },
+    { nil, "<C-t>", "Float Terminal", "float", nil },
   }
 
   local function get_buf_size()
@@ -82,7 +83,9 @@ function M.config()
     close_on_exit = true, -- close the terminal window when the process exits
     shell = nil, -- change the default shell
     float_opts = {
-      border = "rounded",
+      border = "none",
+      width = 1000,
+      height = 100,
       winblend = 0,
       highlights = {
         border = "Normal",

@@ -87,20 +87,15 @@ return {
         },
         filters = {
           dotfiles = true,
+          git_ignored = true,
           custom = { ".DS_Store", "__init__.py", ".venv" },
           exclude = { ".env" },
         },
         git = {
-          enable = true, -- we need this for git.ignore has effect
+          enable = true, -- need this for git.ignore and filters.git_ignore has effect
           ignore = true,
-          timeout = 1000, -- some big repo need longer than 200ms
+          timeout = 600, -- some big repo need longer than 200ms
         },
-      }
-
-      local wk = require "which-key"
-      wk.add {
-        { "<leader>e", "<cmd>NvimTreeToggle<CR>" },
-        { "<leader>f", "<cmd>NvimTreeFocus<CR>" },
       }
     end,
   },

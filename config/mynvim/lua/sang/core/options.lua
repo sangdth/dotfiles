@@ -54,7 +54,7 @@ vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
 
 vim.cmd "set whichwrap+=<,>,[,],h,l"
-vim.cmd [[set iskeyword+=-]]
+vim.cmd [[set iskeyword+=-]] -- For treating kebad style words is one word
 
 vim.g.netrw_banner = 0
 vim.g.netrw_mouse = 2

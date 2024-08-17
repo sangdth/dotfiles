@@ -1,9 +1,8 @@
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
-keymap("n", "<Space>", "", opts)
+keymap("n", "<Space>", "Nop", opts)
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 keymap("n", "<C-i>", "<C-i>", opts)
 
@@ -77,6 +76,12 @@ keymap({ "n", "o", "x" }, "<s-l>", "g_", opts)
 -- tailwind bearable to work with
 keymap({ "n", "x" }, "j", "gj", opts)
 keymap({ "n", "x" }, "k", "gk", opts)
+
 keymap("n", "<leader>w", ":lua vim.wo.wrap = not vim.wo.wrap<CR>", opts)
+keymap("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", opts)
+keymap("n", "<leader>f", "<cmd>NvimTreeFocus<CR>", opts)
+keymap("n", "<leader>h", "<cmd>nohlsearch<CR>")
+keymap("n", "<leader>q", "<cmd>lua require 'sang.plugins.bufferline'.buf_kill 'bd'<CR>")
+keymap("n", "<leader>gg", "<cmd>lua require 'sang.plugins.toggleterm'.lazygit_toggle()<CR>")
 
 vim.api.nvim_set_keymap("t", "<C-;>", "<C-\\><C-n>", opts)
