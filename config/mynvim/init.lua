@@ -22,7 +22,7 @@ spec "sang.plugins.indentline"
 spec "sang.plugins.linters"
 spec "sang.plugins.lspconfig"
 spec "sang.plugins.mason" -- NOT
--- spec "sang.plugins.mini"
+spec "sang.plugins.mini"
 -- spec "sang.plugins.navic"
 spec "sang.plugins.nvimtree" -- NOT
 -- spec "sang.plugins.project"
