@@ -1,0 +1,95 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vim_session
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Compiled Lua sources
+luac.out
+
+# luarocks build files
+*.src.rock
+*.zip
+*.tar.gz
+
+# Object files
+*.o
+*.os
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.def
+*.exp
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Development directories
+java-debug/
+vscode-java-test/
+node_modules/
+.next/
+dist/
+build/
+
+# State and lock files
+config/lazygit/state.yml
+gitconfig
+lazy-lock.json
+.aider*
+
+# Sensitive information
+.env
+.env.*
+.credentials
+.npmrc
+.netrc
+.gitconfig.local
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# iTerm2 user-specific settings
+iTerm2/Profiles.json
+
+# Tool-specific files
+.tool-versions
+.nvmrc
+.ruby-version
+.python-version

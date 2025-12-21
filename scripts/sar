@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# 1. Search for text in files using Ripgrep
+# 2. Interactively restart Ripgrep with reload action
+# 3. Open the file in lvim
+
+RG_PREFIX="rg --column --no-heading --color=always "
+# Ripgrep prints the matching lines in the following format
+# src/pattern_test.go:7:  "github.com/junegunn/fzf/src/algo"
+
+INITIAL_QUERY="${*:-}"
+IFS=: read -ra selected < <(
+  FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
+  fzf --ansi \
+      --disabled --query "$INITIAL_QUERY" \
+      --bind "change:reload:sleep 0.05; $RG_PREFIX {q} || true" \
+      --delimiter : \
+      --preview 'bat --color=always {1} --highlight-line {2}' \
+      --preview-window 'right,60%,border-rounded,+{2}+3/3'
+)
+[ -n "${selected[0]}" ] && lvim "${selected[0]}" "+${selected[1]}"

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# 1. Search for text in files using Ripgrep
+# 2. Interactively restart Ripgrep with reload action
+# 3. Open the file in lvim
+RG_PREFIX="rg --column --no-heading --color=always "
+# Ripgrep prints the matching lines in the following format
+# src/pattern_test.go:7:  "github.com/junegunn/fzf/src/algo"
+# {1} is file path, {2} is line number
+
+INITIAL_QUERY="${*:-}"
+IFS=: read -ra selected < <(
+  FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
+  fzf --ansi \
+      --disabled --query "$INITIAL_QUERY" \
+      --bind "change:reload:sleep 0.05; $RG_PREFIX {q} || true" \
+      --delimiter : \
+      --preview 'bat --color=always {1} --highlight-line {2}' \
+      --preview-window 'right,60%,border-rounded,+{2}+3/3'
+)
+# +{2} — The base offset is extracted from the second token
+# +3 — We add 3 lines to the base offset to compensate for the header part of bat output
+
+[ -n "${selected[0]}" ] && lvim "${selected[0]}" "+${selected[1]}"
+# we open the file with "${selected[0]}"
+# and move the cursor to the line "+${selected[1]}"

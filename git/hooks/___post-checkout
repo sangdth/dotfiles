@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Git post checkout hook.
+# NOTE: Not use this any more, but keep for learning :D
+# ------------------------------------------------------
+# Update Node dependencies, if necessary
+
+function yes_or_no {
+    while true; do
+        read -p "$* [y/n]: " yn
+        case $yn in
+            [Yy]*) return 0  ;;  
+            [Nn]*) echo "Aborted" ; return  1 ;;
+        esac
+    done
+}
+
+PREVIOUS_HEAD=$1
+NEW_HEAD=$2
+BRANCH_SWITCH=$3
+
+NPM_LOCK=./package-lock.json
+PREFIX=`$(git rev-parse --show-prefix)`
+
+echo '> Start running the post-checkout hook...'
+
+function auto_update {
+    echo '> Fetched and pruned branches...'
+    git fetch origin --prune
+
+    # Check if package.json has been changed
+    # TODO: for monorepo project, it could have multiple package.json,
+    # so we need to detect change only from the root's package.json
+    REQUIREMENTS=`git diff $PREVIOUS_HEAD $NEW_HEAD --name-status | grep "package.json"`
+
+    # $? is the REQUIREMENTS returned status
+    if [ $? -eq 0 ]; then
+        echo '> Pull the changes...'
+        git pull origin
+
+        # check if the current location has package.json or not
+        # if it has, cd into it because for some reasons the git hooks now
+        # return $PWD always at top level, not sub-directory any more.
+        # TODO: detect the turborepo and do not perform the install inside
+        # do the install with turporepo script instead
+        if [[ -f "$PWD/$PREFIX/package.json" ]]; then
+          echo "> Found package.json in current directory"
+          cd ./$PREFIX
+        fi
+
+        if [[ -f "./package.json" && -f "./yarn.lock" ]]; then
+          echo '> Detected yarn.lock, use yarn install...'
+          yarn install
+        fi
+
+        if [[ -f "./package.json" && -f "./package-lock.json" ]]; then
+          echo '> Detected npm lock, use npm install...'
+          npm install
+        fi
+
+        if [[ -f "./package.json" && -f "./pnpm-lock.yaml" ]]; then
+          echo '> Detected pnpm lock, use pnpm install...'
+          pnpm install
+        fi
+    fi
+
+}
+
+if [[ $BRANCH_SWITCH == "1" && $PREVIOUS_HEAD != $NEW_HEAD && $PREVIOUS_HEAD != "0000000000000000000000000000000000000000" ]]; then
+    yes_or_no "Will we update this?" && auto_update
+fi

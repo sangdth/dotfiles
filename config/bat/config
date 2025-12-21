@@ -1,0 +1,18 @@
+# Theme and appearance
+--theme="Catppuccin-mocha"
+--style="numbers,changes,header,grid"
+--decorations=always
+--color=always
+
+# Paging
+--paging=auto
+--wrap=auto
+
+# Performance
+--line-range=:500
+
+# File type mappings
+--map-syntax "*.conf:INI"
+--map-syntax ".ignore:Git Ignore"
+--map-syntax "*.envrc:Bash"
+--map-syntax "Dockerfile*:Dockerfile"

@@ -1,0 +1,33 @@
+# Display options
+--max-columns=150
+--line-number
+--column
+--color=always
+--heading
+--with-filename
+
+# Search behavior
+--smart-case
+--hidden
+--follow
+
+# Performance
+--max-filesize=1M
+--max-count=1000
+
+# Exclude patterns
+--glob=!.git/*
+--glob=!node_modules/*
+--glob=!.next/*
+--glob=!dist/*
+--glob=!build/*
+--glob=!*.min.js
+--glob=!*.min.css
+--glob=!package-lock.json
+--glob=!yarn.lock
+--glob=!pnpm-lock.yaml
+
+# File type associations
+--type-add=web:*.{html,css,js,jsx,ts,tsx,vue,svelte}
+--type-add=config:*.{json,yaml,yml,toml,ini,conf}
+--type-add=docs:*.{md,txt,rst}

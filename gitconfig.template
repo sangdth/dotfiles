@@ -1,0 +1,117 @@
+[init]
+  defaultBranch = master
+
+[user]
+  name = YOUR_NAME
+  email = YOUR_EMAIL
+  signingkey = YOUR_GPG_KEY
+
+[gpg]
+  program = gpg
+
+[commit]
+  template = ~/.dotfiles/git/commit-template
+  gpgsign = true
+
+[core]
+  excludesfile = ~/.gitignore_global
+  pager = delta
+  editor = nvim
+
+[blame]
+  # ignoreRevsFile = ./.git-blame-ignore-revs
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  features = line-numbers decorations
+  navigate = true
+  side-by-side = true
+  true-color = always
+  whitespace-error-style = 22 reverse
+  syntax-theme = OneHalfDark
+  minus-style = syntax "#78191b"
+  plus-style = syntax "#1b4721"
+  blame-code-style = syntax
+  blame-format = {author:<15.14}
+
+[delta "decorations"]
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
+  hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+  line-numbers-left-style = cyan
+  line-numbers-right-style = cyan
+  line-numbers-minus-style = 124
+  line-numbers-plus-style = 28
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default
+
+[difftool "sourcetree"]
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path = 
+
+[mergetool "sourcetree"]
+  cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
+
+[color]
+  ui = auto
+  branch = auto
+  status = auto
+
+[alias]
+  st = !git status
+  co = checkout
+  br = branch
+  ci = commit
+  unstage = reset HEAD --
+  last = log -1 HEAD
+  visual = !gitk
+  
+  # Branch management
+  fmain = !git checkout -b master && git branch -D main
+  sorrymaster = !git checkout -b main && git branch -D master
+  sync = !git fetch origin --prune && git pull origin
+  
+  # Better logging
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  
+  # Bit integration
+  save = !bit save
+  switch = !bit switch
+
+[rebase]
+  autoSquash = true
+
+[pull]
+  rebase = true
+
+[push]
+  autoSetupRemote = true
+  recurseSubmodules = on-demand
+
+[branch]
+  autosetupmerge = always
+
+[status]
+  showUntrackedFiles = all
+
+[rerere]
+  enabled = true
+
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+
+[mergetool]
+  keepBackup = true

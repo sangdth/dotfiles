@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Remember to alias fnm='fnm2'
+
+# TODO: How to make the (which fmn) work here instead of hard coded path?
+/opt/homebrew/bin/fnm $*
+
+FNM_STATUS_CODE=$?
+
+echo $-
+
+if [[ "$1" == "install" && "$FNM_STATUS_CODE" == "0" ]]; then
+  # TODO: Check for the --reinstall-global from $* then check for content in default-packages
+
+  # NOTE: on Mac OS, the paths with --parseable has space in "Application Support",
+  # thus make the `awk print` with 3, it might be different from other OS.
+  CURRENT_GLOBAL_PKGS=$(npm ls -g --parseable | sed 's/node_modules\// /g' | awk '{print $3}' | xargs)
+
+  # Use this one to install global packages from default-packages list
+  # CURRENT_GLOBAL_PKGS=$(cat ~/dotfiles/default-packages | xargs)
+
+  /opt/homebrew/bin/fnm use $2
+
+  echo "Updating npm"
+  npm i -g npm
+
+  echo "Installing default global packages"
+
+  npm i -g $CURRENT_GLOBAL_PKGS
+
+  # Bonus: Enable corepack
+  echo "Enable corepack"
+  corepack enable
+fi

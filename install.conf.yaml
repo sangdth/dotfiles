@@ -1,0 +1,60 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+      force: true
+
+- clean: ["~"]
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - command: |
+        if [ ! -f ~/.gitconfig ]; then
+          cp gitconfig.template ~/.gitconfig
+          echo "Created ~/.gitconfig from template. Please update it with your information."
+        fi
+      description: Setting up gitconfig
+    - command: |
+        if [ ! -f ~/.env ]; then
+          install -m 600 env.template ~/.env
+          echo "Created ~/.env from template with 600 permissions. Please update it with your information."
+        else
+          chmod 600 ~/.env
+          echo "Ensured ~/.env has 600 permissions."
+        fi
+      description: Securing environment variables
+    - command: |
+        if [ ! -f ~/.credentials ]; then
+          install -m 600 /dev/null ~/.credentials
+          echo "Created ~/.credentials with 600 permissions. Add your secrets as needed."
+        else
+          chmod 600 ~/.credentials
+          echo "Ensured ~/.credentials has 600 permissions."
+        fi
+      description: Securing credentials file
+
+# Configuration links
+- link:
+    # Tool configurations
+    ~/.config/bat: config/bat
+    ~/.config/fd/ignore: config/fd/ignore
+    ~/.config/lazydocker: config/lazydocker
+    ~/.config/lazygit: config/lazygit
+    ~/.config/nvim: config/nvim
+    ~/.config/ripgrep/config: config/ripgrep/config
+
+    # Global configurations
+    ~/.agignore: agignore
+    ~/.gitignore_global: gitignore_global
+    ~/.hushlogin: hushlogin
+    ~/.zshrc: zshrc
+
+# Post-installation message
+- shell:
+    - command: |
+        echo "\nInstallation completed!"
+        echo "Please remember to:"
+        echo "1. Update ~/.gitconfig with your personal information"
+        echo "2. Update ~/.env with your environment variables"
+        echo "3. Add any sensitive tokens to ~/.credentials"
+      quiet: true

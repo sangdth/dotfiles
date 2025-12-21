@@ -1,0 +1,36 @@
+quitOnTopLevelReturn: false
+promptToReturnFromSubprocess: false
+os:
+  edit: "nvim {{filename}}"
+  editAtLine: "nvim +{{line}} {{filename}}"
+  editAtLineAndWait: "nvim +{{line}} {{filename}}"
+git:
+  # commitPrefixes:
+  #   something-main:
+  #     - pattern: "^\\w+\\/(\\w+-\\w+).*"
+  #       replace: "$1 "
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+gui:
+  nerdFontsVersion: "3"
+  sidePanelWidth: 0.3
+  mainPanelSplitMode: "vertical"
+  theme:
+    inactiveBorderColor:
+      - "#4A5568"
+    selectedLineBgColor:
+      - "#2D3748"
+    cherryPickedCommitBgColor:
+      - "#1f2335"
+    cherryPickedCommitFgColor:
+      - "#0BC5EA"
+      - bold
+  # authorColors:
+  #   "*": blue
+  branchColors:
+    feature: white
+    bugfix: red
+    develop: blue
+    master: magenta
+    main: magenta
