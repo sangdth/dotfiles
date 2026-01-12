@@ -34,3 +34,12 @@ gui:
     develop: blue
     master: magenta
     main: magenta
+customCommands:
+  - key: "<c-a>"
+    description: "Generate AI Commit Message"
+    context: "files"
+    loadingText: "Generating commit message with Gemini..."
+    command: >
+      git diff --cached | gemini "Generate a git commit message for these changes following Conventional Commits. Return ONLY the raw commit message, no markdown, no explanation." > .git/COMMIT_EDITMSG && git commit -e -F .git/COMMIT_EDITMSG
+
+    output: terminal

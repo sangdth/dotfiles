@@ -104,3 +104,13 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     end, { silent = true })
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained", "TermClose" }, {
+  command = "checktime",
+})
+
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  callback = function(args)
+    vim.notify("File changed on disk. Reloaded: " .. args.file, vim.log.levels.WARN)
+  end,
+})

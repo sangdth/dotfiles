@@ -1,0 +1,3 @@
+Session cleanup disabled: Either maxAge or maxCount must be specified
+Loaded cached credentials.
+Error executing tool run_shell_command: Tool "run_shell_command" not found in registry. Tools must use the exact names that are registered. Did you mean one of: "search_file_content", "read_file", "save_memory"?

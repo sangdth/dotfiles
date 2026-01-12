@@ -93,3 +93,6 @@ compinit
 
 # Added by Antigravity
 export PATH="/Users/sang/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/sang/.antigravity/antigravity/bin:$PATH"

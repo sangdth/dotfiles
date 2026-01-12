@@ -1,0 +1,3 @@
+I cannot directly execute shell commands like `echo hi`. The `run_shell_command` tool is not available in this environment.
+
+My available tools are `list_directory`, `read_file`, `search_file_content`, `glob`, `save_memory`, `google_web_search`, `write_todos`, and `delegate_to_agent`.
