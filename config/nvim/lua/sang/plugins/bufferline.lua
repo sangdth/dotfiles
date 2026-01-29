@@ -36,7 +36,7 @@ function M.buf_kill(kill_command, bufnr, force)
       else
         return
       end
-    elseif api.nvim_buf_get_option(bufnr, "buftype") == "terminal" then
+    elseif vim.bo[bufnr].buftype == "terminal" then
       choice = fn.confirm(fmt([[Close "%s"?]], bufname), "&Yes\n&No\n&Cancel")
       if choice == 1 then
         force = true
@@ -80,46 +80,7 @@ function M.buf_kill(kill_command, bufnr, force)
   if api.nvim_buf_is_valid(bufnr) and bo[bufnr].buflisted then
     vim.cmd(string.format("%s %d", kill_command, bufnr))
   end
-end
--- local function is_ft(b, ft)
---   return vim.bo[b].filetype == ft
--- end
-
--- local function diagnostics_indicator(num, _, diagnostics, _)
---   local result = {}
---   local symbols = {
---     error = lvim.icons.diagnostics.Error,
---     warning = lvim.icons.diagnostics.Warning,
---     info = lvim.icons.diagnostics.Information,
---   }
---   if not lvim.use_icons then
---     return "(" .. num .. ")"
---   end
---   for name, count in pairs(diagnostics) do
---     if symbols[name] and count > 0 then
---       table.insert(result, symbols[name] .. " " .. count)
---     end
---   end
---   result = table.concat(result, " ")
---   return #result > 0 and result or ""
--- end
-
--- local function custom_filter(buf, buf_nums)
---   local logs = vim.tbl_filter(function(b)
---     return is_ft(b, "log")
---   end, buf_nums or {})
---   if vim.tbl_isempty(logs) then
---     return true
---   end
---   local tab_num = vim.fn.tabpagenr()
---   local last_tab = vim.fn.tabpagenr "$"
---   local is_log = is_ft(buf, "log")
---   if last_tab == 1 then
---     return true
---   end
---   -- only show log buffers in secondary tabs
---   return (tab_num == last_tab and is_log) or (tab_num ~= last_tab and not is_log)
--- end
+  end
 
 function M.config()
   local icons = require "sang.utils.icons"
@@ -156,16 +117,6 @@ function M.config()
       close_icon = icons.ui.BoldClose,
       left_trunc_marker = icons.ui.ArrowCircleLeft,
       right_trunc_marker = icons.ui.ArrowCircleRight,
-      --- name_formatter can be used to change the buffer's label in the bufferline.
-      --- Please note some names can/will break the
-      --- bufferline so use this at your discretion knowing that it has
-      --- some limitations that will *NOT* be fixed.
-      -- name_formatter = function(buf) -- buf contains a "name", "path" and "bufnr"
-      --   -- remove extension from markdown files for example
-      --   if buf.name:match "%.md" then
-      --     return vim.fn.fnamemodify(buf.name, ":t:r")
-      --   end
-      -- end,
       max_name_length = 18,
       max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
       truncate_names = true, -- whether or not tab names should be truncated

@@ -132,18 +132,6 @@ return {
         colorscheme = {
           enable_preview = true,
         },
-        -- lsp_references = {
-        --   initial_mode = "normal",
-        -- },
-        -- lsp_definitions = {
-        --   initial_mode = "normal",
-        -- },
-        -- lsp_declarations = {
-        --   initial_mode = "normal",
-        -- },
-        -- lsp_implementations = {
-        --   initial_mode = "normal",
-        -- },
         buffers = {
           previewer = false,
           initial_mode = "normal",

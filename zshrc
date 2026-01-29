@@ -8,32 +8,15 @@ if [[ ! -f ~/.brew_shellenv_cache ]] || [[ ~/.brew_shellenv_cache -ot /opt/homeb
 fi
 eval "$(cat ~/.brew_shellenv_cache)"
 
-# Trying to disable the permission prompt
-ZSH_DISABLE_COMPFIX="true"
-
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="false"
 
-# Always automatically upgrade.
-zstyle ':omz:update' mode auto
-
-# How often to auto-update (in days).
-zstyle ':omz:update' frequency 1
-
-# Display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# This makes repository status check for large repositories much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# not work well with starship
+# not work well with starship
 VI_MODE_SET_CURSOR="false"
 
-plugins=(
-  zsh-autosuggestions
-)
-
-source $ZSH/oh-my-zsh.sh
+# Load zsh plugins via homebrew
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/dotfiles/paths
 source $HOME/dotfiles/aliases
 source $HOME/dotfiles/fzf/fzf-git.sh
@@ -90,6 +73,12 @@ fpath=(/Users/sang/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# Added by Antigravity
+export PATH="/Users/sang/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/sang/.antigravity/antigravity/bin:$PATH"
 
 # Added by Antigravity
 export PATH="/Users/sang/.antigravity/antigravity/bin:$PATH"

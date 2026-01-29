@@ -91,7 +91,6 @@ out/
 
 .gradle/
 .vscode/
-.oh-my-zsh/
 
 
 # nuxt.js build output

@@ -43,7 +43,7 @@ install -m 600 /dev/null ~/.credentials
 
 - Neovim configuration with various plugins
 - Git configuration and aliases
-- Zsh configuration with Oh My Zsh
+- Zsh configuration with custom setup
 - iTerm2 configuration
 - Various tool configurations (ripgrep, fd, bat, etc.)
 

@@ -103,7 +103,11 @@ return {
           },
         },
         lualine_y = { myprogress },
-        lualine_z = {},
+        lualine_z = {
+          {
+            require("opencode").statusline,
+          },
+        },
       },
       extensions = { "quickfix", "man", "fugitive" },
     }

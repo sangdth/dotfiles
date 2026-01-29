@@ -44,7 +44,7 @@ return {
       },
       attach_to_untracked = true,
       current_line_blame = true,
-      current_line_blame_formatter = "<author>|<author_time:%d.%m.%Y>: <summary>",
+      current_line_blame_formatter = "[<author> | <author_time:%d.%m.%Y>] <summary>",
       update_debounce = 200,
       max_file_length = 40000,
       preview_config = {
