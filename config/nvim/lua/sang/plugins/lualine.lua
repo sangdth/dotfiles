@@ -11,6 +11,19 @@ local function myprogress()
   return string.format(format_str, cur, total)
 end
 
+-- Cache for claudecode connection status (updated async)
+local claude_connected_cache = false
+local claude_cache_timer = nil
+
+local function update_claude_status()
+  vim.schedule(function()
+    local ok, claudecode = pcall(require, "claudecode")
+    if ok and claudecode.is_claude_connected then
+      claude_connected_cache = claudecode.is_claude_connected()
+    end
+  end)
+end
+
 return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
@@ -18,6 +31,10 @@ return {
     "nvim-tree/nvim-web-devicons",
   },
   config = function()
+    -- Start async timer to update claude status every 2 seconds
+    claude_cache_timer = vim.loop.new_timer()
+    claude_cache_timer:start(0, 2000, vim.schedule_wrap(update_claude_status))
+
     require("lualine").setup {
       options = {
         theme = "catppuccin",
@@ -31,34 +48,6 @@ return {
         lualine_a = {},
         lualine_b = { "branch" },
         lualine_c = { "diagnostics" },
-        -- lualine_x = {
-        --   {
-        --     "lsp_status",
-        --     icon = "",
-        --     symbols = {
-        --       -- Standard unicode symbols to cycle through for LSP progress:
-        --       spinner = {
-        --         "󰐽",
-        --         "󰀚",
-        --         "󰀚",
-        --         "󰐾",
-        --         "󰐾",
-        --         "󰐾",
-        --         "󰗝",
-        --         "󰗝",
-        --         "󰗝",
-        --         "󰗝",
-        --       },
-        --       done = "󰄳",
-        --       -- Delimiter inserted between LSP names:
-        --       separator = " ",
-        --       color = { fg = "green" },
-        --     },
-        --     -- List of LSP names to ignore (e.g., `null-ls`):
-        --     ignore_lsp = {},
-        --   },
-        --   "filetype",
-        -- },
         lualine_x = {
           {
             function()
@@ -105,7 +94,11 @@ return {
         lualine_y = { myprogress },
         lualine_z = {
           {
-            require("opencode").statusline,
+            function()
+              -- Use cached value instead of blocking call
+              return claude_connected_cache and "" or ""
+            end,
+            icon = "🤖",
           },
         },
       },

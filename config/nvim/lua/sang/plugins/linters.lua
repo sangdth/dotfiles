@@ -3,7 +3,7 @@ return {
   event = { "BufNewFile", "BufReadPost", "BufReadPre" },
   opts = {
     -- Event to trigger linters
-    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+    events = { "BufWritePost", "BufReadPost" },
     linters_by_ft = {
       javascript = { "eslint" },
       typescript = { "eslint" },

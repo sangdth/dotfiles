@@ -38,9 +38,6 @@ alias openlocal='ngrok http --region=us --hostname=ants.ngrok.io' # -region=eu -
 
 alias redis='redis-cli'
 
-# For golang development
-alias air='$HOME/.local/bin/air'
-
 alias luamake='$HOME/.config/lua-language-server/3rd/luamake/luamake'
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
@@ -114,5 +111,3 @@ alias reload="exec $SHELL -l"
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
-
-alias claude='$HOME/.claude/local/claude'

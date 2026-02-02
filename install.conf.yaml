@@ -23,15 +23,6 @@
           echo "Ensured ~/.env has 600 permissions."
         fi
       description: Securing environment variables
-    - command: |
-        if [ ! -f ~/.credentials ]; then
-          install -m 600 /dev/null ~/.credentials
-          echo "Created ~/.credentials with 600 permissions. Add your secrets as needed."
-        else
-          chmod 600 ~/.credentials
-          echo "Ensured ~/.credentials has 600 permissions."
-        fi
-      description: Securing credentials file
 
 # Configuration links
 - link:
@@ -56,5 +47,4 @@
         echo "Please remember to:"
         echo "1. Update ~/.gitconfig with your personal information"
         echo "2. Update ~/.env with your environment variables"
-        echo "3. Add any sensitive tokens to ~/.credentials"
       quiet: true
