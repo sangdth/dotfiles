@@ -4,173 +4,94 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a personal dotfiles repository that manages development environment configuration using Dotbot. It handles shell configuration (Zsh), editor setup (Neovim), Git configuration, and various development tools.
+Personal dotfiles repository using Dotbot for automated configuration management. Handles Zsh shell, Neovim, Git, and various development tools on macOS.
 
-## Installation & Setup
-
-The repository uses Dotbot for automated installation:
+## Installation
 
 ```bash
 ./install
 ```
 
-This script:
-- Initializes git submodules (Dotbot)
-- Creates symbolic links for all configuration files
-- Sets up template files (~/.gitconfig, ~/.env, ~/.credentials) with secure permissions (600)
+Creates symlinks and sets up template files with secure permissions (600).
 
-### Template Files
+### Template System
 
-Before making changes, understand the template system:
 - `gitconfig.template` → User creates `~/.gitconfig` (git-ignored)
 - `env.template` → User creates `~/.env` (git-ignored)
-- Template files contain placeholder values (YOUR_NAME, YOUR_EMAIL, YOUR_GPG_KEY, YOUR_SSH_KEY)
+- Templates contain placeholders: YOUR_NAME, YOUR_EMAIL, YOUR_GPG_KEY, YOUR_SSH_KEY
 
-Never modify user's personal `.gitconfig` or `.env` files. Only suggest changes to templates.
+**Never modify user's personal `.gitconfig`, `.env`, or `.credentials` files.** Only suggest changes to templates.
 
-## Key Architecture
+## Shell Loading Order
 
-### Configuration System
-
-The shell environment loads in this order (see zshrc:1-88):
+The zshrc loads components in this order:
 1. `~/.env` - User environment variables (if exists)
-2. Homebrew environment (cached for performance)
-3. `paths` - PATH configuration for all tools
-4. `aliases` - Shell aliases and shortcuts
-5. `fzf/fzf-git.sh` - FZF Git integration
+2. Homebrew environment (cached to `~/.brew_shellenv_cache`)
+3. Oh-My-Zsh with pure prompt
+4. `paths` - PATH configuration
+5. `aliases` - Shell aliases
 6. `~/.credentials` - Sensitive credentials (if exists)
-7. Lazy-loaded components: iTerm2 integration, GVM, NVM
+7. NVM - Lazy loaded via function wrappers
 
-### Symlink Structure
+## Symlink Structure (install.conf.yaml)
 
-All configs are symlinked via install.conf.yaml:36-50:
-- `~/.config/bat` → `config/bat`
-- `~/.config/nvim` → `config/nvim`
-- `~/.config/lazygit` → `config/lazygit`
-- `~/.config/lazydocker` → `config/lazydocker`
-- `~/.config/ripgrep/config` → `config/ripgrep/config`
-- `~/.config/fd/ignore` → `config/fd/ignore`
-- `~/.zshrc` → `zshrc`
-- `~/.gitignore_global` → `gitignore_global`
+```
+~/.config/bat       → config/bat
+~/.config/nvim      → config/nvim
+~/.config/lazygit   → config/lazygit
+~/.config/lazydocker → config/lazydocker
+~/.config/ripgrep/config → config/ripgrep/config
+~/.config/fd/ignore → config/fd/ignore
+~/.zshrc            → zshrc
+~/.gitignore_global → gitignore_global
+```
 
-Changes to files in `~/.config/` or `~/` automatically affect this repository.
+Changes to files in `~/.config/` or `~/` directly affect this repository.
 
-### Performance Optimizations
+## Performance Optimizations
 
-The zshrc implements several lazy-loading strategies:
-- Homebrew shellenv cached to `~/.brew_shellenv_cache` (zshrc:6-8)
-- iTerm2 and GVM loaded in background after shell starts (zshrc:43)
-- NVM loaded on-demand (zshrc:51-52)
-- Pyenv initialization deferred via function wrapper (paths:46-50)
+- Homebrew shellenv cached to avoid slow startup
+- NVM lazy-loaded via function wrappers (zshrc:38-49)
+- Pyenv lazy-loaded via function wrapper (paths:46-50)
 
-## Development Tools Configuration
+## Key Files
 
-### Git Setup
+| File | Purpose |
+|------|---------|
+| `zshrc` | Main shell configuration |
+| `paths` | All PATH exports by category |
+| `aliases` | Shell aliases |
+| `gitconfig.template` | Git config with Delta pager, GPG signing |
+| `install.conf.yaml` | Dotbot configuration |
 
-Git configuration uses:
-- Delta as pager with side-by-side diffs (gitconfig.template:18, 28-30)
-- GPG commit signing enabled (gitconfig.template:14)
-- Auto-rebase on pull (gitconfig.template:95)
-- Auto-setup remote on push (gitconfig.template:98)
-- Custom aliases for common operations (gitconfig.template:70-89)
+## Custom Scripts (in PATH via paths:7)
 
-Key aliases:
-- `git lg` - Pretty colored log with graph
-- `git sync` - Fetch with prune and pull
-- `git save/switch` - Bit integration
+- `fnm2` - Fast Node Manager wrapper that reinstalls global packages after `fnm install`
+- `sall`, `sar` - Interactive ripgrep + fzf search, opens results in lvim
 
-### PATH Management
+## Git Configuration Highlights
 
-All PATH configuration lives in `paths` file, organized by category:
-- Base system paths (line 2)
-- Development tools: LLVM, Cargo, custom scripts (lines 5-7)
-- Conditional Android SDK (lines 10-14)
-- Node.js: PNPM, Bun (lines 17-22)
-- Python: Multiple versions and Poetry (lines 29-31, 42-50)
-- Ruby with Homebrew (lines 34-36)
-- PostgreSQL (line 52)
+- Delta as pager with side-by-side diffs
+- GPG commit signing enabled
+- Auto-rebase on pull, auto-setup remote on push
+- Key aliases: `git lg` (pretty log), `git sync` (fetch+pull)
 
-### Custom Scripts
-
-Scripts in `scripts/` directory are in PATH (paths:7):
-- `fnm2` - Fast Node Manager wrapper
-- `sall`, `sar` - Search utilities
-
-## Common Commands
-
-### Testing Changes
+## Testing Changes
 
 ```bash
-# Reload shell configuration
 source ~/.zshrc
-# or
-reload
 ```
 
-### Managing Dotfiles
+Or use `reload` alias.
 
-```bash
-# Re-run installation (safe to run multiple times)
-./install
+## Adding New Configuration
 
-# Check what would be linked
-git submodule update --init --recursive
-```
+- **PATH entries** → `paths` file
+- **Aliases** → `aliases` file
+- **Environment variables** → User's `~/.env`
+- **Credentials** → User's `~/.credentials`
+- **Tool configs** → `config/<tool>/` directory
 
-### Git Operations
+## Git-Ignored Sensitive Files
 
-The repository uses submodules for Dotbot. When making changes:
-
-```bash
-# Update submodules
-git submodule update --remote --merge
-
-# Check submodule status
-git submodule status
-```
-
-## Security Considerations
-
-Files with sensitive data are git-ignored (.gitignore:74-89):
-- `.env`, `.env.*`
-- `.credentials`
-- `.npmrc`, `.netrc`
-- `*.pem`, `*.key`, `*.cert`, `*.crt`
-- `iTerm2/Profiles.json`
-- `.gitconfig` (user must use gitconfig.template)
-
-The installation script enforces 600 permissions on sensitive files (install.conf.yaml:19-34).
-
-## Editing Configurations
-
-### Neovim
-
-Config located in `config/nvim/`:
-- `init.lua` - Main configuration entry point
-- `lua/` - Plugin and configuration modules
-- Uses lazy.nvim for plugin management (lazy-lock.json tracks versions)
-
-### Zsh
-
-Primary shell config in `zshrc`. To add:
-- Aliases → Add to `aliases` file
-- PATH entries → Add to `paths` file
-- Environment variables → User adds to their `~/.env` (never commit)
-- Credentials → User adds to their `~/.credentials` (never commit)
-
-### Tool Configurations
-
-Each tool has dedicated config directory under `config/`:
-- `bat/` - Syntax highlighting theme
-- `fd/` - File search ignore patterns
-- `lazygit/` - Git TUI configuration
-- `lazydocker/` - Docker TUI configuration
-- `ripgrep/` - Search tool configuration
-
-## Important Notes
-
-- This is a personal dotfiles repository - user-specific values are in template files
-- Never commit actual credentials, API keys, or personal information
-- The repository works via symlinks - editing `~/.zshrc` edits `dotfiles/zshrc`
-- Git config template uses GPG signing - user must have GPG key configured
-- Shell loads credentials from `~/.credentials` if it exists (zshrc:26)
+`.env`, `.env.*`, `.credentials`, `.npmrc`, `.netrc`, `*.pem`, `*.key`, `iTerm2/Profiles.json`, `.gitconfig`
