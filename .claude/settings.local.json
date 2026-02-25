@@ -16,6 +16,15 @@
       "Bash(starship config:*)",
       "Bash(starship print-config:*)",
       "Bash(nvim:*)"
+      "Bash(corepack:*)",
+      "Bash(command -v ag:*)",
+      "Bash(command -v:*)",
+      "Bash(command:*)",
+      "Bash(command -v ollama:*)",
+      "Bash(command -v poetry:*)",
+      "Bash(pip3 show:*)",
+      "Bash(zsh:*)",
+      "Bash(git add:*)"
     ]
   }
 }

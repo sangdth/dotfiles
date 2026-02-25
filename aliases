@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-alias ag='ag --path-to-ignore ~/dotfiles/.agignore'
 alias cl='clear'
 alias cp='cp -i'
 alias cs='cursor-agent'
@@ -30,7 +29,6 @@ alias randomport='jot -r 1 55000 55999'
 alias rm='rm -i'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias vvv='virtualenv env && source ./env/bin/activate' # for python virtualenv
-alias whisperx='whisperx --compute_type int8'
 alias zshrc='nvim ~/dotfiles/zshrc'
 alias nvm-upgrade='nvm install --lts --reinstall-packages-from=$(node -v)'
 
@@ -38,13 +36,7 @@ alias openlocal='ngrok http --region=us --hostname=ants.ngrok.io' # -region=eu -
 
 alias redis='redis-cli'
 
-alias luamake='$HOME/.config/lua-language-server/3rd/luamake/luamake'
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-
-# Control mongodb
-alias startmongo='mongod --config $HOME/.local/mongodb/mongod.conf'
-alias stopmongo='killall mongod'
-alias findmongo='lsof -iTCP -sTCP:LISTEN | grep mongod'
 
 # Control spotlight
 alias togglespotlight='sudo mdutil -a -i off'
@@ -56,10 +48,6 @@ alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
-# View HTTP traffic
-alias sniff="sudo grep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
 

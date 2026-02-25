@@ -13,7 +13,7 @@ if [[ ! -f ~/.brew_shellenv_cache ]] || [[ ~/.brew_shellenv_cache -ot /opt/homeb
   /opt/homebrew/bin/brew shellenv > ~/.brew_shellenv_cache
 fi
 if [[ -f ~/.brew_shellenv_cache && -O ~/.brew_shellenv_cache ]]; then
-  eval "$(cat ~/.brew_shellenv_cache)"
+  source ~/.brew_shellenv_cache
 fi
 
 zstyle ':omz:update' mode auto
@@ -32,6 +32,8 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $HOME/dotfiles/paths
 source $HOME/dotfiles/aliases
+source $HOME/dotfiles/fzf/fzf-git.sh
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm

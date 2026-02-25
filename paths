@@ -2,16 +2,8 @@
 export PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:$HOME/bin:$PATH"
 
 # Development tools
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/dotfiles/scripts:$PATH"
-
-# Android SDK (only if directory exists)
-if [[ -d "$HOME/Library/Android/sdk" ]]; then
-  export ANDROID_SDK="$HOME/Library/Android/sdk"
-  export ANDROID_HOME="$HOME/Library/Android/sdk"
-  export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools"
-fi
 
 # Node.js package managers
 export PNPM_HOME="$HOME/Library/pnpm"
@@ -21,14 +13,8 @@ export PATH="$PNPM_HOME:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Go
-export GOROOT_BOOTSTRAP="$GOROOT"
-
-# NVM is loaded in zshrc to avoid duplication
-
 # Python
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
-export PATH="/opt/homebrew/opt/python@3.11/libexec/bin:$PATH"
 
 # Ruby
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
