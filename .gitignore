@@ -93,3 +93,5 @@ iTerm2/Profiles.json
 .nvmrc
 .ruby-version
 .python-version
+
+.claude/*.local.*

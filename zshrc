@@ -33,6 +33,7 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/dotfiles/paths
 source $HOME/dotfiles/aliases
 source $HOME/dotfiles/fzf/fzf-git.sh
+source $HOME/dotfiles/load-nvm
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
