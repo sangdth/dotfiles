@@ -173,10 +173,6 @@ function M.config()
         delay = 200,
         reveal = { "close" },
       },
-
-      keymap = {
-        normal_mode = {},
-      },
       sort_by = "id",
       highlights = {
         background = {

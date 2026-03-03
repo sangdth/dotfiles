@@ -1,6 +1,10 @@
 local M = {
   "Wansmer/treesj",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
+  keys = {
+    { "sj", "<cmd>TSJSplit<CR>" },
+    { "sk", "<cmd>TSJJoin<CR>" },
+  },
 }
 
 function M.config()

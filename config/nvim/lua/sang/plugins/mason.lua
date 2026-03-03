@@ -14,9 +14,26 @@ return {
       },
     }
 
+    require("mason-lspconfig").setup {
+      ensure_installed = {
+        "lua_ls",
+        "cssls",
+        "html",
+        "ts_ls",
+        "pyright",
+        "bashls",
+        "jsonls",
+        "yamlls",
+        "tailwindcss",
+      },
+    }
+
     require("mason-tool-installer").setup {
-      "eslint",
-      "prettier",
+      ensure_installed = {
+        "biome",
+        "eslint",
+        "prettier",
+      },
     }
   end,
 }

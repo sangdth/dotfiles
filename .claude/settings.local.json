@@ -3,7 +3,19 @@
     "allow": [
       "Bash(grep:*)",
       "Bash(echo:*)",
-      "Bash(corepack:*)"
+      "Bash(corepack:*)",
+      "Bash(fnm list:*)",
+      "Bash(fnm env)",
+      "Bash(node --version:*)",
+      "Bash(npm --version)",
+      "Bash(/opt/homebrew/bin/fnm list:*)",
+      "Bash(/opt/homebrew/bin/fnm current:*)",
+      "Bash(/opt/homebrew/bin/fnm env:*)",
+      "Bash(./install)",
+      "Bash(ln:*)",
+      "Bash(starship config:*)",
+      "Bash(starship print-config:*)",
+      "Bash(nvim:*)"
     ]
   }
 }

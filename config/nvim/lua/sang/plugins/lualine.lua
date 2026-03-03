@@ -3,7 +3,7 @@ local function myprogress()
   local total = vim.fn.line "$"
 
   -- Calculate the number of digits in total
-  local digits = math.floor(math.log10(total)) + 1
+  local digits = math.floor(math.log10(math.max(1, total))) + 1
 
   -- Format the current line number with leading zeros
   local format_str = "%0" .. digits .. "d/%d"
@@ -32,7 +32,7 @@ return {
   },
   config = function()
     -- Start async timer to update claude status every 2 seconds
-    claude_cache_timer = vim.loop.new_timer()
+    claude_cache_timer = vim.uv.new_timer()
     claude_cache_timer:start(0, 2000, vim.schedule_wrap(update_claude_status))
 
     require("lualine").setup {
@@ -69,7 +69,7 @@ return {
               if executing or status == "starting" or status == "restarting" then
                 local frames = { "󰐽", "󰀚", "󰀚", "󰐾", "󰐾", "󰐾", "󰗝", "󰗝", "󰗝", "󰗝" }
 
-                local frame = math.floor(vim.loop.now() / 100) % #frames + 1
+                local frame = math.floor(vim.uv.now() / 100) % #frames + 1
                 return "󰐻 " .. frames[frame]
               end
 

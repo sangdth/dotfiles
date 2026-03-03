@@ -33,6 +33,7 @@
     ~/.config/lazygit: config/lazygit
     ~/.config/nvim: config/nvim
     ~/.config/ripgrep/config: config/ripgrep/config
+    ~/.config/starship.toml: config/starship.toml
 
     # Global configurations
     ~/.agignore: agignore

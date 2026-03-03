@@ -19,29 +19,21 @@ return {
     local M = {}
     local lint = require "lint"
 
-    -- for name, linter in pairs(opts.linters) do
-    --   if type(linter) == "table" and type(lint.linters[name]) == "table" then
-    --     lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
-    --     if type(linter.prepend_args) == "table" then
-    --       lint.linters[name].args = lint.linters[name].args or {}
-    --       vim.list_extend(lint.linters[name].args, linter.prepend_args)
-    --     end
-    --   else
-    --     lint.linters[name] = linter
-    --   end
-    -- end
-
     lint.linters_by_ft = opts.linters_by_ft
 
     function M.lint()
-      -- Use nvim-lint's logic first:
-      -- * checks if linters exist for the full filetype first
-      -- * otherwise will split filetype by "." and add all those linters
-      -- * this differs from conform.nvim which only uses the first filetype that has a formatter
       local names = lint._resolve_linter_by_ft(vim.bo.filetype)
-
-      -- Create a copy of the names table to avoid modifying the original.
       names = vim.list_extend({}, names)
+
+      -- Swap eslint for biomejs when biome.json is in the project
+      local has_biome = vim.fs.find({ "biome.json", "biome.jsonc" }, {
+        upward = true,
+        path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h"),
+      })[1]
+      if has_biome then
+        names = vim.tbl_filter(function(name) return name ~= "eslint" end, names)
+        table.insert(names, "biomejs")
+      end
 
       -- Add fallback linters.
       if #names == 0 then
@@ -84,9 +76,5 @@ return {
       group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
       callback = M.debounce(100, M.lint),
     })
-
-    -- vim.keymap.set("n", "<leader>le", function()
-    --   lint.try_lint()
-    -- end, { desc = "Trigger linting for current file" })
   end,
 }

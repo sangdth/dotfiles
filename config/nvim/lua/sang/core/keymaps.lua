@@ -1,11 +1,9 @@
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
-keymap("n", "<Space>", "Nop", opts)
+keymap("n", "<Space>", "<Nop>", opts)
 
 keymap("n", "<C-i>", "<C-i>", opts)
-
-keymap("n", "rn", vim.lsp.buf.rename, opts)
 
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)

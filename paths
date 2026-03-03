@@ -55,3 +55,5 @@ function pyenv() {
 # export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+export PATH=/Users/sang/.opencode/bin:$PATH

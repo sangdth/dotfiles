@@ -2,12 +2,12 @@ local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    { "folke/neodev.nvim" },
+    { "folke/lazydev.nvim" },
   },
 }
 
 local function lsp_keymaps(bufnr)
-  local opts = { noremap = true, silent = true }
+  local opts = { noremap = true, silent = true, buffer = bufnr }
   local keymap = vim.keymap.set
   keymap("n", "gD", vim.lsp.buf.declaration, opts)
   keymap("n", "gd", vim.lsp.buf.definition, opts)
@@ -21,9 +21,24 @@ local function lsp_keymaps(bufnr)
   keymap("n", "glk", vim.diagnostic.goto_prev, opts)
 end
 
-M.on_attach = function(_, bufnr)
-  lsp_keymaps(bufnr)
-end
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    lsp_keymaps(ev.buf)
+
+    vim.api.nvim_create_autocmd("CursorHold", {
+      buffer = ev.buf,
+      callback = function()
+        -- Don't show hover if a float is already visible (cmp, hover, diagnostics, etc.)
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+          if vim.api.nvim_win_get_config(win).relative ~= "" then
+            return
+          end
+        end
+        vim.lsp.buf.hover { focusable = false }
+      end,
+    })
+  end,
+})
 
 function M.common_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -50,8 +65,6 @@ M.toggle_inlay_hints = function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = bufnr })
 end
 
-local border = require "sang.utils.border"
-
 function M.config()
   local icons = require "sang.utils.icons"
 
@@ -72,12 +85,11 @@ function M.config()
 
   vim.diagnostic.config {
     signs = {
-      active = true,
-      values = {
-        { name = "DiagnosticSignError", text = icons.diagnostics.Error },
-        { name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
-        { name = "DiagnosticSignInfo", text = icons.diagnostics.Information },
-        { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
+      text = {
+        [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = icons.diagnostics.Warning,
+        [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = icons.diagnostics.Information,
       },
     },
     virtual_text = {
@@ -97,7 +109,6 @@ function M.config()
   for _, server in pairs(servers) do
     local opts = {
       capabilities = M.common_capabilities(),
-      on_attach = M.on_attach,
     }
 
     local require_ok, settings = pcall(require, "sang.lspsettings." .. server)
@@ -106,7 +117,7 @@ function M.config()
     end
 
     if server == "lua_ls" then
-      require("neodev").setup()
+      require("lazydev").setup()
     end
 
     vim.lsp.config(server, opts)

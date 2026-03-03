@@ -20,7 +20,7 @@ vim.opt.swapfile = false
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 1000
 vim.opt.undofile = true
-vim.opt.updatetime = 300
+vim.opt.updatetime = 500
 vim.opt.writebackup = false
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
@@ -43,7 +43,7 @@ vim.opt.fillchars = { eob = " ", stl = " " }
 vim.opt.shortmess:append "c"
 vim.opt.foldcolumn = "0"
 vim.opt.foldenable = true
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"

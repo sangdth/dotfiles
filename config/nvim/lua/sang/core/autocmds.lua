@@ -1,10 +1,3 @@
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function(args)
-    require("conform").format { bufnr = args.buf, async = true, lsp_fallback = true }
-  end,
-})
-
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   callback = function()
     vim.cmd "set formatoptions-=cro"

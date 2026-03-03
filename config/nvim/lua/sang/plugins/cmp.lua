@@ -44,17 +44,13 @@ local M = {
 
 local source_names = {
   buffer = "",
-  calc = "󰇔",
   cmp_tabnine = "󰋙",
   cmp_ai = "",
-  copilot = "",
-  dotenv = "",
   emoji = "",
   luasnip = "",
   nvim_lsp = "",
   nvim_lua = "󰢱",
   path = "",
-  treesitter = "󰐅",
 }
 
 function M.config()
@@ -78,7 +74,7 @@ function M.config()
 
   cmp.setup {
     enabled = function()
-      local buftype = vim.api.nvim_buf_get_option(0, "buftype")
+      local buftype = vim.bo[0].buftype
       if buftype == "prompt" then
         return false
       end
@@ -159,18 +155,13 @@ function M.config()
       end,
     },
     sources = {
-      -- { name = "cmp_ai" },
-      { name = "buffer" },
-      { name = "calc" },
-      { name = "cmp_tabnine" },
-      { name = "copilot" },
-      { name = "dotenv" },
-      { name = "emoji" },
-      { name = "luasnip" },
       { name = "nvim_lsp" },
+      { name = "luasnip" },
+      { name = "buffer" },
+      { name = "cmp_tabnine" },
+      { name = "emoji" },
       { name = "nvim_lua" },
       { name = "path" },
-      { name = "treesitter" },
     },
     confirm_opts = {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -186,7 +177,6 @@ function M.config()
     },
     experimental = {
       ghost_text = true,
-      native_menu = false,
     },
   }
 end
