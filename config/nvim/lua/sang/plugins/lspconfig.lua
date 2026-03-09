@@ -11,7 +11,7 @@ local function lsp_keymaps(bufnr)
   local keymap = vim.keymap.set
   keymap("n", "gD", vim.lsp.buf.declaration, opts)
   keymap("n", "gd", vim.lsp.buf.definition, opts)
-  keymap("n", "K", vim.lsp.buf.hover, opts)
+  keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
   keymap("n", "gI", vim.lsp.buf.implementation, opts)
   keymap("n", "gr", vim.lsp.buf.references, opts)
   keymap("n", "gl", vim.diagnostic.open_float, opts)
@@ -25,16 +25,57 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     lsp_keymaps(ev.buf)
 
+    -- Esc: close hover floats + suppress next CursorHold hover
+    vim.keymap.set("n", "<Esc>", function()
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_config(win).relative ~= "" then
+          pcall(vim.api.nvim_win_close, win, true)
+        end
+      end
+      vim.b.suppress_hover = true
+    end, { buffer = ev.buf, noremap = true, silent = true })
+
+    -- Reset suppress flag when cursor moves
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      buffer = ev.buf,
+      callback = function()
+        vim.b.suppress_hover = false
+      end,
+    })
+
+    -- gd inside hover floats: grab word, close float, search workspace symbols
+    vim.api.nvim_create_autocmd("WinEnter", {
+      callback = function()
+        local win = vim.api.nvim_get_current_win()
+        if vim.api.nvim_win_get_config(win).relative == "" then return end
+        local buf = vim.api.nvim_get_current_buf()
+        if vim.b[buf].float_gd_mapped then return end
+        vim.b[buf].float_gd_mapped = true
+        vim.keymap.set("n", "gd", function()
+          local word = vim.fn.expand "<cword>"
+          for _, w in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_config(w).relative ~= "" then
+              pcall(vim.api.nvim_win_close, w, true)
+            end
+          end
+          vim.schedule(function()
+            require("telescope.builtin").lsp_workspace_symbols { default_text = word }
+          end)
+        end, { buffer = buf, noremap = true, silent = true })
+      end,
+    })
+
     vim.api.nvim_create_autocmd("CursorHold", {
       buffer = ev.buf,
       callback = function()
+        if vim.b.suppress_hover then return end
         -- Don't show hover if a float is already visible (cmp, hover, diagnostics, etc.)
         for _, win in ipairs(vim.api.nvim_list_wins()) do
           if vim.api.nvim_win_get_config(win).relative ~= "" then
             return
           end
         end
-        vim.lsp.buf.hover { focusable = false }
+        vim.lsp.buf.hover { focusable = false, silent = true }
       end,
     })
   end,

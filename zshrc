@@ -5,6 +5,7 @@ fi
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR="cursor"
 export REACT_EDITOR="cursor"
+export RIPGREP_CONFIG_PATH="$HOME/dotfiles/ripgrep/config"
 
 # ZSH_THEME=""
 
