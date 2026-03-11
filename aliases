@@ -94,6 +94,16 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 	alias "$method"="lwp-request -m '$method'"
 done
 
+# Git worktree helper (wraps git-wt, cds into new worktree on add)
+function wt() {
+  if [[ "$1" == "add" ]]; then
+    local dir
+    dir=$(git-wt add "${@:2}") && cd "$dir"
+  else
+    git-wt "$@"
+  fi
+}
+
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 

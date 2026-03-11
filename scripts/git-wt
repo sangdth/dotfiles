@@ -1,0 +1,92 @@
+#!/bin/bash
+set -e
+
+SUBCOMMAND="$1"
+NAME="$2"
+
+if [[ "$SUBCOMMAND" == "ls" ]]; then
+  git worktree list
+  exit 0
+fi
+
+if [[ "$SUBCOMMAND" != "add" ]] || [[ -z "$NAME" ]]; then
+  echo "Usage: git wt add <branch-name-or-ticket>" >&2
+  echo "       git wt ls" >&2
+  exit 1
+fi
+
+# If NAME looks like a Linear ticket (e.g. ope-1234, OPE-1234), fetch and generate branch name
+if [[ "$NAME" =~ ^[a-zA-Z]+-[0-9]+$ ]]; then
+  TICKET_ID=$(echo "$NAME" | tr '[:lower:]' '[:upper:]')
+  TEAM_KEY="${TICKET_ID%%-*}"
+  TICKET_NUM="${TICKET_ID##*-}"
+
+  if [[ -z "$LINEAR_API_KEY" ]]; then
+    echo "LINEAR_API_KEY is not set. Add it to ~/.env" >&2
+    exit 1
+  fi
+
+  QUERY=$(cat <<GRAPHQL
+{"query":"{ issues(filter: { team: { key: { eq: \\"${TEAM_KEY}\\" } }, number: { eq: ${TICKET_NUM} } }, first: 1) { nodes { title description identifier } } }"}
+GRAPHQL
+)
+
+  RESPONSE=$(curl -s -X POST https://api.linear.app/graphql \
+    -H "Content-Type: application/json" \
+    -H "Authorization: $LINEAR_API_KEY" \
+    -d "$QUERY")
+
+  TITLE=$(echo "$RESPONSE" | jq -r '.data.issues.nodes[0].title // empty')
+  DESCRIPTION=$(echo "$RESPONSE" | jq -r '.data.issues.nodes[0].description // empty')
+
+  if [[ -z "$TITLE" ]]; then
+    echo "Could not fetch Linear ticket: $TICKET_ID" >&2
+    echo "API response: $RESPONSE" >&2
+    exit 1
+  fi
+
+  echo "Ticket: $TICKET_ID — $TITLE" >&2
+
+  PROMPT="Act as a git branch name generator. Convert bug reports or issue descriptions into branch names.
+
+Guidelines:
+- Format: kebab-case, all lowercase.
+- Length: Maximum 40-60 characters.
+- The branch name MUST start with '$(echo "$TICKET_ID" | tr '[:upper:]' '[:lower:]')-' (the lowercase ticket id).
+- Context: For short text, assume it relates to the \"Operating.app\" application.
+- Output: Return only the branch name. No explanations or extra text.
+
+Ticket title: $TITLE
+Ticket description: $DESCRIPTION"
+
+  NAME=$(claude -p "$PROMPT" 2>/dev/null)
+
+  if [[ -z "$NAME" ]]; then
+    echo "Failed to generate branch name." >&2
+    exit 1
+  fi
+
+  echo "Branch: $NAME" >&2
+fi
+
+SRC=$(git rev-parse --show-toplevel)
+REPO_NAME=$(basename "$SRC")
+PARENT=$(dirname "$SRC")
+DIR="${PARENT}/${REPO_NAME}-${2}"
+
+if [[ -d "$DIR" ]]; then
+  echo "Using existing worktree: $DIR" >&2
+else
+  echo "Creating worktree at $DIR" >&2
+  git -C "$SRC" worktree add -b "$NAME" "$DIR" main >&2
+
+  find "$SRC" -name ".env*" -type f | while read -r f; do
+    rel="${f#$SRC/}"
+    mkdir -p "$DIR/$(dirname "$rel")"
+    cp "$f" "$DIR/$rel"
+  done
+
+  npm --prefix "$DIR" i >&2
+fi
+
+echo "$DIR"
