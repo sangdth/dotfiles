@@ -1,0 +1,157 @@
+#!/bin/bash
+set -e
+
+CACHE_DIR="$HOME/.cache/starship-migration"
+CACHE_FILE="$CACHE_DIR/remote-num"
+CACHE_HASH="$CACHE_DIR/remote-hash"
+LOCK_DIR="$CACHE_DIR/.lock"
+TTL=300 # 5 minutes
+
+MONOREPO_DIR="$HOME/Projects/monorepo"
+GH_REPO="Operating-App/monorepo"
+MIGRATIONS_PATH="server/migrations/committed"
+
+# --when mode: exit 0 if inside monorepo or worktree, 1 otherwise
+if [[ "$1" == "--when" ]]; then
+  case "$PWD" in
+    "$MONOREPO_DIR"|"$MONOREPO_DIR"/*) exit 0 ;;
+    "$MONOREPO_DIR"-*) exit 0 ;;
+    *) exit 1 ;;
+  esac
+fi
+
+mkdir -p "$CACHE_DIR"
+
+# Background fetch: get latest remote migration number + its hash
+fetch_remote() {
+  # Acquire lock (atomic mkdir)
+  if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    return
+  fi
+
+  # Ensure lock is cleaned up on exit
+  trap 'rmdir "$LOCK_DIR" 2>/dev/null' EXIT
+
+  latest_file=$(gh api "repos/$GH_REPO/contents/$MIGRATIONS_PATH" \
+    --jq '.[].name' 2>/dev/null \
+    | grep -E '^[0-9]+\.sql$' \
+    | sort \
+    | tail -1)
+
+  if [[ -z "$latest_file" ]]; then
+    rmdir "$LOCK_DIR" 2>/dev/null
+    trap - EXIT
+    return
+  fi
+
+  remote_num="${latest_file%.sql}"
+
+  # Fetch the file content to extract the Hash line
+  remote_hash=$(gh api "repos/$GH_REPO/contents/$MIGRATIONS_PATH/$latest_file" \
+    --jq '.content' 2>/dev/null \
+    | base64 -d 2>/dev/null \
+    | head -2 \
+    | grep -oE 'sha1:[a-f0-9]+' \
+    | tail -1)
+
+  echo "$remote_num" > "$CACHE_FILE"
+  echo "$remote_hash" > "$CACHE_HASH"
+
+  rmdir "$LOCK_DIR" 2>/dev/null
+  trap - EXIT
+}
+
+# Check if cache is fresh
+needs_refresh=false
+if [[ -f "$CACHE_FILE" ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    cache_age=$(( $(date +%s) - $(stat -f %m "$CACHE_FILE") ))
+  else
+    cache_age=$(( $(date +%s) - $(stat -c %Y "$CACHE_FILE") ))
+  fi
+  if [[ $cache_age -ge $TTL ]]; then
+    needs_refresh=true
+  fi
+else
+  # No cache — spawn background fetch and output nothing
+  fetch_remote &
+  disown
+  exit 0
+fi
+
+# Spawn background refresh if stale
+if [[ "$needs_refresh" == "true" ]]; then
+  fetch_remote &
+  disown
+fi
+
+# Read cached remote values
+remote_num=$(cat "$CACHE_FILE")
+remote_hash=""
+[[ -f "$CACHE_HASH" ]] && remote_hash=$(cat "$CACHE_HASH")
+
+# Resolve local migrations directory (worktree-aware)
+local_migrations_dir=""
+case "$PWD" in
+  "$MONOREPO_DIR"/*)
+    local_migrations_dir="$MONOREPO_DIR/$MIGRATIONS_PATH"
+    ;;
+  "$MONOREPO_DIR"-*)
+    wt_root="${PWD%%/server/*}"
+    if [[ "$wt_root" == "$PWD" ]]; then
+      wt_root=$(echo "$PWD" | grep -oE "$HOME/Projects/monorepo-[^/]+")
+    fi
+    if [[ -d "$wt_root/$MIGRATIONS_PATH" ]]; then
+      local_migrations_dir="$wt_root/$MIGRATIONS_PATH"
+    else
+      local_migrations_dir="$MONOREPO_DIR/$MIGRATIONS_PATH"
+    fi
+    ;;
+  *)
+    local_migrations_dir="$MONOREPO_DIR/$MIGRATIONS_PATH"
+    ;;
+esac
+
+local_num=""
+if [[ -d "$local_migrations_dir" ]]; then
+  local_num=$(ls "$local_migrations_dir" 2>/dev/null \
+    | grep -E '^[0-9]+\.sql$' \
+    | sort \
+    | tail -1 \
+    | sed 's/\.sql//')
+fi
+
+# If we have no data, output nothing
+if [[ -z "$remote_num" ]] || [[ -z "$local_num" ]]; then
+  exit 0
+fi
+
+# Compare numbers first, then hashes if same number
+remote_int=$((10#$remote_num))
+local_int=$((10#$local_num))
+
+if [[ $remote_int -gt $local_int ]]; then
+  # Remote is ahead — someone added a migration we don't have
+  printf '\033[31m✗ %s\033[0m' "$remote_num"
+elif [[ $remote_int -eq $local_int ]]; then
+  # Same number — compare hashes to detect content conflict
+  local_hash=""
+  local_file="$local_migrations_dir/${local_num}.sql"
+  if [[ -f "$local_file" ]]; then
+    local_hash=$(head -2 "$local_file" | grep -oE 'sha1:[a-f0-9]+' | tail -1)
+  fi
+
+  if [[ -z "$remote_hash" ]] || [[ -z "$local_hash" ]]; then
+    # Can't compare hashes — show number without status
+    printf '\033[33m? %s\033[0m' "$remote_num"
+  elif [[ "$remote_hash" == "$local_hash" ]]; then
+    # Same file — no conflict
+    printf '\033[32m✓ %s\033[0m' "$remote_num"
+  else
+    # Same number but different content — conflict!
+    printf '\033[31m✗ %s\033[0m' "$remote_num"
+  fi
+else
+  # Local is ahead — our migration number is safe
+  printf '\033[32m✓ %s\033[0m' "$remote_num"
+fi

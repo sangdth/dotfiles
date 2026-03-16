@@ -16,6 +16,7 @@ $git_branch\
 $git_commit\
 $git_state\
 $git_status\
+${custom.migration}\
 $docker_context\
 $nodejs\
 $python\
@@ -96,3 +97,10 @@ style = "bold blue"
 format = "is [$symbol$version]($style) "
 symbol = "📦 "
 style = "bold 208"
+
+[custom.migration]
+command = "migration-check"
+when = "migration-check --when"
+format = "[$output ]($style)"
+style = ""
+shell = ["bash", "--noprofile", "--norc"]

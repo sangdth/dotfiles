@@ -67,12 +67,13 @@ Ticket description: $DESCRIPTION"
   fi
 
   echo "Branch: $NAME" >&2
+  DIR_NAME="${NAME#"$(echo "$TICKET_ID" | tr '[:upper:]' '[:lower:]')"-}"
 fi
 
 SRC=$(git rev-parse --show-toplevel)
 REPO_NAME=$(basename "$SRC")
 PARENT=$(dirname "$SRC")
-DIR="${PARENT}/${REPO_NAME}-${2}"
+DIR="${PARENT}/${REPO_NAME}-${DIR_NAME:-$NAME}"
 
 if [[ -d "$DIR" ]]; then
   echo "Using existing worktree: $DIR" >&2
