@@ -54,12 +54,12 @@ Guidelines:
 - Length: Maximum 40-60 characters.
 - The branch name MUST start with '$(echo "$TICKET_ID" | tr '[:upper:]' '[:lower:]')-' (the lowercase ticket id).
 - Context: For short text, assume it relates to the \"Operating.app\" application.
-- Output: Return only the branch name. No explanations or extra text.
+- Output: Return only the branch name. No explanations, no markdown, no backticks, no extra text.
 
 Ticket title: $TITLE
 Ticket description: $DESCRIPTION"
 
-  NAME=$(claude -p "$PROMPT" 2>/dev/null)
+  NAME=$(claude -p "$PROMPT" 2>/dev/null | tr -d '`' | xargs)
 
   if [[ -z "$NAME" ]]; then
     echo "Failed to generate branch name." >&2
@@ -80,6 +80,11 @@ if [[ -d "$DIR" ]]; then
 else
   echo "Creating worktree at $DIR" >&2
   git -C "$SRC" worktree add -b "$NAME" "$DIR" main >&2
+
+  # Register branch with Graphite so it's tracked and linked
+  if command -v gt &>/dev/null; then
+    (cd "$DIR" && gt branch track --force) >&2
+  fi
 
   find "$SRC" -name ".env*" -type f | while read -r f; do
     rel="${f#$SRC/}"

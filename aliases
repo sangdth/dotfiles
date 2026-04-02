@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 alias cl='clear'
+alias claer='clear'
+alias clau='claude'
+alias cla='claude'
 alias cp='cp -i'
 alias cs='cursor-agent'
 alias dc='docker compose'
@@ -29,10 +32,10 @@ alias randomport='jot -r 1 55000 55999'
 alias rm='rm -i'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 alias vvv='virtualenv env && source ./env/bin/activate' # for python virtualenv
-alias zshrc='nvim ~/dotfiles/zshrc'
+alias configzsh='nvim ~/dotfiles/zshrc'
 alias nvm-upgrade='nvm install --lts --reinstall-packages-from=$(node -v)'
 
-alias openlocal='ngrok http --region=us --hostname=ants.ngrok.io' # -region=eu -subdomain=sa -host-header=rewrite 3000'
+alias openlocal='ngrok http --region=eu --hostname=${1}.ngrok.io' # -region=eu -subdomain=sa -host-header=rewrite 3000'
 
 alias redis='redis-cli'
 
