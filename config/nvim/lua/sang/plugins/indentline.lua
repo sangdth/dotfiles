@@ -1,11 +1,9 @@
 return {
   "lukas-reineke/indent-blankline.nvim",
   event = "VeryLazy",
-  main = "ibl",
-  config = function()
+  opts = function()
     local icons = require "sang.utils.icons"
-
-    require("ibl").setup {
+    return {
       debounce = 100,
       indent = {
         char = icons.ui.LineMiddle,
@@ -19,20 +17,31 @@ return {
         buftypes = {
           "terminal",
           "nofile",
+          "quickfix",
+          "prompt",
         },
         filetypes = {
-          "help",
-          "startify",
+          "",
+          "checkhealth",
           "dashboard",
+          "gitcommit",
+          "help",
           "lazy",
+          "lspinfo",
+          "man",
           "neogitstatus",
           "NvimTree",
+          "startify",
+          "TelescopePrompt",
+          "TelescopeResults",
           "Trouble",
           "text",
         },
       },
     }
-
+  end,
+  config = function(_, opts)
+    require("ibl").setup(opts)
     local hooks = require "ibl.hooks"
     hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
   end,

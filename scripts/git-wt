@@ -47,16 +47,18 @@ GRAPHQL
 
   echo "Ticket: $TICKET_ID — $TITLE" >&2
 
-  PROMPT="Act as a git branch name generator. Convert bug reports or issue descriptions into branch names.
+  PROMPT="Act as a name generator. Convert issue descriptions into branch names.
+
+IMOIRTANT: Return ONLY the branch name. No explanations, no markdown, no backticks, no extra highlight.
 
 Guidelines:
 - Format: kebab-case, all lowercase.
 - Length: Maximum 40-60 characters.
 - The branch name MUST start with '$(echo "$TICKET_ID" | tr '[:upper:]' '[:lower:]')-' (the lowercase ticket id).
 - Context: For short text, assume it relates to the \"Operating.app\" application.
-- Output: Return only the branch name. No explanations, no markdown, no backticks, no extra text.
 
 Ticket title: $TITLE
+
 Ticket description: $DESCRIPTION"
 
   NAME=$(claude -p "$PROMPT" 2>/dev/null | tr -d '`' | xargs)
