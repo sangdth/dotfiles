@@ -25,6 +25,7 @@ return {
         "jsonls",
         "yamlls",
         "tailwindcss",
+        "svelte",
       },
     }
 

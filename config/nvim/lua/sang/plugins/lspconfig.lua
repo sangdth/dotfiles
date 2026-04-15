@@ -105,6 +105,7 @@ function M.config()
     "rust_analyzer",
     "marksman", -- Markdown LSP
     "tailwindcss", -- Tailwind CSS LSP
+    "svelte", -- Svelte LSP
   }
 
   vim.diagnostic.config {
