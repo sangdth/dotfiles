@@ -138,3 +138,8 @@ fpath=(/Users/sang/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# bun completions
+[ -s "/Users/sang/.bun/_bun" ] && source "/Users/sang/.bun/_bun"
+
+alias claude-mem='bun "/Users/sang/.claude/plugins/cache/thedotmack/claude-mem/12.1.1/scripts/worker-service.cjs"'
